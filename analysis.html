@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analysis — The Malaysian Lens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1628;
+      --gold: #c9a84c;
+      --cream: #faf8f3;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --border: #e5e0d5;
+      --red: #c0392b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    header { background: var(--navy); border-bottom: 3px solid var(--gold); padding: 0 1.5rem; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 0 0.8rem; max-width: 1200px; margin: 0 auto; }
+    .site-name { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: #fff; text-decoration: none; }
+    .site-name span { color: var(--gold); }
+    .site-tagline { font-size: 0.65rem; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+    .header-nav { display: flex; gap: 1.5rem; align-items: center; }
+    .header-nav a { color: #cbd5e0; text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .header-nav a:hover, .header-nav a.active { color: var(--gold); }
+
+    .page-hero {
+      background: var(--navy);
+      padding: 3rem 1.5rem 2.5rem;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+    }
+    .page-hero-inner { max-width: 1200px; margin: 0 auto; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; }
+    .page-hero p { font-size: 0.95rem; color: #94a3b8; max-width: 600px; }
+
+    /* FILTER BAR */
+    .filter-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 0.8rem 1.5rem; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .filter-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .filter-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; margin-right: 0.5rem; }
+    .filter-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--gold); color: var(--navy); }
+    .filter-btn.active { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+
+    /* GRID */
+    .articles-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+    .article-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid transparent;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.4s ease forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .article-card:hover { border-bottom-color: var(--gold); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+
+    .card-emoji { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+    .card-category { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 0.5rem; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.35; transition: color 0.2s; }
+    .article-card:hover .card-title { color: var(--gold); }
+    .card-excerpt { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
+    .card-meta { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 0.2rem 0.65rem;
+      border-radius: 2px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .no-results { display: none; text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 0.95rem; }
+    .no-results.show { display: block; }
+
+    footer { background: var(--navy); color: #94a3b8; padding: 2.5rem 1.5rem; text-align: center; }
+    .footer-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 0.5rem; }
+    footer p { font-size: 0.8rem; line-height: 1.9; }
+    footer .sources { margin-top: 0.5rem; font-size: 0.7rem; color: #4a5568; }
+
+    @media (max-width: 768px) {
+      .site-name { font-size: 1.3rem; }
+      .page-hero h1 { font-size: 1.7rem; }
+      .articles-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <a href="index.html" class="site-name">The <span>Malaysian</span> Lens</a>
+      <div class="site-tagline">Economic Analysis · Data-Driven · Independent</div>
+    </div>
+    <nav class="header-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="analysis.html" class="active">Analysis</a>
+      <span style="color:#c9a84c;font-size:1.3rem;">🇲🇾</span>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>Analysis</h1>
+    <p>Data-driven posts on the Malaysian economy — grounded in DOSM and BNM data, written for everyone. Sources stated in each piece.</p>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="industry-trade">Industry &amp; Trade</button>
+    <button class="filter-btn" data-filter="monetary-policy">Monetary Policy</button>
+    <button class="filter-btn" data-filter="labour-wages">Labour &amp; Wages</button>
+    <button class="filter-btn" data-filter="fiscal">Fiscal</button>
+    <button class="filter-btn" data-filter="external">External</button>
+  </div>
+</div>
+
+<div class="articles-wrap">
+  <div class="articles-grid" id="articles-grid">
+
+    <div class="article-card" data-category="industry-trade" onclick="window.location='articles/semiconductors.html'" style="animation-delay:0.05s">
+      <span class="card-emoji">💡</span>
+      <div class="card-category">Industry &amp; Trade</div>
+      <div class="card-title">Malaysia's Semiconductor Golden Goose Is Running Out of Time</div>
+      <p class="card-excerpt">A RM1 billion ARM Holdings deal. Institutional uncertainty. Two scenarios — both bad for Malaysia. The data tells a story most headlines miss.</p>
+      <div class="card-meta">
+        <span class="tag">Semiconductors</span>
+        <span class="tag">FDI</span>
+        <span>March 2026</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="no-results" id="no-results">No posts found for this category yet — check back soon.</div>
+</div>
+
+<footer>
+  <div class="footer-name">The Malaysian Lens</div>
+  <p>Economic Analysis by Deisigan &nbsp;·&nbsp; 🇲🇾 &nbsp;·&nbsp; Independent</p>
+  <p class="sources">Data: DOSM (data.gov.my) · BNM (apikijangportal.bnm.gov.my) · Sources stated per article</p>
+  <p style="margin-top:0.5rem;font-size:0.7rem;color:#4a5568;">Views are my own. Not the official position of any institution.</p>
+</footer>
+
+<script>
+  // Category filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.article-card');
+  const noResults = document.getElementById('no-results');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      cards.forEach((card, i) => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.style.display = match ? 'block' : 'none';
+        if (match) {
+          card.style.animationDelay = `${i * 0.04}s`;
+          visible++;
+        }
+      });
+      noResults.classList.toggle('show', visible === 0);
+    });
+  });
+</script>
+</body>
+</html>

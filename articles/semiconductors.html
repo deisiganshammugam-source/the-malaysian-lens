@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malaysia's Semiconductor Golden Goose — The Malaysian Lens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1628;
+      --gold: #c9a84c;
+      --cream: #faf8f3;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --border: #e5e0d5;
+      --red: #c0392b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+    /* HEADER */
+    header { background: var(--navy); border-bottom: 3px solid var(--gold); padding: 0 2rem; }
+    .header-top { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0 1rem; max-width: 1100px; margin: 0 auto; }
+    .site-name { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: #fff; text-decoration: none; display: block; }
+    .site-name span { color: var(--gold); }
+    .site-tagline { font-size: 0.7rem; color: #a0aec0; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+    nav { max-width: 1100px; margin: 0 auto; padding: 0.75rem 0; display: flex; gap: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    nav a { color: #cbd5e0; text-decoration: none; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    nav a:hover { color: var(--gold); }
+    .date-bar { background: var(--gold); text-align: center; padding: 0.35rem; font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; color: var(--navy); }
+
+    /* ARTICLE */
+    .article-wrapper { max-width: 720px; margin: 3rem auto; padding: 0 2rem; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--muted); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2rem; }
+    .back-link:hover { color: var(--gold); }
+
+    .article-category { display: inline-block; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 1rem; }
+
+    .article-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--navy);
+      margin-bottom: 1.25rem;
+    }
+
+    .article-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+      border-left: 3px solid var(--gold);
+      padding-left: 1rem;
+    }
+
+    .article-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .article-meta-bar .tag {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 0.2rem 0.65rem;
+      border-radius: 2px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* Body */
+    .article-body { font-size: 1.05rem; line-height: 1.85; }
+
+    .article-body p { margin-bottom: 1.4rem; }
+
+    .article-body .hook {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .article-body .hook-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .section-break {
+      text-align: center;
+      color: var(--gold);
+      font-size: 1.2rem;
+      letter-spacing: 8px;
+      margin: 2rem 0;
+    }
+
+    /* Data table */
+    .data-table-wrapper { margin: 2rem 0; overflow-x: auto; }
+
+    .data-table-title {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead { background: var(--navy); color: #fff; }
+    thead th { padding: 0.75rem 1rem; text-align: left; font-weight: 500; letter-spacing: 0.5px; font-size: 0.78rem; }
+    tbody tr:nth-child(even) { background: #fff; }
+    tbody tr:nth-child(odd) { background: #f5f2ec; }
+    tbody td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); }
+    .table-source { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+
+    /* Pull quote */
+    .pull-quote {
+      background: var(--navy);
+      color: #fff;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-left: 4px solid var(--gold);
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    /* Key numbers */
+    .key-numbers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .key-num {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .key-num .val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .key-num .lbl {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.25rem;
+    }
+
+    /* Callout */
+    .callout {
+      background: #fff3cd;
+      border-left: 4px solid #f59e0b;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+      font-size: 0.95rem;
+    }
+
+    /* Vigilance box */
+    .vigilance-box {
+      background: var(--navy);
+      color: #e2e8f0;
+      padding: 2rem;
+      margin: 2.5rem 0 1rem;
+      text-align: center;
+    }
+
+    .vigilance-box p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    .vigilance-box .flag { font-size: 1.5rem; margin-top: 0.75rem; display: block; }
+
+    .disclaimer { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+
+    /* FOOTER */
+    footer { background: var(--navy); color: #a0aec0; padding: 2.5rem 2rem; text-align: center; margin-top: 4rem; }
+    footer .footer-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 0.5rem; }
+    footer p { font-size: 0.8rem; line-height: 1.8; }
+    footer .sources { margin-top: 1rem; font-size: 0.72rem; color: #4a5568; }
+
+    @media (max-width: 600px) {
+      .article-headline { font-size: 2rem; }
+      .key-numbers { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div>
+        <a href="../index.html" class="site-name">The <span>Malaysian</span> Lens</a>
+        <div class="site-tagline">Economic Analysis · Data-Driven · Independent</div>
+      </div>
+      <div style="font-size:2rem;">🇲🇾</div>
+    </div>
+    <nav>
+      <a href="../index.html">Dashboard</a>
+      <a href="../analysis.html">Analysis</a>
+    </nav>
+  </header>
+
+  <div class="date-bar" id="datebar">Loading...</div>
+
+  <div class="article-wrapper">
+    <a href="../index.html" class="back-link">← Back to all analysis</a>
+
+    <span class="article-category">Industry &amp; Trade</span>
+
+    <h1 class="article-headline">Malaysia's Semiconductor Golden Goose Is Running Out of Time</h1>
+
+    <p class="article-sub">
+      A RM1 billion ARM Holdings deal. Institutional uncertainty. Two scenarios — both bad for Malaysia. Don't be tired. Be vigilant.
+    </p>
+
+    <div class="article-meta-bar">
+      <span class="tag">Semiconductors</span>
+      <span class="tag">FDI</span>
+      <span class="tag">DOSM</span>
+      <span>By Deisigan &nbsp;·&nbsp; March 2026</span>
+    </div>
+
+    <div class="article-body">
+
+      <p class="hook">Malaysia's semiconductor industry is a golden goose.</p>
+      <p class="hook-sub">But the goose is tired. And right now, the things that should be protecting it are doing the opposite.</p>
+
+      <p>Everyone knows Malaysia is a semiconductor powerhouse. It's our single biggest export category. Penang is known globally as the Silicon Valley of the East. We are proud of this. We should be.</p>
+
+      <p>But here's what the headline number hides.</p>
+
+      <div class="section-break">· · ·</div>
+
+      <div class="key-numbers">
+        <div class="key-num">
+          <div class="val">~40%</div>
+          <div class="lbl">of global chip testing &amp; packaging done in Malaysia</div>
+        </div>
+        <div class="key-num">
+          <div class="val">RM210B</div>
+          <div class="lbl">Malaysia's electrical &amp; electronics exports (2024)</div>
+        </div>
+        <div class="key-num">
+          <div class="val">0%</div>
+          <div class="lbl">chip design capability — we test and pack, not design</div>
+        </div>
+      </div>
+
+      <p>We only test and package the chips. We don't design them. We don't manufacture them. The value-added work — the intellectual property, the engineering, the margins — happens somewhere else.</p>
+
+      <p>This is not a secret. Policymakers know it. MIDA knows it. The data flags it clearly. The question is: what are we doing about it?</p>
+
+      <div class="section-break">· · ·</div>
+
+      <div class="data-table-wrapper">
+        <div class="data-table-title">Malaysia Semiconductor Value Chain — Where We Sit</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Activity</th>
+              <th>Malaysia's Role</th>
+              <th>Value Added</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1. Design</td>
+              <td>Architecture, IP creation</td>
+              <td style="color:#c0392b; font-weight:600;">Minimal</td>
+              <td>Very High</td>
+            </tr>
+            <tr>
+              <td>2. Fabrication</td>
+              <td>Wafer manufacturing</td>
+              <td style="color:#c0392b; font-weight:600;">Minimal</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>3. Test &amp; Package</td>
+              <td>Assemble, test finished chips</td>
+              <td style="color:#27ae60; font-weight:600;">~40% globally</td>
+              <td>Low–Medium</td>
+            </tr>
+            <tr>
+              <td>4. Distribution</td>
+              <td>Logistics, sales</td>
+              <td style="color:#f39c12; font-weight:600;">Some</td>
+              <td>Low</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-source">Source: DOSM E&E Trade Data 2024 · MIDA Investment Performance Report</div>
+      </div>
+
+      <p>The government had a plan to change this. RM1 billion. ARM Holdings — the British company whose chip designs power literally every smartphone on the planet — agreed to partner with Malaysia to train Malaysian engineers to <em>design</em> chips. ARM doesn't do deals like this with just anyone.</p>
+
+      <div class="pull-quote">
+        <p>"ARM doesn't partner for prestige. They partner when they see a pipeline. That deal was Malaysia signalling it was serious about moving up the value chain."</p>
+      </div>
+
+      <p>Then came the uncertainty.</p>
+
+      <p>Bloomberg published an investigation raising questions about how certain institutions operate. Rafizi raised similar concerns publicly. Shortly after — a high-profile MACC case was filed against him. The case involves the ARM deal.</p>
+
+      <div class="section-break">· · ·</div>
+
+      <p>Now think about what both scenarios mean for Malaysia.</p>
+
+      <div class="callout">
+        <strong>If the allegations are true</strong> — we have a serious corruption problem at the heart of a RM1 billion strategic investment. That's devastating. Not just morally. Economically. FDI is built on trust in institutions.
+      </div>
+
+      <div class="callout" style="border-color: #6b7280; background: #f3f4f6;">
+        <strong>If the allegations are NOT true</strong> — then we just spooked one of the world's most important tech companies for nothing. The chilling effect on ARM and every other potential partner is real, regardless of the outcome.
+      </div>
+
+      <p><strong>Both scenarios are bad for Malaysia.</strong></p>
+
+      <div class="data-table-wrapper">
+        <div class="data-table-title">Malaysia FDI in E&amp;E Sector — Approved vs Realised (RM Billion)</div>
+        <table>
+          <thead>
+            <tr><th>Year</th><th>Approved FDI</th><th>Realised FDI</th><th>Realisation Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2021</td><td>52.4</td><td>31.2</td><td>59.5%</td></tr>
+            <tr><td>2022</td><td>71.8</td><td>48.3</td><td>67.3%</td></tr>
+            <tr><td>2023</td><td>68.1</td><td>43.7</td><td>64.2%</td></tr>
+            <tr><td>2024</td><td>61.2</td><td>38.9</td><td>63.6%</td></tr>
+          </tbody>
+        </table>
+        <div class="table-source">Source: MIDA Investment Performance Report · DOSM FDI Statistics</div>
+      </div>
+
+      <p>Note the realisation rate. Approved FDI means a company said "yes, we intend to invest." Realised FDI means the money actually arrived. The gap between those two numbers is institutional confidence.</p>
+
+      <div class="section-break">· · ·</div>
+
+      <p>I know what some of you are thinking.</p>
+      <p><em>"What's new. We've seen this before. 1MDB."</em></p>
+      <p>I get it. That exhaustion is real and valid.</p>
+      <p>But that exhaustion is exactly what allows these things to keep happening.</p>
+
+      <div class="vigilance-box">
+        <p>Don't be tired. Be vigilant. Ask questions. Demand answers.<br/>
+        Malaysia has come too far to lose it to institutional uncertainty — real or perceived.</p>
+        <span class="flag">🇲🇾</span>
+      </div>
+
+      <p class="disclaimer">Views are my own. Data sourced from DOSM, BNM, MIDA, and publicly available Bloomberg reporting. Sources stated throughout.</p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-name">The Malaysian Lens</div>
+    <p>Economic Analysis by Deisigan &nbsp;·&nbsp; 🇲🇾 &nbsp;·&nbsp; Independent</p>
+    <p class="sources">Data: DOSM · BNM · MIDA · Sources stated per article</p>
+  </footer>
+
+  <script>
+    const d = new Date();
+    document.getElementById('datebar').textContent =
+      d.toLocaleDateString('en-MY', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Python pipeline scripts (run locally — not needed for hosting)
+*.py
+__pycache__/
+
+# Logs and temp files
+refresh.log
+data_preview.js
+*.log
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+
+# Credentials (stored in ~/Projects/.lens_config, not here)
+.lens_config
+*.env

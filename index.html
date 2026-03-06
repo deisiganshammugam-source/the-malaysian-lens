@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Malaysian Lens | Economic Data Dashboard</title>
+  <meta name="description" content="Independent Malaysian economic data dashboard. GDP, inflation, exchange rates, trade, monetary policy, and inequality — sourced from DOSM and BNM." />
+  <meta property="og:title" content="The Malaysian Lens" />
+  <meta property="og:description" content="Independent Malaysian economic data — GDP, CPI, OPR, FX, trade, and inequality." />
+  <meta property="og:url" content="https://themalaysialens.org" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The Malaysian Lens" />
+  <meta name="twitter:description" content="Independent Malaysian economic data dashboard." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2b4a'/><text x='50%' y='72%' text-anchor='middle' font-family='Inter,sans-serif' font-weight='700' font-size='14' fill='%23c9a84c'>ML</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #1a2b4a;
+      --navy-light: #243654;
+      --gold:       #c9a84c;
+      --bg:         #f5f6f8;
+      --card:       #ffffff;
+      --text:       #1a1a2e;
+      --muted:      #6b7280;
+      --border:     #e5e7eb;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ─ HEADER ─ */
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .brand { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+    .brand-name { font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .brand-name span { color: var(--gold); }
+    .brand-tag { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; }
+    .header-meta { font-size: 0.7rem; color: rgba(255,255,255,0.45); text-align: right; }
+    .header-meta strong { color: var(--gold); }
+
+    /* ─ HERO KPI BAR ─ */
+    .hero {
+      background: var(--navy-light);
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      padding: 0.7rem 2rem;
+    }
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .kpi {
+      flex: 1;
+      min-width: 130px;
+      padding: 0.55rem 1rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .kpi:last-child { border-right: none; }
+    .kpi-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.5); font-weight: 500; }
+    .kpi-value { font-size: 1.35rem; font-weight: 700; color: var(--gold); line-height: 1.15; }
+    .kpi-sub   { font-size: 0.65rem; color: rgba(255,255,255,0.4); }
+
+    /* ─ NAV TABS ─ */
+    .nav-wrapper {
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-wrapper::-webkit-scrollbar { display: none; }
+    .nav { display: flex; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .nav-btn {
+      padding: 0.8rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover { color: var(--navy); }
+    .nav-btn.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 600; }
+
+    /* ─ MAIN ─ */
+    main { max-width: 1200px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    .section-title {
+      font-size: 1.05rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 0.25rem; padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--gold); display: inline-block;
+    }
+    .section-sub { font-size: 0.78rem; color: var(--muted); margin: 0.2rem 0 1.4rem; display: block; }
+
+    /* ─ GRID ─ */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+    /* ─ CARD ─ */
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border: 1px solid var(--border);
+    }
+    .card-title {
+      font-size: 0.78rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.9rem;
+    }
+    .chart-wrap { position: relative; width: 100%; }
+    .chart-wrap canvas { width: 100% !important; }
+
+    /* ─ SUMMARY CARDS (dashboard) ─ */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .s-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .s-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; }
+    .s-value { font-size: 1.7rem; font-weight: 700; color: var(--navy); line-height: 1; }
+    .s-sub   { font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* ─ TABLE ─ */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .data-table th {
+      text-align: left; padding: 0.5rem 0.75rem;
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--muted);
+      border-bottom: 2px solid var(--border); background: #fafafa;
+    }
+    .data-table td { padding: 0.48rem 0.75rem; border-bottom: 1px solid var(--border); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f9fbff; }
+    .right { text-align: right; }
+
+    .badge {
+      display: inline-block; padding: 0.12rem 0.45rem;
+      border-radius: 4px; font-size: 0.68rem; font-weight: 600;
+    }
+    .b-green { background: #d1fae5; color: #065f46; }
+    .b-blue  { background: #dbeafe; color: #1e40af; }
+    .b-red   { background: #fee2e2; color: #991b1b; }
+
+    /* ─ INSIGHT STRIP ─ */
+    .insight {
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      color: #fff;
+      border-radius: 10px;
+      padding: 1.1rem 1.4rem;
+      font-size: 0.83rem;
+      line-height: 1.6;
+      margin-top: 1.25rem;
+    }
+    .insight strong { color: var(--gold); }
+
+    /* ─ ABOUT STRIP ─ */
+    .about-strip {
+      margin-top: 1.25rem;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .about-strip a { color: var(--gold); text-decoration: none; }
+    .about-strip a:hover { text-decoration: underline; }
+
+    /* ─ FOOTER ─ */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 0.74rem;
+      line-height: 1.8;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer strong { color: rgba(255,255,255,0.8); }
+
+    /* ─ RESPONSIVE ─ */
+    @media (max-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      header  { padding: 0 1rem; }
+      .hero   { padding: 0.5rem 1rem; }
+      main    { padding: 1.25rem 1rem 2.5rem; }
+      .brand-tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════ HEADER -->
+<header>
+  <div class="brand">
+    <div class="brand-name">The <span>Malaysian</span> Lens</div>
+    <div class="brand-tag">Economic Analysis · Data-Driven · Independent</div>
+  </div>
+  <div class="header-meta">Updated: <strong id="last-updated">—</strong></div>
+</header>
+
+<!-- ════════════════════ HERO KPI BAR -->
+<div class="hero">
+  <div class="hero-grid">
+    <div class="kpi">
+      <div class="kpi-label">GDP Growth</div>
+      <div class="kpi-value" id="h-gdp">—</div>
+      <div class="kpi-sub" id="h-gdp-sub">annual real</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CPI Inflation</div>
+      <div class="kpi-value" id="h-cpi">—</div>
+      <div class="kpi-sub" id="h-cpi-sub">YoY</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">OPR</div>
+      <div class="kpi-value" id="h-opr">—</div>
+      <div class="kpi-sub">BNM policy rate</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">USD / MYR</div>
+      <div class="kpi-value" id="h-fx">—</div>
+      <div class="kpi-sub">monthly avg</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Poverty Rate</div>
+      <div class="kpi-value" id="h-pov">—</div>
+      <div class="kpi-sub" id="h-pov-sub">absolute</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ NAV -->
+<div class="nav-wrapper">
+  <nav class="nav" role="tablist">
+    <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="switchTab('economy')">Economy</button>
+    <button class="nav-btn" onclick="switchTab('prices')">Prices</button>
+    <button class="nav-btn" onclick="switchTab('monetary')">Monetary</button>
+    <button class="nav-btn" onclick="switchTab('external')">External</button>
+    <button class="nav-btn" onclick="switchTab('society')">Society</button>
+  </nav>
+</div>
+
+<!-- ════════════════════ MAIN -->
+<main>
+
+  <!-- ── DASHBOARD ── -->
+  <section id="tab-dashboard" class="tab-section active">
+    <div class="section-title">Dashboard</div>
+    <span class="section-sub">Key indicators at a glance · Sources: DOSM &amp; BNM</span>
+
+    <div class="summary-grid" id="summary-grid"></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">GDP Growth — Annual (%)</div>
+        <div class="chart-wrap" style="height:215px"><canvas id="c-dash-gdp"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Headline Inflation — Annual Avg. (%)</div>
+        <div class="chart-wrap" style="height:215px"><canvas id="c-dash-cpi"></canvas></div>
+      </div>
+    </div>
+
+    <div class="insight" id="dash-insight"></div>
+
+    <div class="about-strip">
+      <strong style="color:var(--navy)">About</strong> — Data is sourced from
+      <a href="https://api.data.gov.my" target="_blank" rel="noopener">DOSM (api.data.gov.my)</a> and
+      <a href="https://apikijangportal.bnm.gov.my" target="_blank" rel="noopener">BNM (apikijangportal.bnm.gov.my)</a>.
+      Charts update automatically when fresh data is available.
+      This is an independent publication — no institutional affiliation.
+      Read in-depth pieces in the <a href="analysis.html">Analysis</a> section.
+    </div>
+  </section>
+
+  <!-- ── ECONOMY ── -->
+  <section id="tab-economy" class="tab-section">
+    <div class="section-title">Economy</div>
+    <span class="section-sub">Real GDP — annual growth, quarterly trend, sectoral performance, and expenditure composition</span>
+
+    <div class="grid-2" style="margin-bottom:1.25rem">
+      <div class="card">
+        <div class="card-title">Annual GDP Growth (%) — 2000 to latest</div>
+        <div class="chart-wrap" style="height:245px"><canvas id="c-gdp-annual"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Quarterly GDP Growth — YoY (%)</div>
+        <div class="chart-wrap" style="height:245px"><canvas id="c-gdp-qtr"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" id="t-sectors">GDP by Sector — YoY Growth (%)</div>
+        <div class="chart-wrap" style="height:275px"><canvas id="c-sectors"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Expenditure Components — Share of GDP (%)</div>
+        <div class="chart-wrap" style="height:275px"><canvas id="c-expenditure"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICES ── -->
+  <section id="tab-prices" class="tab-section">
+    <div class="section-title">Prices</div>
+    <span class="section-sub">Consumer Price Index — headline, core, and divisional breakdown · Source: DOSM</span>
+
+    <div class="grid-2" style="margin-bottom:1.25rem">
+      <div class="card">
+        <div class="card-title">Headline CPI — Annual Avg. YoY (%)</div>
+        <div class="chart-wrap" style="height:245px"><canvas id="c-cpi-trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Core vs. Headline Inflation (%)</div>
+        <div class="chart-wrap" style="height:245px"><canvas id="c-cpi-core"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="t-cpi-div">CPI by Division — 12-Month Average (%)</div>
+      <div class="chart-wrap" style="height:310px"><canvas id="c-cpi-div"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ── MONETARY ── -->
+  <section id="tab-monetary" class="tab-section">
+    <div class="section-title">Monetary Policy</div>
+    <span class="section-sub">BNM overnight policy rate history and current bank lending rates · Source: BNM</span>
+
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="card-title">Overnight Policy Rate — BNM MPC Decisions (%)</div>
+      <div class="chart-wrap" style="height:255px"><canvas id="c-opr"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Bank Base Rates &amp; Effective Lending Rates — Current</div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="tbl-rates">
+          <thead>
+            <tr>
+              <th>Bank</th>
+              <th class="right">Base Rate (%)</th>
+              <th class="right">Base Lending Rate (%)</th>
+              <th class="right">Eff. Lending Rate (%)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXTERNAL ── -->
+  <section id="tab-external" class="tab-section">
+    <div class="section-title">External Sector</div>
+    <span class="section-sub">Exchange rates and trade flows · Sources: DOSM &amp; BNM</span>
+
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="card-title">MYR Exchange Rates — Monthly Average (MYR per unit of foreign currency)</div>
+      <div class="chart-wrap" style="height:275px"><canvas id="c-fx"></canvas></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Trade — Annual Exports &amp; Imports (RM Billion)</div>
+        <div class="chart-wrap" style="height:265px"><canvas id="c-trade"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="t-trade-comm">Trade by Commodity — Latest Year (RM Billion)</div>
+        <div class="chart-wrap" style="height:265px"><canvas id="c-trade-comm"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOCIETY ── -->
+  <section id="tab-society" class="tab-section">
+    <div class="section-title">Society &amp; Inequality</div>
+    <span class="section-sub">Income inequality and poverty — national trend and state-level snapshot · Source: DOSM HIES</span>
+
+    <div class="grid-2" style="margin-bottom:1.25rem">
+      <div class="card">
+        <div class="card-title">Gini Coefficient — 1970 to 2022</div>
+        <div class="chart-wrap" style="height:255px"><canvas id="c-gini"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Absolute Poverty Rate — 1970 to 2022 (%)</div>
+        <div class="chart-wrap" style="height:255px"><canvas id="c-poverty"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">State Household Income &amp; Inequality — HIES 2022</div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="tbl-states">
+          <thead>
+            <tr>
+              <th>State / Territory</th>
+              <th class="right">Mean Income (RM/mo)</th>
+              <th class="right">Median Income (RM/mo)</th>
+              <th class="right">Gini</th>
+              <th class="right">Poverty (%)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ════════════════════ FOOTER -->
+<footer>
+  <strong>The Malaysian Lens</strong> — Economic Analysis · Data-Driven · Independent<br/>
+  Data sourced from
+  <a href="https://api.data.gov.my" target="_blank" rel="noopener">DOSM (api.data.gov.my)</a> and
+  <a href="https://apikijangportal.bnm.gov.my" target="_blank" rel="noopener">BNM (apikijangportal.bnm.gov.my)</a>.<br/>
+  For informational purposes only. Not financial advice. ·
+  <a href="analysis.html">Analysis</a>
+</footer>
+
+<!-- ════════════════════ DATA OBJECT ════════════════════ -->
+<script>
+// ════════════════════════════════════════════════════════════
+// DATA
+// Automatically replaced by update_data.py — do not hand-edit
+// ════════════════════════════════════════════════════════════
+const DATA = {
+  // Auto-generated by update_data.py on 6 March 2026
+  // Sources: DOSM (api.data.gov.my) · BNM (apikijangportal.bnm.gov.my)
+
+  _lastUpdated: '6 March 2026',
+
+  hero: {
+    gdpGrowth:   5.2,
+    gdpYear:     2025,
+    cpi:         1.6,
+    cpiMonth:    '2026-01',
+    opr:         2.75,
+    usdmyr:      4.0283,
+    poverty:     6.2,
+    povertyYear: 2022,
+  },
+
+  gdp: {
+    years:  [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    growth: [8.9, 0.5, 5.4, 5.8, 6.8, 5.3, 5.8, 6.5, 4.8, -1.6, 7.2, 5.3, 5.5, 4.7, 6.0, 5.1, 4.4, 5.8, 4.8, 4.4, -5.5, 3.3, 9.0, 3.5, 5.1, 5.2],
+  },
+
+  gdpQuarterly: {
+    labels: ["Q1 2016", "Q2 2016", "Q3 2016", "Q4 2016", "Q1 2017", "Q2 2017", "Q3 2017", "Q4 2017", "Q1 2018", "Q2 2018", "Q3 2018", "Q4 2018", "Q1 2019", "Q2 2019", "Q3 2019", "Q4 2019", "Q1 2020", "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021", "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022", "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023", "Q2 2023", "Q3 2023", "Q4 2023", "Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+    values: [4.3, 4.2, 4.5, 4.8, 5.6, 5.7, 6.1, 5.8, 5.3, 4.8, 4.5, 4.8, 4.7, 4.9, 4.5, 3.6, 0.7, -16.9, -2.5, -3.2, -0.2, 16.3, -4.2, 3.5, 5.1, 9.2, 14.6, 7.4, 5.7, 2.7, 3.1, 2.8, 4.2, 5.9, 5.4, 4.9, 4.4, 4.4, 5.4, 6.3],
+  },
+
+  sectors: {
+    // 2025 annual avg of quarterly YoY — Source: DOSM
+    labels: ["Agriculture", "Mining & Quarrying", "Manufacturing", "Construction", "Services", "Taxes less Subsidies"],
+    values: [2.2, 0.9, 4.5, 12.3, 5.5, 14.6],
+  },
+
+  expenditure: {
+    // Annual shares as % of GDP — Source: DOSM
+    years:      [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    privateCons:[54.7, 55.3, 56.9, 58.7, 59.6, 58.7, 60.0, 60.7, 60.7, 60.6],
+    govtCons:   [12.7, 12.6, 12.5, 12.1, 13.3, 13.7, 13.3, 13.2, 13.2, 13.4],
+    investment: [25.4, 25.5, 24.6, 23.1, 20.9, 20.1, 19.7, 20.0, 21.3, 22.2],
+    netExports: [0.0, 0.1, -0.6, -1.0, -0.3, 1.5, 1.6, 2.0, 0.6, 0.5],
+  },
+
+  cpi: {
+    years:    [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+    headline: [2.1, 2.1, 3.8, 1.0, 0.7, -1.1, 2.5, 3.4, 2.5, 1.8, 1.4, 1.6],
+    core:     [null, null, null, null, 1.1, 1.1, 0.7, 3.0, 3.0, 1.8, 2.0, 2.3],
+  },
+
+  cpiComponents: {
+    // 12-month avg: 2025-02 – 2026-01 — Source: DOSM
+    labels:  ["Food & Non-alc. Beverages", "Alcoholic Bev. & Tobacco", "Clothing & Footwear", "Housing, Water & Utilities", "Furnishings & Equipment", "Health", "Transport", "Communication", "Recreation & Culture", "Education", "Restaurants & Hotels", "Miscellaneous Goods", "Insurance & Financial"],
+    values:  [1.96, 1.06, -0.15, 1.46, 0.2, 1.23, 0.32, -3.7, 1.07, 2.4, 3.16, 3.88, 4.66],
+    weights: [29.5, 0.5, 3.2, 23.8, 4.5, 1.9, 14.2, 6.3, 3.8, 1.6, 8.1, 7.6, 5.0],
+  },
+
+  fx: {
+    // Monthly avg vs MYR — Source: BNM/DOSM
+    labels: ["Jan 22", "Feb 22", "Mar 22", "Apr 22", "May 22", "Jun 22", "Jul 22", "Aug 22", "Sep 22", "Oct 22", "Nov 22", "Dec 22", "Jan 23", "Feb 23", "Mar 23", "Apr 23", "May 23", "Jun 23", "Jul 23", "Aug 23", "Sep 23", "Oct 23", "Nov 23", "Dec 23", "Jan 24", "Feb 24", "Mar 24", "Apr 24", "May 24", "Jun 24", "Jul 24", "Aug 24", "Sep 24", "Oct 24", "Nov 24", "Dec 24", "Jan 25", "Feb 25", "Mar 25", "Apr 25", "May 25", "Jun 25", "Jul 25", "Aug 25", "Sep 25", "Oct 25", "Nov 25", "Dec 25", "Jan 26"],
+    usd:    [4.1889, 4.1877, 4.2006, 4.2666, 4.3844, 4.4015, 4.4407, 4.4659, 4.5445, 4.6951, 4.6228, 4.4142, 4.329, 4.377, 4.466, 4.4227, 4.5227, 4.6336, 4.5962, 4.608, 4.6795, 4.7461, 4.6878, 4.659, 4.683, 4.7723, 4.7153, 4.7671, 4.7183, 4.7101, 4.6796, 4.4174, 4.2626, 4.2954, 4.4356, 4.4604, 4.474, 4.4418, 4.4358, 4.4158, 4.2635, 4.2429, 4.2363, 4.2266, 4.2126, 4.216, 4.1559, 4.0919, 4.0283],
+    sgd:    [3.1013, 3.1096, 3.0903, 3.1248, 3.1743, 3.1801, 3.1836, 3.228, 3.2144, 3.2974, 3.3287, 3.2651, 3.2651, 3.2854, 3.3309, 3.3214, 3.3753, 3.4431, 3.4425, 3.4125, 3.4339, 3.4668, 3.477, 3.4967, 3.5071, 3.5488, 3.5184, 3.5126, 3.4919, 3.4846, 3.4746, 3.3561, 3.2876, 3.2814, 3.3188, 3.3034, 3.2836, 3.2991, 3.3191, 3.3373, 3.2952, 3.3039, 3.3076, 3.2878, 3.278, 3.2551, 3.1892, 3.1681, 3.1462],
+    cny:    [0.659, 0.6601, 0.662, 0.6637, 0.6535, 0.6573, 0.6594, 0.6571, 0.6473, 0.6526, 0.6435, 0.6323, 0.6376, 0.6397, 0.6475, 0.6422, 0.6466, 0.6471, 0.6394, 0.6356, 0.6414, 0.6495, 0.649, 0.6521, 0.6529, 0.6634, 0.6548, 0.6586, 0.6523, 0.6492, 0.6441, 0.6175, 0.6022, 0.6061, 0.6155, 0.6126, 0.6126, 0.6108, 0.6116, 0.6046, 0.591, 0.5908, 0.5907, 0.5891, 0.5913, 0.5922, 0.5846, 0.5808, 0.578],
+    eur:    [4.7425, 4.7501, 4.6285, 4.6185, 4.6441, 4.6524, 4.5281, 4.5254, 4.4987, 4.6218, 4.7011, 4.6709, 4.6615, 4.6847, 4.7825, 4.8442, 4.9139, 5.0223, 5.0783, 5.0287, 5.0043, 5.0127, 5.0682, 5.0826, 5.1101, 5.1498, 5.1277, 5.1116, 5.0989, 5.0718, 5.0741, 4.8653, 4.7329, 4.685, 4.7159, 4.6713, 4.6283, 4.6272, 4.7852, 4.9632, 4.8108, 4.8822, 4.9525, 4.9166, 4.9435, 4.9099, 4.8028, 4.79, 4.728],
+    jpy:    [0.0365, 0.0363, 0.0355, 0.0338, 0.0341, 0.0328, 0.0325, 0.0331, 0.0318, 0.0319, 0.0324, 0.0327, 0.0332, 0.0329, 0.0334, 0.0332, 0.033, 0.0328, 0.0326, 0.0318, 0.0317, 0.0317, 0.0313, 0.0323, 0.0321, 0.0319, 0.0315, 0.031, 0.0303, 0.0298, 0.0296, 0.0302, 0.0297, 0.0287, 0.0289, 0.029, 0.0286, 0.0293, 0.0298, 0.0307, 0.0295, 0.0294, 0.0289, 0.0286, 0.0285, 0.0279, 0.0268, 0.0263, 0.0257],
+  },
+
+  trade: {
+    years:   [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    exports: [1004, 995, 984, 1241, 1550, 1426, 1508, 1606],
+    imports: [880, 849, 800, 987, 1294, 1211, 1340, 1452],
+  },
+
+  tradeCommodity: {
+    // Latest full year: 2025 — Source: DOSM
+    labels:  ["Food & Live Animals", "Beverages & Tobacco", "Crude Materials", "Mineral Fuels", "Animal & Veg. Oils", "Chemicals", "Manufactured Goods", "Machinery & Transport", "Misc. Manufactures", "Other Commodities"],
+    exports: [58.9, 2.9, 33.9, 179.3, 88.4, 108.9, 133.3, 808.1, 179.2, 13.5],
+    imports: [92.8, 3.4, 51.7, 174.8, 13.4, 116.3, 123.7, 746.9, 101.4, 27.5],
+  },
+
+  opr: {
+    labels: ["Pre-2020", "Jan 2020", "Mar 2020", "May 2020", "Jul 2020", "2021", "May 2022", "Jul 2022", "Sep 2022", "Nov 2022", "May 2023", "Jan 2026"],
+    values: [3.0, 2.75, 2.5, 2.0, 1.75, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 2.75],
+  },
+
+  baseRates: [
+    {
+        "name": "Maybank",
+        "br": 1.75,
+        "blr": 5.4,
+        "elf": 3.25
+    },
+    {
+        "name": "Public Bank",
+        "br": 2.27,
+        "blr": 5.47,
+        "elf": 3.1
+    },
+    {
+        "name": "Standard Chartered",
+        "br": 2.27,
+        "blr": 5.45,
+        "elf": 3.5
+    },
+    {
+        "name": "HSBC Bank",
+        "br": 2.39,
+        "blr": 5.49,
+        "elf": 3.5
+    },
+    {
+        "name": "Citibank",
+        "br": 2.4,
+        "blr": 5.55,
+        "elf": 3.2
+    },
+    {
+        "name": "RHB Bank",
+        "br": 2.5,
+        "blr": 5.45,
+        "elf": 3.5
+    },
+    {
+        "name": "Bank of China",
+        "br": 2.55,
+        "blr": 5.35,
+        "elf": 3.55
+    },
+    {
+        "name": "Alliance Bank",
+        "br": 2.57,
+        "blr": 5.42,
+        "elf": 3.11
+    },
+    {
+        "name": "OCBC Bank",
+        "br": 2.58,
+        "blr": 5.51,
+        "elf": 3.45
+    },
+    {
+        "name": "AmBank",
+        "br": 2.6,
+        "blr": 5.45,
+        "elf": 3.25
+    },
+    {
+        "name": "UOB",
+        "br": 2.61,
+        "blr": 5.57,
+        "elf": 3.36
+    },
+    {
+        "name": "Hong Leong Bank",
+        "br": 2.63,
+        "blr": 5.64,
+        "elf": 3.5
+    },
+    {
+        "name": "Affin Bank",
+        "br": 2.7,
+        "blr": 5.56,
+        "elf": 3.3
+    },
+    {
+        "name": "CIMB Bank",
+        "br": 2.75,
+        "blr": 5.6,
+        "elf": 3.5
+    },
+    {
+        "name": "Bangkok Bank",
+        "br": 3.22,
+        "blr": 5.87,
+        "elf": 4.42
+    }
+],
+
+  gini: {
+    years:  [1970, 1974, 1976, 1979, 1984, 1987, 1989, 1992, 1995, 1997, 1999, 2002, 2004, 2007, 2009, 2012, 2014, 2016, 2019, 2022],
+    values: [0.513, 0.53, 0.557, 0.505, 0.483, 0.456, 0.442, 0.451, 0.456, 0.459, 0.443, 0.461, 0.462, 0.441, 0.441, 0.431, 0.401, 0.399, 0.407, 0.404],
+  },
+
+  poverty: {
+    years:    [1970, 1976, 1979, 1984, 1987, 1989, 1992, 1995, 1997, 1999, 2002, 2004, 2007, 2009, 2012, 2014, 2016, 2019, 2020, 2022],
+    absolute: [49.3, 37.7, 37.4, 20.7, 19.4, 16.5, 12.4, 8.7, 6.1, 7.5, 5.1, 5.7, 3.6, 3.8, 1.7, 0.6, 0.4, 5.6, 8.4, 6.2],
+    hardcore: [null, null, null, 6.9, 5.1, 3.9, 2.9, 2.0, 1.4, 1.4, 1.0, 1.2, 0.7, 0.7, 0.2, 0.1, 0.0, 0.4, 1.0, 0.2],
+  },
+
+  stateData: [
+    {
+        "state": "W.P. Putrajaya",
+        "gini": 0.368,
+        "poverty": 0.1,
+        "meanIncome": 13473,
+        "medianIncome": 10056
+    },
+    {
+        "state": "W.P. Kuala Lumpur",
+        "gini": 0.38,
+        "poverty": 1.4,
+        "meanIncome": 13325,
+        "medianIncome": 10234
+    },
+    {
+        "state": "Selangor",
+        "gini": 0.361,
+        "poverty": 1.5,
+        "meanIncome": 12233,
+        "medianIncome": 9983
+    },
+    {
+        "state": "Johor",
+        "gini": 0.366,
+        "poverty": 4.6,
+        "meanIncome": 8517,
+        "medianIncome": 6879
+    },
+    {
+        "state": "Pulau Pinang",
+        "gini": 0.371,
+        "poverty": 2.0,
+        "meanIncome": 8267,
+        "medianIncome": 6502
+    },
+    {
+        "state": "W.P. Labuan",
+        "gini": 0.3,
+        "poverty": 2.5,
+        "meanIncome": 8250,
+        "medianIncome": 6904
+    },
+    {
+        "state": "Melaka",
+        "gini": 0.37,
+        "poverty": 4.2,
+        "meanIncome": 8057,
+        "medianIncome": 6210
+    },
+    {
+        "state": "Terengganu",
+        "gini": 0.326,
+        "poverty": 6.2,
+        "meanIncome": 7248,
+        "medianIncome": 5878
+    },
+    {
+        "state": "Negeri Sembilan",
+        "gini": 0.369,
+        "poverty": 4.4,
+        "meanIncome": 6788,
+        "medianIncome": 5226
+    },
+    {
+        "state": "Sarawak",
+        "gini": 0.382,
+        "poverty": 10.8,
+        "meanIncome": 6457,
+        "medianIncome": 4978
+    },
+    {
+        "state": "Sabah",
+        "gini": 0.395,
+        "poverty": 19.7,
+        "meanIncome": 6171,
+        "medianIncome": 4577
+    },
+    {
+        "state": "Perak",
+        "gini": 0.368,
+        "poverty": 7.5,
+        "meanIncome": 5779,
+        "medianIncome": 4494
+    },
+    {
+        "state": "Pahang",
+        "gini": 0.308,
+        "poverty": 6.3,
+        "meanIncome": 5777,
+        "medianIncome": 4753
+    },
+    {
+        "state": "Perlis",
+        "gini": 0.336,
+        "poverty": 4.0,
+        "meanIncome": 5664,
+        "medianIncome": 4713
+    },
+    {
+        "state": "Kedah",
+        "gini": 0.359,
+        "poverty": 9.0,
+        "meanIncome": 5550,
+        "medianIncome": 4402
+    },
+    {
+        "state": "Kelantan",
+        "gini": 0.385,
+        "poverty": 13.2,
+        "meanIncome": 4885,
+        "medianIncome": 3614
+    }
+],
+};
+</script>
+
+<!-- ════════════════════ APP SCRIPT ════════════════════ -->
+<script>
+// ── PALETTE ─────────────────────────────────────────────
+const NAVY  = '#1a2b4a';
+const GOLD  = '#c9a84c';
+const TEAL  = '#0e7490';
+const RED   = '#dc2626';
+const PURP  = '#7c3aed';
+const FONT  = { family: 'Inter, sans-serif', size: 11 };
+
+Chart.defaults.font = FONT;
+Chart.defaults.color = '#6b7280';
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+
+function opts(o = {}) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: FONT } },
+      y: { grid: { color: '#f0f0f0' }, ticks: { font: FONT } },
+    },
+    ...o,
+  };
+}
+
+// ── TAB SWITCHING ────────────────────────────────────────
+const rendered = {};
+function switchTab(id) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  const tabs = ['dashboard','economy','prices','monetary','external','society'];
+  document.querySelectorAll('.nav-btn')[tabs.indexOf(id)]?.classList.add('active');
+  if (!rendered[id]) { rendered[id] = true; renderTab(id); }
+}
+
+// ── HERO ─────────────────────────────────────────────────
+function initHero() {
+  const h = DATA.hero;
+  document.getElementById('h-gdp').textContent   = h.gdpGrowth + '%';
+  document.getElementById('h-gdp-sub').textContent = h.gdpYear + ' real GDP';
+  document.getElementById('h-cpi').textContent   = h.cpi + '%';
+  document.getElementById('h-cpi-sub').textContent = h.cpiMonth + ' YoY';
+  document.getElementById('h-opr').textContent   = h.opr + '%';
+  document.getElementById('h-fx').textContent    = h.usdmyr.toFixed(4);
+  document.getElementById('h-pov').textContent   = h.poverty + '%';
+  document.getElementById('h-pov-sub').textContent = h.povertyYear + ' absolute';
+  document.getElementById('last-updated').textContent = DATA._lastUpdated;
+}
+
+// ── DASHBOARD ────────────────────────────────────────────
+function renderDashboard() {
+  // Summary cards
+  const h = DATA.hero;
+  const giniLatest = DATA.gini.values[DATA.gini.values.length - 1];
+  const cards = [
+    { label: 'GDP Growth',  value: h.gdpGrowth + '%',        sub: h.gdpYear + ' real YoY' },
+    { label: 'Inflation',   value: h.cpi + '%',               sub: h.cpiMonth + ' headline' },
+    { label: 'OPR',         value: h.opr + '%',               sub: 'BNM policy rate' },
+    { label: 'USD / MYR',   value: h.usdmyr.toFixed(4),       sub: 'latest monthly avg' },
+    { label: 'Poverty',     value: h.poverty + '%',           sub: h.povertyYear + ' absolute' },
+    { label: 'Gini',        value: giniLatest.toFixed(3),     sub: '2022 national' },
+  ];
+  document.getElementById('summary-grid').innerHTML = cards.map(c => `
+    <div class="s-card">
+      <div class="s-label">${c.label}</div>
+      <div class="s-value">${c.value}</div>
+      <div class="s-sub">${c.sub}</div>
+    </div>`).join('');
+
+  // GDP bar
+  new Chart(document.getElementById('c-dash-gdp'), {
+    type: 'bar',
+    data: {
+      labels: DATA.gdp.years,
+      datasets: [{ data: DATA.gdp.growth, backgroundColor: DATA.gdp.growth.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 3 }],
+    },
+    options: opts({ scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8, font: FONT } }, y: { grid: { color:'#f0f0f0' }, ticks: { callback: v => v+'%', font: FONT } } } }),
+  });
+
+  // CPI line
+  const cpiDs = [
+    { label: 'Headline', data: DATA.cpi.headline, borderColor: GOLD, backgroundColor: GOLD+'22', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 3 },
+    ...(DATA.cpi.core.some(v => v !== null)
+      ? [{ label: 'Core', data: DATA.cpi.core, borderColor: TEAL, borderDash: [4,3], tension: 0.3, borderWidth: 2, pointRadius: 2, spanGaps: true }]
+      : []),
+  ];
+  new Chart(document.getElementById('c-dash-cpi'), {
+    type: 'line',
+    data: { labels: DATA.cpi.years, datasets: cpiDs },
+    options: opts({
+      plugins: { legend: { display: cpiDs.length > 1, position: 'bottom' }, tooltip: { mode: 'index', intersect: false } },
+      scales: { x: { grid: { display: false }, ticks: { font: FONT } }, y: { grid: { color:'#f0f0f0' }, ticks: { callback: v => v+'%', font: FONT } } },
+    }),
+  });
+
+  // Insight
+  const g = DATA.gdp.growth;
+  const postPandemic = g.filter((_, i) => DATA.gdp.years[i] >= 2021);
+  const avg = (postPandemic.reduce((a,b) => a+b, 0) / postPandemic.length).toFixed(1);
+  document.getElementById('dash-insight').innerHTML =
+    `Malaysia's real GDP grew <strong>${h.gdpGrowth}%</strong> in ${h.gdpYear}, ` +
+    `averaging <strong>${avg}%</strong> annually since the 2021 rebound. ` +
+    `Inflation stands at <strong>${h.cpi}%</strong> YoY (${h.cpiMonth}), ` +
+    `with BNM maintaining the OPR at <strong>${h.opr}%</strong> since May 2023. ` +
+    `Absolute poverty has fallen from <strong>49.3%</strong> in 1970 to <strong>${h.poverty}%</strong> in ${h.povertyYear}.`;
+}
+
+// ── ECONOMY ──────────────────────────────────────────────
+function renderEconomy() {
+  // Annual
+  new Chart(document.getElementById('c-gdp-annual'), {
+    type: 'bar',
+    data: { labels: DATA.gdp.years, datasets: [{ data: DATA.gdp.growth, backgroundColor: DATA.gdp.growth.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 3 }] },
+    options: opts({ scales: { x: { grid:{display:false}, ticks:{maxTicksLimit:10,font:FONT} }, y: { grid:{color:'#f0f0f0'}, ticks:{callback:v=>v+'%',font:FONT} } } }),
+  });
+
+  // Quarterly
+  new Chart(document.getElementById('c-gdp-qtr'), {
+    type: 'line',
+    data: {
+      labels: DATA.gdpQuarterly.labels,
+      datasets: [{ data: DATA.gdpQuarterly.values, borderColor: GOLD, backgroundColor: GOLD+'18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 2 }],
+    },
+    options: opts({ scales: { x: { grid:{display:false}, ticks:{maxTicksLimit:12,font:FONT} }, y: { grid:{color:'#f0f0f0'}, ticks:{callback:v=>v+'%',font:FONT} } } }),
+  });
+
+  // Sectors
+  new Chart(document.getElementById('c-sectors'), {
+    type: 'bar',
+    data: { labels: DATA.sectors.labels, datasets: [{ data: DATA.sectors.values, backgroundColor: DATA.sectors.values.map(v => v < 0 ? RED+'aa' : TEAL+'cc'), borderRadius: 4 }] },
+    options: opts({ indexAxis:'y', scales: { x:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}}, y:{grid:{display:false},ticks:{font:FONT}} } }),
+  });
+
+  // Expenditure stacked
+  new Chart(document.getElementById('c-expenditure'), {
+    type: 'bar',
+    data: {
+      labels: DATA.expenditure.years,
+      datasets: [
+        { label: 'Private Consumption', data: DATA.expenditure.privateCons, backgroundColor: NAVY+'cc', borderRadius: 2 },
+        { label: 'Govt Consumption',    data: DATA.expenditure.govtCons,    backgroundColor: GOLD+'cc', borderRadius: 2 },
+        { label: 'Investment',          data: DATA.expenditure.investment,  backgroundColor: TEAL+'cc', borderRadius: 2 },
+        { label: 'Net Exports',         data: DATA.expenditure.netExports,  backgroundColor: PURP+'cc', borderRadius: 2 },
+      ],
+    },
+    options: opts({
+      plugins: { legend: { display: true, position: 'bottom' }, tooltip: { mode:'index', intersect:false } },
+      scales: { x:{stacked:true,grid:{display:false},ticks:{font:FONT}}, y:{stacked:true,grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}} },
+    }),
+  });
+}
+
+// ── PRICES ───────────────────────────────────────────────
+function renderPrices() {
+  // Headline
+  new Chart(document.getElementById('c-cpi-trend'), {
+    type: 'line',
+    data: { labels: DATA.cpi.years, datasets: [{ data: DATA.cpi.headline, borderColor: GOLD, backgroundColor: GOLD+'22', fill:true, tension:0.3, borderWidth:2.5, pointRadius:4, pointBackgroundColor:GOLD }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}} } }),
+  });
+
+  // Core vs headline
+  new Chart(document.getElementById('c-cpi-core'), {
+    type: 'line',
+    data: {
+      labels: DATA.cpi.years,
+      datasets: [
+        { label:'Headline', data:DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'18', fill:true, tension:0.3, borderWidth:2, pointRadius:3 },
+        { label:'Core', data:DATA.cpi.core, borderColor:TEAL, borderDash:[5,3], tension:0.3, borderWidth:2, pointRadius:3, spanGaps:true, fill:false },
+      ],
+    },
+    options: opts({
+      plugins: { legend:{display:true,position:'bottom'}, tooltip:{mode:'index',intersect:false} },
+      scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}} },
+    }),
+  });
+
+  // Divisions
+  if (DATA.cpiComponents.labels.length) {
+    const paired = DATA.cpiComponents.labels.map((l, i) => [l, DATA.cpiComponents.values[i]]).sort((a, b) => b[1] - a[1]);
+    new Chart(document.getElementById('c-cpi-div'), {
+      type: 'bar',
+      data: {
+        labels: paired.map(p => p[0]),
+        datasets: [{ data: paired.map(p => p[1]), backgroundColor: paired.map(p => p[1] > 0 ? NAVY+'cc' : RED+'aa'), borderRadius: 4 }],
+      },
+      options: opts({ indexAxis:'y', scales: { x:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}}, y:{grid:{display:false},ticks:{font:{...FONT,size:10}}} } }),
+    });
+  }
+}
+
+// ── MONETARY ─────────────────────────────────────────────
+function renderMonetary() {
+  // OPR step chart
+  new Chart(document.getElementById('c-opr'), {
+    type: 'line',
+    data: {
+      labels: DATA.opr.labels,
+      datasets: [{ label:'OPR (%)', data:DATA.opr.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, stepped:'before', borderWidth:2.5, pointRadius:5, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2 }],
+    },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:1.5,max:3.5,grid:{color:'#f0f0f0'},ticks:{callback:v=>v.toFixed(2)+'%',stepSize:0.25,font:FONT}} } }),
+  });
+
+  // Base rates table
+  const tbody = document.querySelector('#tbl-rates tbody');
+  tbody.innerHTML = DATA.baseRates.length
+    ? DATA.baseRates.map(b => `<tr>
+        <td><strong>${b.name}</strong></td>
+        <td class="right">${b.br.toFixed(2)}</td>
+        <td class="right">${b.blr ? b.blr.toFixed(2) : '—'}</td>
+        <td class="right">${b.elf ? b.elf.toFixed(2) : '—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1.2rem">Run update_data.py to populate</td></tr>';
+}
+
+// ── EXTERNAL ─────────────────────────────────────────────
+function renderExternal() {
+  // FX multi-line
+  const FX_META = {
+    usd: { label: 'USD/MYR', color: NAVY },
+    sgd: { label: 'SGD/MYR', color: GOLD },
+    cny: { label: 'CNY/MYR', color: RED  },
+    eur: { label: 'EUR/MYR', color: TEAL },
+    jpy: { label: 'JPY/MYR', color: PURP },
+  };
+  const fxDs = Object.entries(FX_META)
+    .filter(([k]) => DATA.fx[k] && DATA.fx[k].length)
+    .map(([k, m]) => ({ label: m.label, data: DATA.fx[k], borderColor: m.color, tension: 0.3, borderWidth: 1.8, pointRadius: 0, fill: false }));
+
+  if (fxDs.length) {
+    new Chart(document.getElementById('c-fx'), {
+      type: 'line',
+      data: { labels: DATA.fx.labels, datasets: fxDs },
+      options: opts({ plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{display:false},ticks:{maxTicksLimit:18,font:FONT}},y:{grid:{color:'#f0f0f0'},ticks:{font:FONT}}} }),
+    });
+  }
+
+  // Trade totals
+  new Chart(document.getElementById('c-trade'), {
+    type: 'bar',
+    data: {
+      labels: DATA.trade.years,
+      datasets: [
+        { label:'Exports (RM B)', data:DATA.trade.exports, backgroundColor:NAVY+'cc', borderRadius:3 },
+        { label:'Imports (RM B)', data:DATA.trade.imports, backgroundColor:GOLD+'cc', borderRadius:3 },
+      ],
+    },
+    options: opts({ plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{display:false},ticks:{font:FONT}},y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>'RM'+v+'B',font:FONT}}} }),
+  });
+
+  // Trade commodity
+  if (DATA.tradeCommodity.labels.length) {
+    new Chart(document.getElementById('c-trade-comm'), {
+      type: 'bar',
+      data: {
+        labels: DATA.tradeCommodity.labels,
+        datasets: [
+          { label:'Exports (RM B)', data:DATA.tradeCommodity.exports, backgroundColor:NAVY+'cc', borderRadius:3 },
+          { label:'Imports (RM B)', data:DATA.tradeCommodity.imports, backgroundColor:GOLD+'cc', borderRadius:3 },
+        ],
+      },
+      options: opts({ indexAxis:'y', plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'B',font:FONT}},y:{grid:{display:false},ticks:{font:{...FONT,size:10}}}} }),
+    });
+  }
+}
+
+// ── SOCIETY ──────────────────────────────────────────────
+function renderSociety() {
+  // Gini
+  new Chart(document.getElementById('c-gini'), {
+    type: 'line',
+    data: { labels: DATA.gini.years, datasets: [{ data:DATA.gini.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, tension:0.2, borderWidth:2.5, pointRadius:5, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2 }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:0.36,max:0.58,grid:{color:'#f0f0f0'},ticks:{callback:v=>v.toFixed(3),font:FONT}} } }),
+  });
+
+  // Poverty
+  const povDs = [
+    { label:'Absolute Poverty', data:DATA.poverty.absolute, borderColor:RED, backgroundColor:RED+'18', fill:true, tension:0.2, borderWidth:2.5, pointRadius:4 },
+    ...(DATA.poverty.hardcore.some(v=>v!==null)
+      ? [{ label:'Hardcore Poverty', data:DATA.poverty.hardcore, borderColor:NAVY, borderDash:[5,3], tension:0.2, borderWidth:2, pointRadius:3, spanGaps:true, fill:false }]
+      : []),
+  ];
+  new Chart(document.getElementById('c-poverty'), {
+    type: 'line',
+    data: { labels: DATA.poverty.years, datasets: povDs },
+    options: opts({ plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{display:false},ticks:{font:FONT}},y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}}} }),
+  });
+
+  // State table
+  const tbody = document.querySelector('#tbl-states tbody');
+  tbody.innerHTML = DATA.stateData.length
+    ? DATA.stateData.map(s => `<tr>
+        <td><strong>${s.state}</strong></td>
+        <td class="right">RM ${s.meanIncome.toLocaleString()}</td>
+        <td class="right">${s.medianIncome ? 'RM ' + s.medianIncome.toLocaleString() : '—'}</td>
+        <td class="right">${s.gini.toFixed(3)}</td>
+        <td class="right"><span class="badge ${s.poverty > 10 ? 'b-red' : s.poverty > 5 ? 'b-blue' : 'b-green'}">${s.poverty}%</span></td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.2rem">Run update_data.py to populate</td></tr>';
+}
+
+// ── ROUTER ───────────────────────────────────────────────
+function renderTab(id) {
+  if (id === 'dashboard') renderDashboard();
+  else if (id === 'economy')   renderEconomy();
+  else if (id === 'prices')    renderPrices();
+  else if (id === 'monetary')  renderMonetary();
+  else if (id === 'external')  renderExternal();
+  else if (id === 'society')   renderSociety();
+}
+
+// ── BOOT ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initHero();
+  rendered['dashboard'] = true;
+  renderDashboard();
+});
+</script>
+
+</body>
+</html>
