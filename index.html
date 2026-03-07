@@ -311,9 +311,10 @@
     </div>
     <div class="card">
       <div class="card-header-row">
-        <div class="card-title" id="t-cpi-div">CPI by Division — click a bar to explore</div>
+        <div class="card-title" id="t-cpi-div">CPI by Division</div>
         <div style="font-size:0.67rem;color:var(--muted)">12-month avg · Source: DOSM</div>
       </div>
+      <div style="font-size:0.72rem;color:var(--gold);font-weight:600;margin-bottom:0.6rem">↓ Click any bar to see the sub-components driving that division's inflation</div>
       <div class="chart-wrap" style="height:310px"><canvas id="c-cpi-div"></canvas></div>
       <div id="cpi-component-detail" class="component-detail" style="display:none"></div>
     </div>
@@ -991,7 +992,11 @@ function switchTab(id) {
   document.getElementById('tab-' + id).classList.add('active');
   const tabs = ['dashboard','economy','prices','monetary','external','society'];
   document.querySelectorAll('.nav-btn')[tabs.indexOf(id)]?.classList.add('active');
-  if (!rendered[id]) { rendered[id] = true; renderTab(id); }
+  if (!rendered[id]) {
+    rendered[id] = true;
+    // Double-rAF: let the browser finish layout after display:block before Chart.js reads canvas size
+    requestAnimationFrame(() => requestAnimationFrame(() => renderTab(id)));
+  }
 }
 
 // ── HERO COUNT-UP ────────────────────────────────────────
@@ -1227,6 +1232,7 @@ function showCpiDetail(item) {
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
     panel.querySelector('.weight-bar-fill').style.width = item.weight + '%';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }));
 
   if (subs.length) {
