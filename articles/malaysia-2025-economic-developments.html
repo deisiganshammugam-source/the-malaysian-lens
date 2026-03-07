@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malaysia 2025: Economic Developments — The Malaysian Lens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {--navy:#0a1628;--gold:#c9a84c;--cream:#faf8f3;--text:#1a1a2e;--muted:#6b7280;--border:#e5e0d5;--red:#c0392b;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;}
+    header{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 2rem;}
+    .header-top{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0 1rem;max-width:1100px;margin:0 auto;}
+    .site-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#fff;text-decoration:none;display:block;}
+    .site-name span{color:var(--gold);}
+    .site-tagline{font-size:0.7rem;color:#a0aec0;letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+    nav{max-width:1100px;margin:0 auto;padding:0.75rem 0;display:flex;gap:2rem;border-top:1px solid rgba(255,255,255,0.1);}
+    nav a{color:#cbd5e0;text-decoration:none;font-size:0.8rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;}
+    nav a:hover{color:var(--gold);}
+    .date-bar{background:var(--gold);text-align:center;padding:0.35rem;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--navy);}
+    .article-wrapper{max-width:720px;margin:3rem auto;padding:0 2rem;}
+    .back-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;color:var(--muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;margin-bottom:2rem;}
+    .back-link:hover{color:var(--gold);}
+    .article-category{display:inline-block;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--red);margin-bottom:1rem;}
+    .article-headline{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;line-height:1.15;color:var(--navy);margin-bottom:1.25rem;}
+    .article-sub{font-size:1.15rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;font-weight:300;border-left:3px solid var(--gold);padding-left:1rem;}
+    .article-meta-bar{display:flex;align-items:center;gap:1.5rem;padding:1rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:2rem;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;}
+    .tag{background:var(--navy);color:var(--gold);padding:0.2rem 0.6rem;border-radius:2px;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;}
+    .article-body{font-size:1.05rem;line-height:1.85;}
+    .article-body p{margin-bottom:1.4rem;}
+    .hook{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy);line-height:1.4;margin-bottom:0.5rem;}
+    .hook-sub{font-size:1rem;color:var(--muted);font-style:italic;margin-bottom:2rem;}
+    .section-break{text-align:center;color:var(--gold);font-size:1.2rem;letter-spacing:8px;margin:2rem 0;}
+    .data-table-wrapper{margin:2rem 0;overflow-x:auto;}
+    .data-table-title{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:0.75rem;}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+    thead{background:var(--navy);color:#fff;}
+    thead th{padding:0.75rem 1rem;text-align:left;font-weight:500;font-size:0.78rem;}
+    tbody tr:nth-child(even){background:#fff;}
+    tbody tr:nth-child(odd){background:#f5f2ec;}
+    tbody td{padding:0.65rem 1rem;border-bottom:1px solid var(--border);}
+    .table-source{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;font-style:italic;}
+    .pull-quote{background:var(--navy);color:#fff;padding:2rem;margin:2rem 0;border-left:4px solid var(--gold);}
+    .pull-quote p{font-family:'Playfair Display',serif;font-size:1.3rem;line-height:1.5;margin-bottom:0;}
+    .key-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0;}
+    .key-num{background:#fff;border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.25rem;text-align:center;}
+    .key-num .val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--navy);}
+    .key-num .lbl{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:0.25rem;}
+    .callout{background:#fff3cd;border-left:4px solid #f59e0b;padding:1.25rem 1.5rem;margin:2rem 0;font-size:0.95rem;}
+    .vigilance-box{background:var(--navy);color:#e2e8f0;padding:2rem;margin:2.5rem 0 1rem;text-align:center;}
+    .vigilance-box p{font-family:'Playfair Display',serif;font-size:1.2rem;line-height:1.6;margin-bottom:0;}
+    .vigilance-box .flag{font-size:1.5rem;margin-top:0.75rem;display:block;}
+    .disclaimer{font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+    footer{background:var(--navy);color:#a0aec0;padding:2.5rem 2rem;text-align:center;margin-top:4rem;}
+    footer .footer-name{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;}
+    footer p{font-size:0.8rem;line-height:1.8;}
+    footer .sources{margin-top:1rem;font-size:0.72rem;color:#4a5568;}
+    @media(max-width:600px){.article-headline{font-size:2rem;}.key-numbers{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <div>
+        <a href="../index.html" class="site-name">The <span>Malaysian</span> Lens</a>
+        <div class="site-tagline">Economic Analysis · Data-Driven · Independent</div>
+      </div>
+      <div style="font-size:2rem;">🇲🇾</div>
+    </div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../index.html#analysis">Analysis</a>
+      <a href="../index.html#data">Key Data</a>
+      <a href="../index.html#about">About</a>
+    </nav>
+  </header>
+  <div class="date-bar" id="datebar">Loading...</div>
+  <div class="article-wrapper">
+    <a href="../index.html" class="back-link">← Back to all analysis</a>
+    <span class="article-category">Macroeconomic Review</span>
+    <h1 class="article-headline">Malaysia 2025: Economic Developments</h1>
+    <p class="article-sub">Growth accelerated to 5.2 percent for the full year, surging to 6.3 percent in Q4 on the back of a powerful domestic investment cycle. Core inflation is rising and external risks are building.</p>
+    <div class="article-meta-bar">
+      <span class="tag">GDP</span> <span class="tag">CPI</span> <span class="tag">BNM</span> <span class="tag">DOSM</span>
+      <span>By Deisigan &nbsp;·&nbsp; March 2026</span>
+    </div>
+    <div class="article-body">
+      
+        <div class="key-numbers">
+          <div class="key-num"><div class="val">5.2%</div><div class="lbl">GDP Growth 2025 (Full Year)</div></div>
+          <div class="key-num"><div class="val">RM 154.6b</div><div class="lbl">Trade Surplus 2025</div></div>
+          <div class="key-num"><div class="val">2.3%</div><div class="lbl">Core CPI (Dec 2025)</div></div>
+        </div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Growth Performance</h2>
+        <p><strong>Malaysia's economy delivered its strongest performance since the post-pandemic rebound, expanding 5.2 percent in 2025 and accelerating sharply through the year to register the fastest quarterly growth rate in more than two years.</strong> After a subdued first half — output grew 4.4 percent in both Q1 and Q2 — momentum gathered decisively: GDP expanded 5.4 percent in Q3 and 6.3 percent in Q4 on a year-on-year basis, the latter also gaining 3.3 percent on a sequential basis. The sequential pickup in Q4 confirms that the acceleration reflected genuine underlying demand rather than base effects alone. On a full-year basis, 2025 marked Malaysia's strongest outturn since 2022, driven by a broad-based expansion across services, manufacturing, and construction, and exceeded most official forecasts heading into the year.</p>
+
+        <div class="data-table-wrapper">
+          <div class="data-table-title">Quarterly GDP Growth, 2025 (Year-on-Year, %)</div>
+          <table>
+            <thead><tr><th>Quarter</th><th>YoY Growth</th><th>QoQ Growth</th></tr></thead>
+            <tbody>
+              <tr><td>Q1 2025</td><td>4.4%</td><td>–3.5%</td></tr>
+              <tr><td>Q2 2025</td><td>4.4%</td><td>1.0%</td></tr>
+              <tr><td>Q3 2025</td><td>5.4%</td><td>5.7%</td></tr>
+              <tr><td>Q4 2025</td><td>6.3%</td><td>3.3%</td></tr>
+            </tbody>
+          </table>
+          <div class="table-source">Source: Department of Statistics Malaysia (DOSM) — February 2026</div>
+        </div>
+
+        <div class="section-break">· · ·</div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Domestic Demand</h2>
+        <p><strong>Domestic demand was the primary engine of growth, with private investment delivering the strongest impulse across all demand components.</strong> Gross fixed capital formation (GFCF) expanded 9.3 percent year-on-year in Q4 — extending a sustained run of strong investment growth throughout the year — as capital spending accelerated in semiconductor fabrication, data center infrastructure, and logistics facilities tied to the New Industrial Master Plan 2030. Construction output grew 11.0 percent in Q4, reflecting this physical build-out in the real economy. Private consumption held firm at 5.3 percent in Q4, underpinned by continued employment gains and real wage growth at a time when headline inflation remained contained. Government consumption also contributed, rising 8.0 percent year-on-year in Q4, partly reflecting the full-year impact of the 2024 civil service salary revision and sustained social expenditure. Taken together, these components suggest that domestic demand had become self-reinforcing by the second half of 2025: the investment cycle fed into employment and income growth, which in turn supported consumption — a virtuous dynamic not always visible in the aggregate growth figure.</p>
+
+        <div class="pull-quote"><p>"By Q4 2025, gross fixed capital formation had expanded 9.3 percent — the physical build-out of Malaysia's technology and industrial ambitions now measurable in the national accounts."</p></div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">External Sector</h2>
+        <p><strong>The external sector contributed positively but provided a more moderate impulse than domestic demand, with import growth outpacing export growth in Q4.</strong> Exports of goods and services grew 3.9 percent year-on-year in Q4, recovering from a softer 1.7 percent in Q3, as global semiconductor demand improved and commodity exports stabilized. In value terms, total merchandise exports reached approximately RM 1.61 trillion in 2025, generating a trade surplus of around RM 154.6 billion — a solid buffer that supported the current account position. However, strong investment activity drove capital goods imports sharply higher (+7.9 percent year-on-year in Q4), narrowing the net trade contribution to GDP. The ringgit appreciated meaningfully in the second half of 2025, moving from an average of 4.23 per US dollar in August to 4.09 in December and 4.03 by January 2026, reflecting improved global risk sentiment and capital inflows into regional emerging markets. Currency appreciation, while supportive of import-cost stability, creates a modest competitiveness headwind for export-oriented sectors that warrants monitoring.</p>
+
+        <div class="section-break">· · ·</div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Inflation</h2>
+        <p><strong>Inflation remained well-contained throughout 2025, though an upward drift in core price pressures toward year-end warrants attention.</strong> Headline CPI averaged approximately 1.4 percent for the full year, easing from 1.7 percent in January to a trough of 1.1 percent in June before gradually recovering to 1.6 percent by December — a level that held into January 2026. This moderation largely reflected favorable food price trends, subdued global commodity prices, and the base effects of prior fuel subsidy adjustments. Core inflation, however, rose steadily from 1.8 percent in January to 2.3 percent by December 2025, a trajectory that continued into January 2026. The widening gap between headline and core readings suggests that underlying demand-side pressures are building — particularly in services prices — even as administered price changes have masked their full extent. This divergence merits close monitoring as subsidy rationalization continues through 2026; the headline rate will likely track upward as fuel subsidy targeting proceeds, potentially compressing real household incomes for lower-income groups.</p>
+
+        <div class="data-table-wrapper">
+          <div class="data-table-title">CPI Inflation: Headline vs. Core, 2025 (YoY, %)</div>
+          <table>
+            <thead><tr><th>Month</th><th>Headline CPI</th><th>Core CPI</th></tr></thead>
+            <tbody>
+              <tr><td>January 2025</td><td>1.7%</td><td>1.8%</td></tr>
+              <tr><td>March 2025</td><td>1.4%</td><td>1.9%</td></tr>
+              <tr><td>June 2025</td><td>1.1%</td><td>1.8%</td></tr>
+              <tr><td>September 2025</td><td>1.5%</td><td>2.1%</td></tr>
+              <tr><td>December 2025</td><td>1.6%</td><td>2.3%</td></tr>
+              <tr><td>January 2026</td><td>1.6%</td><td>2.3%</td></tr>
+            </tbody>
+          </table>
+          <div class="table-source">Source: Department of Statistics Malaysia (DOSM) — February 2026</div>
+        </div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Labour Market</h2>
+        <p><strong>Labour market conditions tightened further in 2025, with broad-based employment gains supporting private consumption across income groups.</strong> The unemployment rate remained close to structural lows through the year, while labour force participation continued its gradual upward trend. Employment growth was concentrated in services — particularly information and communication technology, professional services, and hospitality — consistent with the sectoral composition of GDP expansion. Nominal wage growth broadly outpaced headline inflation for much of 2025, protecting household real incomes and sustaining consumption momentum among B40 and M40 households. Underemployment (Guna Tenaga Tidak Penuh) nonetheless remained a more nuanced challenge: structural skill mismatches between available labour supply and demand from the rapidly expanding technology and high-value manufacturing sectors continued to limit productivity gains and keep a portion of the labour force in lower-wage roles than their qualifications would otherwise command.</p>
+
+        <div class="section-break">· · ·</div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Financial Conditions</h2>
+        <p><strong>Financial conditions remained accommodative throughout 2025, with Bank Negara Malaysia holding the Overnight Policy Rate steady at 2.75 percent.</strong> The MPC's decision to maintain rates reflected a balanced assessment: growth was on a solid trajectory, headline inflation was contained, and the external environment — while uncertain — did not warrant preemptive policy adjustment. With core inflation stabilizing around 2.0–2.3 percent by year-end, the real policy rate edged into marginally positive territory, suggesting that the current monetary stance is broadly neutral rather than accommodative in real terms. Credit growth remained supportive of private investment, and banking system buffers were adequate. The appreciating ringgit provided an additional disinflationary channel that gave BNM room to maintain a patient stance without concern about imported price pressures. Looking into 2026, any policy adjustment is more likely to be guided by the durability of the growth acceleration and the trajectory of core inflation than by external rate movements alone.</p>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Risks and Outlook</h2>
+        <p><strong>The near-term outlook is favorable, but Malaysia's 2026 growth trajectory faces a set of meaningful downside risks that could test the resilience of the domestic demand recovery.</strong> The most significant external risk is a sharper-than-expected slowdown in global trade: escalating US tariff actions on major trading partners — including China — could reduce demand for Malaysia's electronics and manufacturing exports more materially than current forecasts assume. A deceleration in China's economy poses an additional direct risk given close bilateral trade and investment linkages, particularly in commodities and intermediate goods. On the domestic side, the pace of subsidy rationalization — including the planned targeting of RON95 fuel subsidies — carries a dual risk: while necessary for fiscal consolidation, a poorly sequenced implementation could simultaneously compress household purchasing power and push headline inflation into territory that complicates the monetary policy stance. On the upside, sustained foreign direct investment inflows linked to semiconductor supply chain diversification and data center buildout could extend the investment cycle well into 2026. If global conditions remain broadly benign and investment momentum holds, full-year GDP growth in 2026 is likely to remain in the 4.5–5.5 percent range — consistent with Malaysia's medium-term potential output trajectory.</p>
+
+        <p class="disclaimer">Data sourced from the Department of Statistics Malaysia (DOSM) and Bank Negara Malaysia (BNM). All growth rates are year-on-year unless otherwise stated. Trade values are in ringgit; exchange rates are monthly averages. Views are the author's own and do not represent the position of the World Bank Group.</p>
+    
+    </div>
+  </div>
+  <footer>
+    <div class="footer-name">The Malaysian Lens</div>
+    <p>Economic Analysis by Deisigan &nbsp;·&nbsp; World Bank Economist &nbsp;·&nbsp; 🇲🇾</p>
+    <p class="sources">Data: DOSM · BNM · World Bank</p>
+  </footer>
+  <script>
+    const d = new Date();
+    document.getElementById('datebar').textContent =
+      d.toLocaleDateString('en-MY', {weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+  </script>
+</body>
+</html>
