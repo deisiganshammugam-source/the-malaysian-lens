@@ -984,19 +984,25 @@ function ins(id, html) {
   if (el) el.innerHTML = html;
 }
 
+// ── CHART HELPER — auto-destroy before recreate ──────────
+function createChart(id, config) {
+  const cv = document.getElementById(id);
+  if (!cv) return null;
+  Chart.getChart(cv)?.destroy();
+  return new Chart(cv, config);
+}
+
 // ── TAB SWITCHING ────────────────────────────────────────
-const rendered = {};
 function switchTab(id) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
+  const section = document.getElementById('tab-' + id);
+  section.classList.add('active');
   const tabs = ['dashboard','economy','prices','monetary','external','society'];
   document.querySelectorAll('.nav-btn')[tabs.indexOf(id)]?.classList.add('active');
-  if (!rendered[id]) {
-    rendered[id] = true;
-    // Double-rAF: let the browser finish layout after display:block before Chart.js reads canvas size
-    requestAnimationFrame(() => requestAnimationFrame(() => renderTab(id)));
-  }
+  // Force synchronous layout reflow so Chart.js reads correct canvas dimensions
+  void section.offsetHeight;
+  renderTab(id);
 }
 
 // ── HERO COUNT-UP ────────────────────────────────────────
@@ -1055,7 +1061,7 @@ function renderDashboard() {
   const cpiPrev   = DATA.cpi.headline[DATA.cpi.headline.length - 2];
   ins('ins-dash-cpi', `<strong>${h.cpi}%</strong> YoY as of ${h.cpiMonth} — ${h.cpi < 2 ? 'well-contained' : h.cpi < 3 ? 'moderate' : 'elevated'}, ${h.cpi < cpiPrev ? 'easing from' : 'up from'} ${cpiPrev}% the prior year`);
 
-  new Chart(document.getElementById('c-dash-gdp'), {
+  createChart('c-dash-gdp', {
     type: 'bar',
     data: { labels: yrs, datasets: [{ data: g, backgroundColor: g.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 5, borderSkipped: false }] },
     options: opts({ scales: { x:{ grid:{display:false}, ticks:{maxTicksLimit:8,font:FONT} }, y:{ grid:{color:'#edf0f7'}, ticks:{callback:v=>v+'%',font:FONT}, border:{display:false} } } }),
@@ -1065,7 +1071,7 @@ function renderDashboard() {
     { label:'Headline', data:DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'25', fill:true, tension:0.4, borderWidth:2.5, pointRadius:4, pointHoverRadius:6, pointBackgroundColor:GOLD, pointBorderColor:'#fff', pointBorderWidth:2 },
     ...(DATA.cpi.core.some(v=>v!==null) ? [{ label:'Core', data:DATA.cpi.core, borderColor:TEAL, borderDash:[5,3], tension:0.4, borderWidth:2, pointRadius:2, spanGaps:true, fill:false }] : []),
   ];
-  new Chart(document.getElementById('c-dash-cpi'), {
+  createChart('c-dash-cpi', {
     type: 'line', data:{ labels:DATA.cpi.years, datasets:cpiDs },
     options: opts({ plugins:{ legend:{display:cpiDs.length>1,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
@@ -1132,13 +1138,13 @@ function renderEconomy() {
   const privLast = DATA.expenditure.privateCons[DATA.expenditure.privateCons.length-1];
   ins('ins-exp', `Private consumption at <strong>${privLast}% of GDP</strong> — the primary growth driver`);
 
-  new Chart(document.getElementById('c-sectors'), {
+  createChart('c-sectors', {
     type: 'bar',
     data: { labels: DATA.sectors.labels, datasets: [{ data: DATA.sectors.values, backgroundColor: DATA.sectors.values.map(v => v < 0 ? RED+'aa' : TEAL+'cc'), borderRadius: 5, borderSkipped: false }] },
     options: opts({ indexAxis:'y', scales: { x:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}}, y:{grid:{display:false},ticks:{font:FONT}} } }),
   });
 
-  new Chart(document.getElementById('c-expenditure'), {
+  createChart('c-expenditure', {
     type: 'bar',
     data: { labels: DATA.expenditure.years, datasets: [
       { label:'Private Consumption', data:DATA.expenditure.privateCons, backgroundColor:NAVY+'cc', borderRadius:2 },
@@ -1162,13 +1168,13 @@ function renderPrices() {
   if (coreLatest != null)
     ins('ins-cpi-core', `Core CPI at <strong>${coreLatest}%</strong> — ${coreLatest > cpiLatest ? 'above headline, suggesting entrenched price pressures' : 'below headline, demand-side pressures contained'}`);
 
-  new Chart(document.getElementById('c-cpi-trend'), {
+  createChart('c-cpi-trend', {
     type: 'line',
     data: { labels: DATA.cpi.years, datasets: [{ data: DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'25', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:GOLD, pointBorderColor:'#fff', pointBorderWidth:2 }] },
     options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
 
-  new Chart(document.getElementById('c-cpi-core'), {
+  createChart('c-cpi-core', {
     type: 'line',
     data: { labels: DATA.cpi.years, datasets: [
       { label:'Headline', data:DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'18', fill:true, tension:0.4, borderWidth:2.5, pointRadius:3, pointHoverRadius:5 },
@@ -1182,7 +1188,7 @@ function renderPrices() {
       .map((l, i) => ({ label:l, value:DATA.cpiComponents.values[i], weight:DATA.cpiComponents.weights[i] }))
       .sort((a, b) => b.value - a.value);
 
-    new Chart(document.getElementById('c-cpi-div'), {
+    createChart('c-cpi-div', {
       type: 'bar',
       data: {
         labels: items.map(p => p.label),
@@ -1236,7 +1242,7 @@ function showCpiDetail(item) {
 
     if (subs.length) {
       if (cpiSubChart) { cpiSubChart.destroy(); cpiSubChart = null; }
-      cpiSubChart = new Chart(document.getElementById('c-cpi-sub'), {
+      cpiSubChart = createChart('c-cpi-sub', {
         type: 'bar',
         data: { labels: subs.map(s=>s.name), datasets: [{ data: subs.map(s=>s.yoy), backgroundColor: subs.map(s=>s.yoy>=0?NAVY+'cc':RED+'aa'), hoverBackgroundColor: subs.map(s=>s.yoy>=0?NAVY:RED), borderRadius:4, borderSkipped:false }] },
         options: opts({ indexAxis:'y', animation:{duration:400}, plugins:{ legend:{display:false}, tooltip:{...TT, callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw.toFixed(2)}% YoY`}} }, scales:{ x:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}}, y:{grid:{display:false},ticks:{font:{...FONT,size:10}}} } }),
@@ -1253,7 +1259,7 @@ function renderMonetary() {
   const action    = oprLatest < oprPrev ? 'cut' : oprLatest > oprPrev ? 'hiked' : 'held';
   ins('ins-opr', `BNM <strong>${action === 'held' ? 'holds' : action + 's'}</strong> OPR at <strong>${oprLatest}%</strong> — last change in ${oprLabel}`);
 
-  new Chart(document.getElementById('c-opr'), {
+  createChart('c-opr', {
     type: 'line',
     data: { labels: DATA.opr.labels, datasets: [{ label:'OPR (%)', data:DATA.opr.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, stepped:'before', borderWidth:3, pointRadius:6, pointHoverRadius:8, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2.5 }] },
     options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:1.5,max:3.5,grid:{color:'#edf0f7'},ticks:{callback:v=>v.toFixed(2)+'%',stepSize:0.25,font:FONT},border:{display:false}} } }),
@@ -1331,7 +1337,7 @@ function renderExternal() {
   const neerChange = ((neerLatest - neerFirst) / neerFirst * 100).toFixed(1);
   ins('ins-neer', `Index at <strong>${neerLatest}</strong> (base Jan 2022 = 100) — MYR has ${neerLatest > 100 ? 'appreciated' : 'depreciated'} <strong>${Math.abs(+neerChange)}%</strong> in trade-weighted terms since the base period`);
 
-  new Chart(document.getElementById('c-neer'), {
+  createChart('c-neer', {
     type: 'line',
     data: { labels: DATA.fx.labels, datasets: [{ label:'NEER (base=100)', data: neer, borderColor: NAVY, backgroundColor: NAVY+'1a', fill:true, tension:0.35, borderWidth:2.5, pointRadius:0, pointHoverRadius:5 }] },
     options: opts({
@@ -1345,7 +1351,7 @@ function renderExternal() {
   const surplus = trExp[trExp.length-1] - trImp[trImp.length-1];
   ins('ins-trade', `Trade surplus of <strong>RM${surplus}B</strong> in ${trYr[trYr.length-1]} — exports at RM${trExp[trExp.length-1]}B`);
 
-  new Chart(document.getElementById('c-trade'), {
+  createChart('c-trade', {
     type: 'bar',
     data: { labels: trYr, datasets: [
       { label:'Exports (RM B)', data:trExp, backgroundColor:NAVY+'cc', borderRadius:4 },
@@ -1357,7 +1363,7 @@ function renderExternal() {
   if (DATA.tradeCommodity.labels.length) {
     const topExp = DATA.tradeCommodity.labels[DATA.tradeCommodity.exports.indexOf(Math.max(...DATA.tradeCommodity.exports))];
     ins('ins-trade-comm', `<strong>${topExp}</strong> is the largest export commodity by value`);
-    new Chart(document.getElementById('c-trade-comm'), {
+    createChart('c-trade-comm', {
       type: 'bar',
       data: { labels: DATA.tradeCommodity.labels, datasets: [
         { label:'Exports (RM B)', data:DATA.tradeCommodity.exports, backgroundColor:NAVY+'cc', borderRadius:3 },
@@ -1378,7 +1384,7 @@ function renderSociety() {
   const povFirst  = DATA.poverty.absolute[0];
   ins('ins-poverty', `Absolute poverty at <strong>${povLatest}%</strong> in ${DATA.poverty.years[DATA.poverty.years.length-1]}, down from <strong>${povFirst}%</strong> in ${DATA.poverty.years[0]}`);
 
-  new Chart(document.getElementById('c-gini'), {
+  createChart('c-gini', {
     type: 'line',
     data: { labels: DATA.gini.years, datasets: [{ data:DATA.gini.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, tension:0.25, borderWidth:2.5, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2 }] },
     options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:0.36,max:0.58,grid:{color:'#edf0f7'},ticks:{callback:v=>v.toFixed(3),font:FONT},border:{display:false}} } }),
@@ -1388,7 +1394,7 @@ function renderSociety() {
     { label:'Absolute Poverty', data:DATA.poverty.absolute, borderColor:RED, backgroundColor:RED+'18', fill:true, tension:0.25, borderWidth:2.5, pointRadius:4, pointHoverRadius:6 },
     ...(DATA.poverty.hardcore.some(v=>v!==null) ? [{ label:'Hardcore Poverty', data:DATA.poverty.hardcore, borderColor:NAVY, borderDash:[5,3], tension:0.25, borderWidth:2, pointRadius:3, spanGaps:true, fill:false }] : []),
   ];
-  new Chart(document.getElementById('c-poverty'), {
+  createChart('c-poverty', {
     type: 'line', data:{ labels:DATA.poverty.years, datasets:povDs },
     options: opts({ plugins:{ legend:{display:true,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
@@ -1406,7 +1412,6 @@ function renderTab(id) {
 
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
-  rendered['dashboard'] = true;
   renderDashboard();
 });
 </script>
