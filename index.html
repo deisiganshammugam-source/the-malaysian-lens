@@ -14,29 +14,29 @@
 :root {
   --navy:   #1a2b4a;
   --gold:   #c9a84c;
-  --gold-lt:#f0e0a0;
-  --bg:     #f0f2f7;
+  --gold-lt:#f5e9c0;
+  --bg:     #f3f5f8;
   --card:   #ffffff;
-  --border: #e2e8f0;
+  --border: #e4e9f0;
   --muted:  #64748b;
   --red:    #dc2626;
   --green:  #16a34a;
   --orange: #ea580c;
   --blue:   #2563eb;
-  --radius: 12px;
-  --shadow: 0 2px 12px rgba(0,0,0,.07);
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(26,43,74,.05);
 }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--navy); font-size:14px; line-height:1.5; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--navy); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 a { color:var(--navy); text-decoration:none; }
 
 /* ── disclaimer ── */
 .disclaimer {
-  background:#fefce8; border-bottom:2px solid var(--gold);
-  padding:.6rem 1.2rem; font-size:.78rem; color:#713f12;
-  display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;
+  background:#fffbeb; border-bottom:1px solid #f3d87a;
+  padding:.55rem 1.4rem; font-size:.74rem; color:#92400e;
+  display:flex; align-items:center; gap:.45rem; flex-wrap:wrap;
 }
-.disclaimer strong { color:#92400e; }
+.disclaimer strong { color:#78350f; font-weight:600; }
 
 /* ── header ── */
 .site-header {
@@ -73,8 +73,8 @@ a { color:var(--navy); text-decoration:none; }
 
 /* ── tabs ── */
 .tabs-wrap {
-  background:#fff; border-bottom:2px solid var(--border);
-  position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,.06);
+  background:#fff; border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100; box-shadow:0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,.03);
 }
 .tabs-inner {
   display:flex; overflow-x:auto; scrollbar-width:none;
@@ -82,11 +82,11 @@ a { color:var(--navy); text-decoration:none; }
 }
 .tabs-inner::-webkit-scrollbar { display:none; }
 .tab-btn {
-  padding:.75rem 1.3rem; font-size:.82rem; font-weight:600;
+  padding:.7rem 1.25rem; font-size:.8rem; font-weight:600;
   color:var(--muted); border:none; background:none; cursor:pointer;
-  border-bottom:3px solid transparent; margin-bottom:-2px;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
   white-space:nowrap; transition:color .15s, border-color .15s;
-  font-family:inherit;
+  font-family:inherit; letter-spacing:.01em;
 }
 .tab-btn:hover { color:var(--navy); }
 .tab-btn.active { color:var(--navy); border-bottom-color:var(--gold); }
@@ -97,37 +97,42 @@ a { color:var(--navy); text-decoration:none; }
 .tab-content.active { display:block; }
 
 /* ── stat cards ── */
-.stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem; }
+.stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.875rem; margin-bottom:1.5rem; }
 .stat-card {
   background:var(--card); border-radius:var(--radius); padding:1.1rem 1.25rem;
-  box-shadow:var(--shadow); border-left:4px solid var(--gold);
+  box-shadow:var(--shadow); border:1px solid var(--border);
+  position:relative; overflow:hidden;
 }
-.stat-label { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.3rem; }
-.stat-value { font-size:1.65rem; font-weight:800; color:var(--navy); line-height:1.1; }
-.stat-sub   { font-size:.72rem; color:var(--muted); margin-top:.2rem; }
+.stat-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--gold) 0%, var(--gold-lt) 100%);
+}
+.stat-label { font-size:.67rem; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:.35rem; }
+.stat-value { font-size:1.6rem; font-weight:800; color:var(--navy); line-height:1.1; letter-spacing:-.02em; }
+.stat-sub   { font-size:.71rem; color:var(--muted); margin-top:.25rem; }
 .stat-pos   { color:var(--green); }
 .stat-neg   { color:var(--red); }
 
 /* ── chart cards ── */
-.chart-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
-.chart-grid-1 { margin-bottom:1.25rem; }
+.chart-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:.875rem; margin-bottom:.875rem; }
+.chart-grid-1 { margin-bottom:.875rem; }
 .chart-card {
   background:var(--card); border-radius:var(--radius); padding:1.25rem;
-  box-shadow:var(--shadow);
+  box-shadow:var(--shadow); border:1px solid var(--border);
 }
-.chart-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.75rem; flex-wrap:wrap; gap:.5rem; }
-.chart-title { font-size:.82rem; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:.04em; }
-.chart-sub   { font-size:.68rem; color:var(--muted); margin-top:.1rem; }
+.chart-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.9rem; flex-wrap:wrap; gap:.5rem; }
+.chart-title { font-size:.72rem; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:.07em; }
+.chart-sub   { font-size:.67rem; color:var(--muted); margin-top:.2rem; font-weight:400; }
 .chart-wrap  { position:relative; height:300px; }
 
 /* ── filter buttons ── */
-.filter-btns { display:flex; gap:.35rem; }
+.filter-btns { display:flex; gap:.3rem; }
 .filter-btn {
-  padding:.25rem .65rem; font-size:.7rem; font-weight:600; border-radius:6px;
-  border:1.5px solid var(--border); background:#fff; color:var(--muted);
-  cursor:pointer; font-family:inherit; transition:all .15s;
+  padding:.22rem .6rem; font-size:.68rem; font-weight:600; border-radius:5px;
+  border:1px solid var(--border); background:var(--card); color:var(--muted);
+  cursor:pointer; font-family:inherit; transition:all .15s; letter-spacing:.01em;
 }
-.filter-btn:hover { border-color:var(--navy); color:var(--navy); }
+.filter-btn:hover { border-color:var(--navy); color:var(--navy); background:var(--bg); }
 .filter-btn.active { background:var(--navy); color:#fff; border-color:var(--navy); }
 
 /* ── section heading ── */
@@ -144,14 +149,15 @@ a { color:var(--navy); text-decoration:none; }
 
 /* ── CPI drill-down ── */
 .drill-hint {
-  font-size:.74rem; color:var(--gold); font-weight:600;
+  font-size:.71rem; color:var(--gold); font-weight:600;
   margin-bottom:.6rem; display:flex; align-items:center; gap:.35rem;
+  letter-spacing:.02em; text-transform:uppercase;
 }
 .drill-panel {
-  background:#f8faff; border:1.5px solid var(--border); border-radius:var(--radius);
+  background:var(--bg); border:1px solid var(--border); border-radius:var(--radius);
   padding:1rem 1.25rem; margin-top:1rem;
-  transform:translateY(-8px); opacity:0;
-  transition:opacity .3s ease, transform .3s ease;
+  transform:translateY(-6px); opacity:0;
+  transition:opacity .25s ease, transform .25s ease;
   pointer-events:none;
 }
 .drill-panel.open { transform:translateY(0); opacity:1; pointer-events:all; }
@@ -177,10 +183,10 @@ a { color:var(--navy); text-decoration:none; }
 
 /* ── trade drill-down ── */
 .trade-drill-panel {
-  background:#f8faff; border:1.5px solid var(--border); border-radius:var(--radius);
+  background:var(--bg); border:1px solid var(--border); border-radius:var(--radius);
   padding:1rem 1.25rem; margin-top:.75rem;
-  transform:translateY(-8px); opacity:0;
-  transition:opacity .3s ease, transform .3s ease;
+  transform:translateY(-6px); opacity:0;
+  transition:opacity .25s ease, transform .25s ease;
   pointer-events:none;
 }
 .trade-drill-panel.open { transform:translateY(0); opacity:1; pointer-events:all; }
@@ -193,20 +199,22 @@ a { color:var(--navy); text-decoration:none; }
 .opr-hold { background:#f1f5f9; color:var(--muted); }
 
 /* ── base rates table ── */
-.rates-table { width:100%; border-collapse:collapse; font-size:.8rem; }
-.rates-table th { padding:.5rem .75rem; text-align:left; font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); background:#f8faff; border-bottom:2px solid var(--border); }
-.rates-table td { padding:.6rem .75rem; border-bottom:1px solid var(--border); }
-.rates-table tr:hover td { background:#f8faff; }
+.rates-table { width:100%; border-collapse:collapse; font-size:.79rem; }
+.rates-table th { padding:.5rem .75rem; text-align:left; font-size:.64rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); background:var(--bg); border-bottom:1px solid var(--border); }
+.rates-table td { padding:.55rem .75rem; border-bottom:1px solid var(--border); }
+.rates-table tr:last-child td { border-bottom:none; }
+.rates-table tr:hover td { background:var(--bg); }
 .rates-table .num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
 
 /* ── analysis cards ── */
-.articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.875rem; }
 .article-card {
   background:var(--card); border-radius:var(--radius); padding:1.25rem;
   box-shadow:var(--shadow); cursor:pointer;
-  transition:transform .2s, box-shadow .2s; border:1.5px solid transparent;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  border:1px solid var(--border);
 }
-.article-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,.1); border-color:var(--gold); }
+.article-card:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,.08), 0 0 0 1px var(--gold); border-color:var(--gold); }
 .article-tag {
   display:inline-block; background:var(--gold); color:var(--navy);
   font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
@@ -228,10 +236,10 @@ a { color:var(--navy); text-decoration:none; }
 .site-footer a { color:var(--gold); }
 
 /* ── money snapshot ── */
-.money-snapshot { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:1rem; }
-.money-item { padding:.75rem 1.25rem; background:#f8faff; border-radius:8px; border:1px solid var(--border); }
-.money-item-label { font-size:.67rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
-.money-item-val   { font-size:1.2rem; font-weight:800; color:var(--navy); }
+.money-snapshot { display:flex; gap:.875rem; flex-wrap:wrap; margin-bottom:1rem; }
+.money-item { padding:.7rem 1.1rem; background:var(--bg); border-radius:8px; border:1px solid var(--border); }
+.money-item-label { font-size:.64rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:.2rem; }
+.money-item-val   { font-size:1.15rem; font-weight:800; color:var(--navy); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
 
 /* ── responsive ── */
 @media(max-width:860px) {
@@ -641,12 +649,34 @@ let DATA = null;
 Chart.defaults.font.family = "'Inter', sans-serif";
 Chart.defaults.font.size   = 11;
 Chart.defaults.color       = '#64748b';
-Chart.defaults.plugins.legend.labels.boxWidth = 10;
-Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15,28,53,.96)';
-Chart.defaults.plugins.tooltip.titleColor      = '#c9a84c';
-Chart.defaults.plugins.tooltip.bodyColor       = '#e2e8f0';
-Chart.defaults.plugins.tooltip.padding         = 10;
-Chart.defaults.plugins.tooltip.cornerRadius    = 8;
+
+// Legend
+Chart.defaults.plugins.legend.labels.boxWidth  = 8;
+Chart.defaults.plugins.legend.labels.boxHeight = 8;
+Chart.defaults.plugins.legend.labels.padding   = 14;
+Chart.defaults.plugins.legend.labels.usePointStyle = false;
+
+// Tooltip — dark, minimal, sharp
+Object.assign(Chart.defaults.plugins.tooltip, {
+  backgroundColor:  'rgba(10,18,36,.93)',
+  titleColor:       '#c9a84c',
+  bodyColor:        '#94a3b8',
+  borderColor:      'rgba(255,255,255,.07)',
+  borderWidth:      1,
+  padding:          { x: 12, y: 9 },
+  cornerRadius:     8,
+  displayColors:    true,
+  boxWidth:         7,
+  boxHeight:        7,
+  boxPadding:       4,
+  titleFont:        { size: 11, weight: '600' },
+  bodyFont:         { size: 11 },
+  titleMarginBottom: 6,
+});
+
+// Grid — dashed, very subtle
+Chart.defaults.scale.grid.color      = 'rgba(26,43,74,.06)';
+Chart.defaults.scale.grid.lineWidth  = 1;
 
 const NAVY  = '#1a2b4a';
 const GOLD  = '#c9a84c';
@@ -845,7 +875,7 @@ function renderGdpAnnual() {
       datasets: [{
         data: data.map(d => d.growth),
         backgroundColor: data.map(d => (d.growth||0) >= 0 ? GREEN+'cc' : RED+'cc'),
-        borderRadius: 4, borderSkipped: false,
+        borderRadius: 6, borderSkipped: false,
       }],
     },
     options: {
@@ -856,7 +886,7 @@ function renderGdpAnnual() {
       },
       scales: {
         x: { grid: { display: false } },
-        y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
       },
     },
   });
@@ -886,7 +916,7 @@ function renderEconomy() {
       },
       scales: {
         x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
-        y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
       },
     },
   });
@@ -900,7 +930,7 @@ function renderEconomy() {
       datasets: [{
         data: sec.map(s => s.value),
         backgroundColor: sec.map(s => (s.value||0) >= 0 ? NAVY+'cc' : RED+'cc'),
-        borderRadius: 4, borderSkipped: false,
+        borderRadius: 6, borderSkipped: false,
       }],
     },
     options: {
@@ -911,7 +941,7 @@ function renderEconomy() {
         tooltip: { callbacks: { label: ctx => ` ${fmt1(ctx.raw)}% YoY` } },
       },
       scales: {
-        x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+        x: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
         y: { grid: { display: false } },
       },
     },
@@ -939,7 +969,7 @@ function renderEconomy() {
       },
       scales: {
         x: { grid: { display: false } },
-        y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
       },
     },
   });
@@ -987,7 +1017,7 @@ function renderCpiTrend() {
       },
       scales: {
         x: { grid: { display: false }, ticks: { maxTicksLimit: 14 } },
-        y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
       },
     },
   });
@@ -1012,7 +1042,7 @@ function renderInflation() {
       datasets: [{
         data: sorted.map(c => c.latest_yoy),
         backgroundColor: sorted.map(c => cpiBarColor(c.latest_yoy||0)),
-        borderRadius: 4, borderSkipped: false,
+        borderRadius: 6, borderSkipped: false,
       }],
     },
     options: {
@@ -1029,7 +1059,7 @@ function renderInflation() {
         tooltip: { callbacks: { label: ctx => ` ${fmt1(ctx.raw)}% YoY` } },
       },
       scales: {
-        x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+        x: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
         y: { grid: { display: false }, ticks: { font: { size: 10 } } },
       },
     },
@@ -1044,7 +1074,7 @@ function renderInflation() {
       datasets: [{
         data: contribs.map(c => c.contribution),
         backgroundColor: contribs.map(c => (c.contribution||0) >= 0 ? NAVY+'cc' : RED+'cc'),
-        borderRadius: 4, borderSkipped: false,
+        borderRadius: 6, borderSkipped: false,
       }],
     },
     options: {
@@ -1055,7 +1085,7 @@ function renderInflation() {
         tooltip: { callbacks: { label: ctx => ` Contribution: ${ctx.raw >= 0 ? '+' : ''}${fmt2(ctx.raw)} pp` } },
       },
       scales: {
-        x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+' pp' } },
+        x: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+' pp' } },
         y: { grid: { display: false }, ticks: { font: { size: 10 } } },
       },
     },
@@ -1097,7 +1127,7 @@ function openCpiDrill(comp) {
         },
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
-          y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v+'%' } },
+          y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v+'%' } },
         },
       },
     });
@@ -1141,7 +1171,7 @@ function renderFxUsd() {
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` USD/MYR: ${fmt2(ctx.raw)}` } } },
       scales: {
         x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
-        y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => 'RM '+fmt2(v) } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => 'RM '+fmt2(v) } },
       },
     },
   });
@@ -1178,7 +1208,7 @@ function renderExternal() {
       plugins: { legend: { display: true, position: 'bottom' }, tooltip: { mode: 'index' } },
       scales: {
         x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
-        y: { grid: { color: '#f1f5f9' } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' } },
       },
     },
   });
@@ -1199,7 +1229,7 @@ function renderExternal() {
       plugins: { legend: { display: true, position: 'bottom' }, tooltip: { mode: 'index', callbacks: { label: ctx => ` ${ctx.dataset.label}: RM ${fmt1(ctx.raw)}B` } } },
       scales: {
         x: { grid: { display: false } },
-        y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => 'RM '+v+'B' } },
+        y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => 'RM '+v+'B' } },
       },
     },
   });
@@ -1213,7 +1243,7 @@ function renderExternal() {
       labels: commKeys.map(k => comm[k].name),
       datasets: [{
         data: commKeys.map(k => comm[k].exports_latest_bn),
-        backgroundColor: NAVY+'cc', borderRadius: 4, borderSkipped: false,
+        backgroundColor: NAVY+'cc', borderRadius: 6, borderSkipped: false,
       }],
     },
     options: {
@@ -1223,7 +1253,7 @@ function renderExternal() {
       onHover: (evt, els) => { evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` Exports: RM ${fmt2(ctx.raw)}B` } } },
       scales: {
-        x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => 'RM '+v+'B' } },
+        x: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => 'RM '+v+'B' } },
         y: { grid: { display: false }, ticks: { font: { size: 10 } } },
       },
     },
@@ -1251,7 +1281,7 @@ function openTradeDrill(key, comm) {
         plugins: { legend: { display: true, position: 'bottom' }, tooltip: { mode: 'index', callbacks: { label: ctx => ` ${ctx.dataset.label}: RM ${fmt2(ctx.raw)}B` } } },
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 12 } },
-          y: { grid: { color: '#f1f5f9' }, ticks: { callback: v => 'RM '+v+'B' } },
+          y: { grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => 'RM '+v+'B' } },
         },
       },
     });
@@ -1289,7 +1319,7 @@ function renderMonetary() {
       },
       scales: {
         x: { grid: { display: false } },
-        y: { min: 1.5, max: 3.5, grid: { color: '#f1f5f9' }, ticks: { callback: v => v.toFixed(2)+'%' } },
+        y: { min: 1.5, max: 3.5, grid: { color: 'rgba(26,43,74,.06)' }, ticks: { callback: v => v.toFixed(2)+'%' } },
       },
     },
   });
