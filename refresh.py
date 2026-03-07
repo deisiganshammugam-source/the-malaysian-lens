@@ -65,12 +65,12 @@ def step1_fetch_data():
         log.warning("   (This is OK if DOSM/BNM APIs are temporarily unavailable)")
 
 
-# ─── STEP 2: UPDATE CHARTS ───────────────────────────────────
+# ─── STEP 2: PUSH DATA TO SUPABASE ───────────────────────────
 def step2_update_charts():
     log.info("─" * 50)
-    log.info("STEP 2 — Updating website charts")
+    log.info("STEP 2 — Pushing data to Supabase")
     log.info("─" * 50)
-    run('python3 update_data.py', cwd=WEBSITE_DIR, label='Rebuilding chart data')
+    run('python3 ingest_supabase.py', cwd=WEBSITE_DIR, label='Uploading to Supabase')
 
 
 # ─── VERCEL CONFIG ───────────────────────────────────────────
