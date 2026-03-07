@@ -266,10 +266,9 @@ def build_money():
         },
     }
 
-# ─── main ─────────────────────────────────────────────────────────────────────
+# ─── build_data (importable) ──────────────────────────────────────────────────
 
-def main():
-    print('Building data...')
+def build_data():
     gdp_annual      = build_gdp_annual()
     gdp_quarterly   = build_gdp_quarterly()
     gdp_sectors     = build_gdp_sectors()
@@ -285,7 +284,6 @@ def main():
     base_rates      = build_base_rates()
     money           = build_money()
 
-    # Ticker quick-access values
     ticker = {
         'gdp_growth':    gdp_annual[-1]['growth'] if gdp_annual else None,
         'cpi':           infl_headline[-1]['yoy'] if infl_headline else None,
@@ -296,7 +294,7 @@ def main():
         'm3_bn':         money['snapshot'].get('m3_rm_bn'),
     }
 
-    DATA = {
+    return {
         '_lastUpdated': datetime.now().strftime('%d %B %Y, %H:%M'),
         'ticker': ticker,
         'gdp': {'annual': gdp_annual, 'quarterly': gdp_quarterly,
@@ -309,6 +307,12 @@ def main():
         'baseRates': base_rates,
         'money': money,
     }
+
+# ─── main (local HTML injection, kept for reference) ──────────────────────────
+
+def main():
+    print('Building data...')
+    DATA = build_data()
 
     html_path = os.path.join(SITE, 'index.html')
     with open(html_path, 'r', encoding='utf-8') as f:
@@ -325,13 +329,8 @@ def main():
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(new_html)
 
-    print(f'  GDP annual: {len(gdp_annual)} years, latest {gdp_annual[-1]["year"]} = {gdp_annual[-1]["growth"]}%')
-    print(f'  GDP quarterly: {len(gdp_quarterly)} quarters, latest = {gdp_quarterly[-1]["growth"]}%')
-    print(f'  CPI headline: {len(infl_headline)} months, latest = {infl_headline[-1]["yoy"]}%')
-    print(f'  CPI core: {len(infl_core)} months, latest = {infl_core[-1]["yoy"]}%')
-    print(f'  FX: {len(fx["usdmyr"])} months, latest USD/MYR = {fx["usdmyr"][-1]["rate"]}')
-    print(f'  OPR: current = {opr[-1]["rate"]}%')
-    print(f'  Base rates: {len(base_rates)} banks')
+    print(f'  GDP annual: {len(DATA["gdp"]["annual"])} years, latest = {DATA["gdp"]["annual"][-1]["growth"]}%')
+    print(f'  CPI: {DATA["inflation"]["headline"][-1]["yoy"]}%  OPR: {DATA["rates"]["opr"][-1]["rate"]}%')
     print(f'  DATA injected -> index.html  [last updated: {DATA["_lastUpdated"]}]')
 
 if __name__ == '__main__':
