@@ -15,217 +15,171 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a2b4a'/><text x='50%' y='72%' text-anchor='middle' font-family='Inter,sans-serif' font-weight='700' font-size='14' fill='%23c9a84c'>ML</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy:       #1a2b4a;
-      --navy-light: #243654;
-      --gold:       #c9a84c;
-      --bg:         #f5f6f8;
-      --card:       #ffffff;
-      --text:       #1a1a2e;
-      --muted:      #6b7280;
-      --border:     #e5e7eb;
+      --navy:      #1a2b4a;
+      --navy-dark: #0f1c35;
+      --gold:      #c9a84c;
+      --gold-dim:  #a8832a;
+      --bg:        #eaedf6;
+      --card:      #ffffff;
+      --text:      #0f1c35;
+      --muted:     #64748b;
+      --border:    #dde1ec;
+      --green:     #059669;
+      --red:       #dc2626;
+      --teal:      #0e7490;
+      --purp:      #7c3aed;
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 15px;
-      line-height: 1.6;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
-    /* ─ HEADER ─ */
+    /* ── HEADER ── */
     header {
-      background: var(--navy);
-      color: #fff;
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+      color: #fff; padding: 0 2rem; display: flex; align-items: center;
+      justify-content: space-between; height: 64px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 0 rgba(201,168,76,0.25), 0 4px 24px rgba(0,0,0,0.3);
     }
-    .brand { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
-    .brand-name { font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .brand { display: flex; align-items: baseline; gap: 0.75rem; }
+    .brand-name { font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
     .brand-name span { color: var(--gold); }
-    .brand-tag { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; }
-    .header-meta { font-size: 0.7rem; color: rgba(255,255,255,0.45); text-align: right; }
-    .header-meta strong { color: var(--gold); }
+    .brand-tag { font-size: 0.62rem; color: rgba(255,255,255,0.38); letter-spacing: 0.09em; text-transform: uppercase; }
+    .header-meta { font-size: 0.67rem; color: rgba(255,255,255,0.38); text-align: right; }
+    .header-meta strong { color: var(--gold); font-weight: 600; }
 
-    /* ─ HERO KPI BAR ─ */
+    /* ── HERO ── */
     .hero {
-      background: var(--navy-light);
-      border-bottom: 1px solid rgba(201,168,76,0.3);
-      padding: 0.7rem 2rem;
+      background: linear-gradient(135deg, #182644 0%, #1f3566 100%);
+      border-bottom: 1px solid rgba(201,168,76,0.18);
     }
-    .hero-grid {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .kpi {
-      flex: 1;
-      min-width: 130px;
-      padding: 0.55rem 1rem;
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
+    .hero-grid { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
+    .kpi { flex: 1; min-width: 130px; padding: 1rem 1.4rem; border-right: 1px solid rgba(255,255,255,0.06); }
     .kpi:last-child { border-right: none; }
-    .kpi-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.5); font-weight: 500; }
-    .kpi-value { font-size: 1.35rem; font-weight: 700; color: var(--gold); line-height: 1.15; }
-    .kpi-sub   { font-size: 0.65rem; color: rgba(255,255,255,0.4); }
+    .kpi-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); font-weight: 700; margin-bottom: 0.1rem; }
+    .kpi-value { font-size: 1.6rem; font-weight: 800; color: var(--gold); line-height: 1.05; letter-spacing: -0.025em; }
+    .kpi-sub { font-size: 0.59rem; color: rgba(255,255,255,0.3); margin-top: 0.15rem; }
 
-    /* ─ NAV TABS ─ */
-    .nav-wrapper {
-      background: #fff;
-      border-bottom: 2px solid var(--border);
-      position: sticky;
-      top: 64px;
-      z-index: 90;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
+    /* ── NAV ── */
+    .nav-wrapper { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 64px; z-index: 90; overflow-x: auto; scrollbar-width: none; }
     .nav-wrapper::-webkit-scrollbar { display: none; }
-    .nav { display: flex; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-    .nav-btn {
-      padding: 0.8rem 1.2rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--muted);
-      border: none;
-      background: none;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: color 0.15s, border-color 0.15s;
-      white-space: nowrap;
-    }
+    .nav { display: flex; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .nav-btn { padding: 0.9rem 1.2rem; font-size: 0.82rem; font-weight: 500; color: var(--muted); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; white-space: nowrap; letter-spacing: 0.01em; }
     .nav-btn:hover { color: var(--navy); }
-    .nav-btn.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 600; }
+    .nav-btn.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 700; }
 
-    /* ─ MAIN ─ */
-    main { max-width: 1200px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
+    /* ── MAIN ── */
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
     .tab-section { display: none; }
-    .tab-section.active { display: block; }
+    .tab-section.active { display: block; animation: tabIn 0.2s ease both; }
+    @keyframes tabIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .section-title {
-      font-size: 1.05rem; font-weight: 700; color: var(--navy);
-      margin-bottom: 0.25rem; padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--gold); display: inline-block;
-    }
-    .section-sub { font-size: 0.78rem; color: var(--muted); margin: 0.2rem 0 1.4rem; display: block; }
+    /* ── SECTION TITLE ── */
+    .section-title { font-size: 1.35rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 0.15rem; }
+    .section-sub { font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 1.75rem; }
 
-    /* ─ GRID ─ */
+    /* ── GRID ── */
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 
-    /* ─ CARD ─ */
+    /* ── CARD ── */
     .card {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.2rem 1.4rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      border: 1px solid var(--border);
+      background: var(--card); border-radius: 14px;
+      padding: 1.4rem 1.5rem 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 20px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s; position: relative; overflow: hidden;
     }
-    .card-title {
-      font-size: 0.78rem; font-weight: 600; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.9rem;
+    .card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%);
+      opacity: 0; transition: opacity 0.2s;
     }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 16px 48px rgba(0,0,0,0.09); }
+    .card:hover::after { opacity: 1; }
+    .card-title { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.3rem; }
+    .card-header-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.3rem; }
+    .card-header-row .card-title { margin-bottom: 0; }
+
+    /* ── INSIGHT LINE ── */
+    .insight-line { font-size: 0.82rem; color: var(--navy); font-weight: 500; line-height: 1.45; margin-bottom: 1rem; opacity: 0.88; }
+    .insight-line strong { color: var(--gold-dim); font-weight: 700; }
+    .insight-line em { font-style: normal; color: var(--green); font-weight: 600; }
+    .insight-line s { text-decoration: none; color: var(--red); font-weight: 600; }
+
     .chart-wrap { position: relative; width: 100%; }
     .chart-wrap canvas { width: 100% !important; }
 
-    /* ─ SUMMARY CARDS (dashboard) ─ */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.4rem;
-    }
-    .s-card {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    .s-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; }
-    .s-value { font-size: 1.7rem; font-weight: 700; color: var(--navy); line-height: 1; }
-    .s-sub   { font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; }
+    /* ── SUMMARY CARDS ── */
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.75rem; }
+    .s-card { background: var(--card); border-radius: 12px; padding: 1.1rem 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 20px rgba(0,0,0,0.06); }
+    .s-label { font-size: 0.6rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+    .s-value { font-size: 1.9rem; font-weight: 800; color: var(--navy); line-height: 1; letter-spacing: -0.03em; }
+    .s-sub { font-size: 0.63rem; color: var(--muted); margin-top: 0.35rem; }
 
-    /* ─ TABLE ─ */
+    /* ── TABLE ── */
     .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-    .data-table th {
-      text-align: left; padding: 0.5rem 0.75rem;
-      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.04em; color: var(--muted);
-      border-bottom: 2px solid var(--border); background: #fafafa;
-    }
-    .data-table td { padding: 0.48rem 0.75rem; border-bottom: 1px solid var(--border); }
+    .data-table th { text-align: left; padding: 0.55rem 0.75rem; font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 2px solid var(--border); background: #f8faff; }
+    .data-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
     .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover td { background: #f9fbff; }
+    .data-table tr:hover td { background: #f5f8ff; }
     .right { text-align: right; }
-
-    .badge {
-      display: inline-block; padding: 0.12rem 0.45rem;
-      border-radius: 4px; font-size: 0.68rem; font-weight: 600;
-    }
+    .badge { display: inline-block; padding: 0.12rem 0.5rem; border-radius: 20px; font-size: 0.66rem; font-weight: 700; }
     .b-green { background: #d1fae5; color: #065f46; }
     .b-blue  { background: #dbeafe; color: #1e40af; }
     .b-red   { background: #fee2e2; color: #991b1b; }
 
-    /* ─ INSIGHT STRIP ─ */
-    .insight {
-      background: linear-gradient(135deg, var(--navy), var(--navy-light));
-      color: #fff;
-      border-radius: 10px;
-      padding: 1.1rem 1.4rem;
-      font-size: 0.83rem;
-      line-height: 1.6;
-      margin-top: 1.25rem;
-    }
-    .insight strong { color: var(--gold); }
+    /* ── DASHBOARD INSIGHT STRIP ── */
+    .insight { background: linear-gradient(135deg, var(--navy-dark), var(--navy)); color: rgba(255,255,255,0.8); border-radius: 12px; padding: 1.25rem 1.5rem; font-size: 0.84rem; line-height: 1.7; margin-top: 1.25rem; }
+    .insight strong { color: var(--gold); font-weight: 700; }
 
-    /* ─ ABOUT STRIP ─ */
-    .about-strip {
-      margin-top: 1.25rem;
-      padding: 1rem 1.25rem;
-      background: var(--card);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .about-strip a { color: var(--gold); text-decoration: none; }
+    /* ── ABOUT STRIP ── */
+    .about-strip { margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--card); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.05); font-size: 0.79rem; color: var(--muted); line-height: 1.6; }
+    .about-strip a { color: var(--gold-dim); text-decoration: none; font-weight: 500; }
     .about-strip a:hover { text-decoration: underline; }
 
-    /* ─ FOOTER ─ */
-    footer {
-      background: var(--navy);
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      padding: 1.5rem 2rem;
-      font-size: 0.74rem;
-      line-height: 1.8;
-    }
-    footer a { color: var(--gold); text-decoration: none; }
-    footer strong { color: rgba(255,255,255,0.8); }
+    /* ── TOGGLE PILLS ── */
+    .chart-toggles { display: flex; gap: 0.25rem; flex-shrink: 0; }
+    .t-btn { padding: 0.15rem 0.55rem; font-size: 0.64rem; font-weight: 700; border: 1.5px solid var(--border); background: none; border-radius: 20px; cursor: pointer; color: var(--muted); transition: all 0.15s; line-height: 1.7; letter-spacing: 0.02em; }
+    .t-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .t-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
 
-    /* ─ RESPONSIVE ─ */
+    /* ── CPI DRILLDOWN ── */
+    .component-detail { margin-top: 1.1rem; padding: 1rem 1.25rem 0.9rem; background: #f3f6ff; border-radius: 10px; border-left: 3px solid var(--gold); animation: tabIn 0.2s ease; }
+    .detail-name { font-weight: 800; color: var(--navy); font-size: 0.88rem; margin-bottom: 0.7rem; }
+    .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.75rem; }
+    .detail-stat-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; margin-bottom: 0.15rem; }
+    .detail-stat-value { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
+    .weight-bar-track { background: var(--border); border-radius: 3px; height: 5px; margin-top: 0.6rem; }
+    .weight-bar-fill { background: var(--gold); border-radius: 3px; height: 5px; transition: width 0.45s cubic-bezier(0.34,1.56,0.64,1); }
+
+    /* ── FX TICKER GRID ── */
+    .fx-ticker-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+    .fx-ticker { background: var(--card); border-radius: 14px; padding: 1rem 1.1rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 20px rgba(0,0,0,0.06); overflow: hidden; position: relative; }
+    .fx-ticker-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
+    .fx-ticker-value { font-size: 1.3rem; font-weight: 800; color: var(--navy); line-height: 1.1; margin: 0.2rem 0 0.1rem; letter-spacing: -0.02em; }
+    .fx-ticker-change { font-size: 0.68rem; font-weight: 700; margin-bottom: 0.55rem; }
+    .fx-ticker-chart { height: 52px; margin: 0 -1.1rem; position: relative; }
+    .chg-up { color: var(--green); }
+    .chg-dn { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer { background: linear-gradient(135deg, var(--navy-dark), var(--navy)); color: rgba(255,255,255,0.38); text-align: center; padding: 1.75rem 2rem; font-size: 0.72rem; line-height: 1.9; }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer strong { color: rgba(255,255,255,0.72); }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 760px) {
       .grid-2 { grid-template-columns: 1fr; }
-      header  { padding: 0 1rem; }
-      .hero   { padding: 0.5rem 1rem; }
-      main    { padding: 1.25rem 1rem 2.5rem; }
+      .fx-ticker-grid { grid-template-columns: repeat(3, 1fr); }
+      header { padding: 0 1rem; }
+      main { padding: 1.5rem 1rem 3rem; }
       .brand-tag { display: none; }
+      .detail-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -235,39 +189,19 @@
 <header>
   <div class="brand">
     <div class="brand-name">The <span>Malaysian</span> Lens</div>
-    <div class="brand-tag">Economic Analysis · Data-Driven · Independent</div>
+    <div class="brand-tag">Economic Analysis · Independent</div>
   </div>
   <div class="header-meta">Updated: <strong id="last-updated">—</strong></div>
 </header>
 
-<!-- ════════════════════ HERO KPI BAR -->
+<!-- ════════════════════ HERO -->
 <div class="hero">
   <div class="hero-grid">
-    <div class="kpi">
-      <div class="kpi-label">GDP Growth</div>
-      <div class="kpi-value" id="h-gdp">—</div>
-      <div class="kpi-sub" id="h-gdp-sub">annual real</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">CPI Inflation</div>
-      <div class="kpi-value" id="h-cpi">—</div>
-      <div class="kpi-sub" id="h-cpi-sub">YoY</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">OPR</div>
-      <div class="kpi-value" id="h-opr">—</div>
-      <div class="kpi-sub">BNM policy rate</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">USD / MYR</div>
-      <div class="kpi-value" id="h-fx">—</div>
-      <div class="kpi-sub">monthly avg</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Poverty Rate</div>
-      <div class="kpi-value" id="h-pov">—</div>
-      <div class="kpi-sub" id="h-pov-sub">absolute</div>
-    </div>
+    <div class="kpi"><div class="kpi-label">GDP Growth</div><div class="kpi-value" id="h-gdp">—</div><div class="kpi-sub" id="h-gdp-sub">annual real</div></div>
+    <div class="kpi"><div class="kpi-label">CPI Inflation</div><div class="kpi-value" id="h-cpi">—</div><div class="kpi-sub" id="h-cpi-sub">YoY</div></div>
+    <div class="kpi"><div class="kpi-label">OPR</div><div class="kpi-value" id="h-opr">—</div><div class="kpi-sub">BNM policy rate</div></div>
+    <div class="kpi"><div class="kpi-label">USD / MYR</div><div class="kpi-value" id="h-fx">—</div><div class="kpi-sub">monthly avg</div></div>
+    <div class="kpi"><div class="kpi-label">Poverty Rate</div><div class="kpi-value" id="h-pov">—</div><div class="kpi-sub" id="h-pov-sub">absolute</div></div>
   </div>
 </div>
 
@@ -290,28 +224,25 @@
   <section id="tab-dashboard" class="tab-section active">
     <div class="section-title">Dashboard</div>
     <span class="section-sub">Key indicators at a glance · Sources: DOSM &amp; BNM</span>
-
     <div class="summary-grid" id="summary-grid"></div>
-
     <div class="grid-2">
       <div class="card">
-        <div class="card-title">GDP Growth — Annual (%)</div>
-        <div class="chart-wrap" style="height:215px"><canvas id="c-dash-gdp"></canvas></div>
+        <div class="card-title">GDP Growth — Annual</div>
+        <div class="insight-line" id="ins-dash-gdp"></div>
+        <div class="chart-wrap" style="height:205px"><canvas id="c-dash-gdp"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">Headline Inflation — Annual Avg. (%)</div>
-        <div class="chart-wrap" style="height:215px"><canvas id="c-dash-cpi"></canvas></div>
+        <div class="card-title">Headline Inflation — Annual Avg.</div>
+        <div class="insight-line" id="ins-dash-cpi"></div>
+        <div class="chart-wrap" style="height:205px"><canvas id="c-dash-cpi"></canvas></div>
       </div>
     </div>
-
     <div class="insight" id="dash-insight"></div>
-
     <div class="about-strip">
-      <strong style="color:var(--navy)">About</strong> — Data is sourced from
+      <strong style="color:var(--navy)">About</strong> — Data sourced from
       <a href="https://api.data.gov.my" target="_blank" rel="noopener">DOSM (api.data.gov.my)</a> and
       <a href="https://apikijangportal.bnm.gov.my" target="_blank" rel="noopener">BNM (apikijangportal.bnm.gov.my)</a>.
-      Charts update automatically when fresh data is available.
-      This is an independent publication — no institutional affiliation.
+      This is an independent publication with no institutional affiliation.
       Read in-depth pieces in the <a href="analysis.html">Analysis</a> section.
     </div>
   </section>
@@ -319,26 +250,44 @@
   <!-- ── ECONOMY ── -->
   <section id="tab-economy" class="tab-section">
     <div class="section-title">Economy</div>
-    <span class="section-sub">Real GDP — annual growth, quarterly trend, sectoral performance, and expenditure composition</span>
+    <span class="section-sub">Real GDP — annual growth, quarterly trend, sectoral performance, and expenditure composition · Source: DOSM</span>
 
     <div class="grid-2" style="margin-bottom:1.25rem">
       <div class="card">
-        <div class="card-title">Annual GDP Growth (%) — 2000 to latest</div>
-        <div class="chart-wrap" style="height:245px"><canvas id="c-gdp-annual"></canvas></div>
+        <div class="card-header-row">
+          <div class="card-title">Annual GDP Growth (%)</div>
+          <div class="chart-toggles">
+            <button class="t-btn" data-gdp="5"   onclick="setGdpRange(5)">5Y</button>
+            <button class="t-btn" data-gdp="10"  onclick="setGdpRange(10)">10Y</button>
+            <button class="t-btn active" data-gdp="max" onclick="setGdpRange('max')">Max</button>
+          </div>
+        </div>
+        <div class="insight-line" id="ins-gdp-annual"></div>
+        <div class="chart-wrap" style="height:230px"><canvas id="c-gdp-annual"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">Quarterly GDP Growth — YoY (%)</div>
-        <div class="chart-wrap" style="height:245px"><canvas id="c-gdp-qtr"></canvas></div>
+        <div class="card-header-row">
+          <div class="card-title">Quarterly GDP Growth — YoY (%)</div>
+          <div class="chart-toggles">
+            <button class="t-btn" data-qtr="5"   onclick="setQtrRange(5)">5Y</button>
+            <button class="t-btn" data-qtr="10"  onclick="setQtrRange(10)">10Y</button>
+            <button class="t-btn active" data-qtr="max" onclick="setQtrRange('max')">Max</button>
+          </div>
+        </div>
+        <div class="insight-line" id="ins-gdp-qtr"></div>
+        <div class="chart-wrap" style="height:230px"><canvas id="c-gdp-qtr"></canvas></div>
       </div>
     </div>
     <div class="grid-2">
       <div class="card">
         <div class="card-title" id="t-sectors">GDP by Sector — YoY Growth (%)</div>
-        <div class="chart-wrap" style="height:275px"><canvas id="c-sectors"></canvas></div>
+        <div class="insight-line" id="ins-sectors"></div>
+        <div class="chart-wrap" style="height:265px"><canvas id="c-sectors"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">Expenditure Components — Share of GDP (%)</div>
-        <div class="chart-wrap" style="height:275px"><canvas id="c-expenditure"></canvas></div>
+        <div class="insight-line" id="ins-exp"></div>
+        <div class="chart-wrap" style="height:265px"><canvas id="c-expenditure"></canvas></div>
       </div>
     </div>
   </section>
@@ -351,16 +300,22 @@
     <div class="grid-2" style="margin-bottom:1.25rem">
       <div class="card">
         <div class="card-title">Headline CPI — Annual Avg. YoY (%)</div>
-        <div class="chart-wrap" style="height:245px"><canvas id="c-cpi-trend"></canvas></div>
+        <div class="insight-line" id="ins-cpi-trend"></div>
+        <div class="chart-wrap" style="height:230px"><canvas id="c-cpi-trend"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">Core vs. Headline Inflation (%)</div>
-        <div class="chart-wrap" style="height:245px"><canvas id="c-cpi-core"></canvas></div>
+        <div class="insight-line" id="ins-cpi-core"></div>
+        <div class="chart-wrap" style="height:230px"><canvas id="c-cpi-core"></canvas></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title" id="t-cpi-div">CPI by Division — 12-Month Average (%)</div>
+      <div class="card-header-row">
+        <div class="card-title" id="t-cpi-div">CPI by Division — click a bar to explore</div>
+        <div style="font-size:0.67rem;color:var(--muted)">12-month avg · Source: DOSM</div>
+      </div>
       <div class="chart-wrap" style="height:310px"><canvas id="c-cpi-div"></canvas></div>
+      <div id="cpi-component-detail" class="component-detail" style="display:none"></div>
     </div>
   </section>
 
@@ -370,21 +325,20 @@
     <span class="section-sub">BNM overnight policy rate history and current bank lending rates · Source: BNM</span>
 
     <div class="card" style="margin-bottom:1.25rem">
-      <div class="card-title">Overnight Policy Rate — BNM MPC Decisions (%)</div>
-      <div class="chart-wrap" style="height:255px"><canvas id="c-opr"></canvas></div>
+      <div class="card-title">Overnight Policy Rate — BNM MPC Decisions</div>
+      <div class="insight-line" id="ins-opr"></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="c-opr"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title">Bank Base Rates &amp; Effective Lending Rates — Current</div>
-      <div style="overflow-x:auto">
+      <div style="overflow-x:auto; margin-top:0.75rem">
         <table class="data-table" id="tbl-rates">
-          <thead>
-            <tr>
-              <th>Bank</th>
-              <th class="right">Base Rate (%)</th>
-              <th class="right">Base Lending Rate (%)</th>
-              <th class="right">Eff. Lending Rate (%)</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Bank</th>
+            <th class="right">Base Rate (%)</th>
+            <th class="right">Base Lending Rate (%)</th>
+            <th class="right">Eff. Lending Rate (%)</th>
+          </tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -394,20 +348,29 @@
   <!-- ── EXTERNAL ── -->
   <section id="tab-external" class="tab-section">
     <div class="section-title">External Sector</div>
-    <span class="section-sub">Exchange rates and trade flows · Sources: DOSM &amp; BNM</span>
+    <span class="section-sub">MYR exchange rates and trade flows · Sources: DOSM &amp; BNM</span>
 
+    <!-- FX Tickers -->
+    <div class="fx-ticker-grid" id="fx-ticker-grid"></div>
+
+    <!-- NEER -->
     <div class="card" style="margin-bottom:1.25rem">
-      <div class="card-title">MYR Exchange Rates — Monthly Average (MYR per unit of foreign currency)</div>
-      <div class="chart-wrap" style="height:275px"><canvas id="c-fx"></canvas></div>
+      <div class="card-title">Nominal Effective Exchange Rate (NEER)</div>
+      <div class="insight-line" id="ins-neer"></div>
+      <div class="chart-wrap" style="height:210px"><canvas id="c-neer"></canvas></div>
     </div>
+
+    <!-- Trade -->
     <div class="grid-2">
       <div class="card">
         <div class="card-title">Trade — Annual Exports &amp; Imports (RM Billion)</div>
-        <div class="chart-wrap" style="height:265px"><canvas id="c-trade"></canvas></div>
+        <div class="insight-line" id="ins-trade"></div>
+        <div class="chart-wrap" style="height:250px"><canvas id="c-trade"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title" id="t-trade-comm">Trade by Commodity — Latest Year (RM Billion)</div>
-        <div class="chart-wrap" style="height:265px"><canvas id="c-trade-comm"></canvas></div>
+        <div class="insight-line" id="ins-trade-comm"></div>
+        <div class="chart-wrap" style="height:250px"><canvas id="c-trade-comm"></canvas></div>
       </div>
     </div>
   </section>
@@ -420,26 +383,26 @@
     <div class="grid-2" style="margin-bottom:1.25rem">
       <div class="card">
         <div class="card-title">Gini Coefficient — 1970 to 2022</div>
-        <div class="chart-wrap" style="height:255px"><canvas id="c-gini"></canvas></div>
+        <div class="insight-line" id="ins-gini"></div>
+        <div class="chart-wrap" style="height:240px"><canvas id="c-gini"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">Absolute Poverty Rate — 1970 to 2022 (%)</div>
-        <div class="chart-wrap" style="height:255px"><canvas id="c-poverty"></canvas></div>
+        <div class="insight-line" id="ins-poverty"></div>
+        <div class="chart-wrap" style="height:240px"><canvas id="c-poverty"></canvas></div>
       </div>
     </div>
     <div class="card">
       <div class="card-title">State Household Income &amp; Inequality — HIES 2022</div>
-      <div style="overflow-x:auto">
+      <div style="overflow-x:auto; margin-top:0.75rem">
         <table class="data-table" id="tbl-states">
-          <thead>
-            <tr>
-              <th>State / Territory</th>
-              <th class="right">Mean Income (RM/mo)</th>
-              <th class="right">Median Income (RM/mo)</th>
-              <th class="right">Gini</th>
-              <th class="right">Poverty (%)</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>State / Territory</th>
+            <th class="right">Mean Income (RM/mo)</th>
+            <th class="right">Median Income (RM/mo)</th>
+            <th class="right">Gini</th>
+            <th class="right">Poverty (%)</th>
+          </tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -465,10 +428,10 @@
 // Automatically replaced by update_data.py — do not hand-edit
 // ════════════════════════════════════════════════════════════
 const DATA = {
-  // Auto-generated by update_data.py on 6 March 2026
+  // Auto-generated by update_data.py on 7 March 2026
   // Sources: DOSM (api.data.gov.my) · BNM (apikijangportal.bnm.gov.my)
 
-  _lastUpdated: '6 March 2026',
+  _lastUpdated: '7 March 2026',
 
   hero: {
     gdpGrowth:   5.2,
@@ -519,6 +482,223 @@ const DATA = {
     weights: [29.5, 0.5, 3.2, 23.8, 4.5, 1.9, 14.2, 6.3, 3.8, 1.6, 8.1, 7.6, 5.0],
   },
 
+  cpiSubComponents: {
+    "01": [
+        {
+            "name": "Non-alcoholic beverages",
+            "yoy": 2.61
+        },
+        {
+            "name": "Food away from home",
+            "yoy": 2.51
+        },
+        {
+            "name": "Food at home",
+            "yoy": 0.61
+        }
+    ],
+    "02": [
+        {
+            "name": "Tobacco",
+            "yoy": 3.52
+        },
+        {
+            "name": "Alcoholic beverages",
+            "yoy": 1.17
+        }
+    ],
+    "03": [
+        {
+            "name": "Clothes",
+            "yoy": 0.1
+        },
+        {
+            "name": "Shoes",
+            "yoy": -0.37
+        }
+    ],
+    "04": [
+        {
+            "name": "Water supply & miscellaneous services relating to the dwelling",
+            "yoy": 7.12
+        },
+        {
+            "name": "Maintenance, repair & security of the dwelling",
+            "yoy": 2.61
+        },
+        {
+            "name": "Actual rentals for housing",
+            "yoy": 1.86
+        },
+        {
+            "name": "Electricity, gas & fuel",
+            "yoy": -7.22
+        }
+    ],
+    "05": [
+        {
+            "name": "Furniture, furnishings & loose carpets",
+            "yoy": 1.06
+        },
+        {
+            "name": "Tools & equipment for house & garden",
+            "yoy": 1.02
+        },
+        {
+            "name": "Goods & services for routine household maintenance",
+            "yoy": -0.08
+        },
+        {
+            "name": "Glassware, tableware & household utensils",
+            "yoy": -0.18
+        },
+        {
+            "name": "Household textiles",
+            "yoy": -0.32
+        },
+        {
+            "name": "Household appliances",
+            "yoy": -0.53
+        }
+    ],
+    "06": [
+        {
+            "name": "Outpatient care services",
+            "yoy": 3.1
+        },
+        {
+            "name": "Others health services",
+            "yoy": 1.83
+        },
+        {
+            "name": "Inpatient care services",
+            "yoy": 1.6
+        },
+        {
+            "name": "Medicines & health products",
+            "yoy": 0.97
+        }
+    ],
+    "07": [
+        {
+            "name": "Transport services of goods",
+            "yoy": 1.05
+        },
+        {
+            "name": "Passenger transport services",
+            "yoy": 0.77
+        },
+        {
+            "name": "Purchase of vehicles",
+            "yoy": 0.21
+        },
+        {
+            "name": "Operation of personal transport equipment",
+            "yoy": -1.02
+        }
+    ],
+    "08": [
+        {
+            "name": "Information & communication services",
+            "yoy": 1.73
+        },
+        {
+            "name": "Information & communication equipment",
+            "yoy": -3.57
+        }
+    ],
+    "09": [
+        {
+            "name": "Cultural services",
+            "yoy": 2.61
+        },
+        {
+            "name": "Recreational services",
+            "yoy": 1.68
+        },
+        {
+            "name": "Newpapers, books & stationery",
+            "yoy": 0.89
+        },
+        {
+            "name": "Cultural goods",
+            "yoy": 0.57
+        },
+        {
+            "name": "Garden products & pets",
+            "yoy": 0.56
+        },
+        {
+            "name": "Other recreational goods",
+            "yoy": -0.39
+        },
+        {
+            "name": "Package holidays",
+            "yoy": -1.73
+        }
+    ],
+    "10": [
+        {
+            "name": "Pre primary & primary education",
+            "yoy": 4.65
+        },
+        {
+            "name": "Education not defined by level",
+            "yoy": 2.63
+        },
+        {
+            "name": "Secondary education",
+            "yoy": 2.3
+        },
+        {
+            "name": "Tertiary education",
+            "yoy": 0.87
+        },
+        {
+            "name": "Post-secondary non-tertiary education",
+            "yoy": 0.35
+        }
+    ],
+    "11": [
+        {
+            "name": "Food & beverage preparation services",
+            "yoy": 3.71
+        },
+        {
+            "name": "Accommodation services",
+            "yoy": 0.27
+        }
+    ],
+    "12": [
+        {
+            "name": "Insurance",
+            "yoy": 5.95
+        },
+        {
+            "name": "Financial Services",
+            "yoy": 0.0
+        }
+    ],
+    "13": [
+        {
+            "name": "Other personal item",
+            "yoy": 26.15
+        },
+        {
+            "name": "Social protection",
+            "yoy": 2.65
+        },
+        {
+            "name": "Other services",
+            "yoy": 1.19
+        },
+        {
+            "name": "Personal care",
+            "yoy": 0.65
+        }
+    ]
+},
+
   fx: {
     // Monthly avg vs MYR — Source: BNM/DOSM
     labels: ["Jan 22", "Feb 22", "Mar 22", "Apr 22", "May 22", "Jun 22", "Jul 22", "Aug 22", "Sep 22", "Oct 22", "Nov 22", "Dec 22", "Jan 23", "Feb 23", "Mar 23", "Apr 23", "May 23", "Jun 23", "Jul 23", "Aug 23", "Sep 23", "Oct 23", "Nov 23", "Dec 23", "Jan 24", "Feb 24", "Mar 24", "Apr 24", "May 24", "Jun 24", "Jul 24", "Aug 24", "Sep 24", "Oct 24", "Nov 24", "Dec 24", "Jan 25", "Feb 25", "Mar 25", "Apr 25", "May 25", "Jun 25", "Jul 25", "Aug 25", "Sep 25", "Oct 25", "Nov 25", "Dec 25", "Jan 26"],
@@ -543,7 +723,7 @@ const DATA = {
   },
 
   opr: {
-    labels: ["Pre-2020", "Jan 2020", "Mar 2020", "May 2020", "Jul 2020", "2021", "May 2022", "Jul 2022", "Sep 2022", "Nov 2022", "May 2023", "Jan 2026"],
+    labels: ["Pre-2020", "Jan 2020", "Mar 2020", "May 2020", "Jul 2020", "2021", "May 2022", "Jul 2022", "Sep 2022", "Nov 2022", "May 2023", "Mar 2026"],
     values: [3.0, 2.75, 2.5, 2.0, 1.75, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 2.75],
   },
 
@@ -770,29 +950,37 @@ const DATA = {
 
 <!-- ════════════════════ APP SCRIPT ════════════════════ -->
 <script>
-// ── PALETTE ─────────────────────────────────────────────
-const NAVY  = '#1a2b4a';
-const GOLD  = '#c9a84c';
-const TEAL  = '#0e7490';
-const RED   = '#dc2626';
-const PURP  = '#7c3aed';
-const FONT  = { family: 'Inter, sans-serif', size: 11 };
+// ── PALETTE ──────────────────────────────────────────────
+const NAVY = '#1a2b4a', GOLD = '#c9a84c', TEAL = '#0e7490',
+      RED  = '#dc2626', PURP = '#7c3aed', GREEN = '#059669';
+const FONT = { family: 'Inter, sans-serif', size: 11 };
+
+const TT = {
+  backgroundColor: 'rgba(15,28,53,0.96)', titleColor: '#c9a84c',
+  bodyColor: '#e2e8f0', borderColor: 'rgba(201,168,76,0.2)', borderWidth: 1,
+  padding: 11, cornerRadius: 8, mode: 'index', intersect: false,
+};
 
 Chart.defaults.font = FONT;
-Chart.defaults.color = '#6b7280';
-Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.color = '#64748b';
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+Chart.defaults.animation = { duration: 450, easing: 'easeOutQuart' };
 
 function opts(o = {}) {
   return {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { ...TT } },
     scales: {
       x: { grid: { display: false }, ticks: { font: FONT } },
-      y: { grid: { color: '#f0f0f0' }, ticks: { font: FONT } },
+      y: { grid: { color: '#edf0f7' }, ticks: { font: FONT }, border: { display: false } },
     },
     ...o,
   };
+}
+
+function ins(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html;
 }
 
 // ── TAB SWITCHING ────────────────────────────────────────
@@ -806,283 +994,410 @@ function switchTab(id) {
   if (!rendered[id]) { rendered[id] = true; renderTab(id); }
 }
 
-// ── HERO ─────────────────────────────────────────────────
+// ── HERO COUNT-UP ────────────────────────────────────────
+function countUp(el, end, dec, suffix, delay = 0) {
+  setTimeout(() => {
+    const dur = 700, t0 = performance.now();
+    const step = now => {
+      const p = Math.min((now - t0) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = (end * ease).toFixed(dec) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, delay);
+}
+
 function initHero() {
   const h = DATA.hero;
-  document.getElementById('h-gdp').textContent   = h.gdpGrowth + '%';
+  countUp(document.getElementById('h-gdp'),  h.gdpGrowth, 1, '%',    0);
+  countUp(document.getElementById('h-cpi'),  h.cpi,       1, '%',  120);
+  countUp(document.getElementById('h-opr'),  h.opr,       2, '%',  240);
+  countUp(document.getElementById('h-fx'),   h.usdmyr,    4, '',   360);
+  countUp(document.getElementById('h-pov'),  h.poverty,   1, '%',  480);
   document.getElementById('h-gdp-sub').textContent = h.gdpYear + ' real GDP';
-  document.getElementById('h-cpi').textContent   = h.cpi + '%';
   document.getElementById('h-cpi-sub').textContent = h.cpiMonth + ' YoY';
-  document.getElementById('h-opr').textContent   = h.opr + '%';
-  document.getElementById('h-fx').textContent    = h.usdmyr.toFixed(4);
-  document.getElementById('h-pov').textContent   = h.poverty + '%';
   document.getElementById('h-pov-sub').textContent = h.povertyYear + ' absolute';
   document.getElementById('last-updated').textContent = DATA._lastUpdated;
 }
 
 // ── DASHBOARD ────────────────────────────────────────────
 function renderDashboard() {
-  // Summary cards
   const h = DATA.hero;
-  const giniLatest = DATA.gini.values[DATA.gini.values.length - 1];
+  const gini = DATA.gini.values[DATA.gini.values.length - 1];
   const cards = [
-    { label: 'GDP Growth',  value: h.gdpGrowth + '%',        sub: h.gdpYear + ' real YoY' },
-    { label: 'Inflation',   value: h.cpi + '%',               sub: h.cpiMonth + ' headline' },
-    { label: 'OPR',         value: h.opr + '%',               sub: 'BNM policy rate' },
-    { label: 'USD / MYR',   value: h.usdmyr.toFixed(4),       sub: 'latest monthly avg' },
-    { label: 'Poverty',     value: h.poverty + '%',           sub: h.povertyYear + ' absolute' },
-    { label: 'Gini',        value: giniLatest.toFixed(3),     sub: '2022 national' },
+    { label:'GDP Growth',  value:h.gdpGrowth+'%',      sub:h.gdpYear+' real YoY' },
+    { label:'Inflation',   value:h.cpi+'%',             sub:h.cpiMonth+' headline' },
+    { label:'OPR',         value:h.opr+'%',             sub:'BNM policy rate' },
+    { label:'USD / MYR',   value:h.usdmyr.toFixed(4),   sub:'latest monthly avg' },
+    { label:'Poverty',     value:h.poverty+'%',         sub:h.povertyYear+' absolute' },
+    { label:'Gini',        value:gini.toFixed(3),       sub:'2022 national' },
   ];
-  document.getElementById('summary-grid').innerHTML = cards.map(c => `
-    <div class="s-card">
-      <div class="s-label">${c.label}</div>
-      <div class="s-value">${c.value}</div>
-      <div class="s-sub">${c.sub}</div>
-    </div>`).join('');
+  document.getElementById('summary-grid').innerHTML = cards.map(c =>
+    `<div class="s-card"><div class="s-label">${c.label}</div><div class="s-value">${c.value}</div><div class="s-sub">${c.sub}</div></div>`
+  ).join('');
 
-  // GDP bar
+  const g = DATA.gdp.growth, yrs = DATA.gdp.years;
+  const latestG = g[g.length - 1], latestY = yrs[yrs.length - 1];
+  const prevG = g[g.length - 2], prevY = yrs[yrs.length - 2];
+  const hist = g.slice(0, -1);
+  const histAvg = (hist.reduce((a,b)=>a+b,0)/hist.length).toFixed(1);
+  const bestSince = latestG > prevG ? `highest since ${yrs[g.indexOf(Math.max(...g.filter((_,i)=>i<g.length-1 && g[i]>=latestG)))]}` : `vs ${prevG}% in ${prevY}`;
+
+  ins('ins-dash-gdp', `<strong>${latestG}%</strong> in ${latestY} — ${latestG > +histAvg ? 'above' : 'below'} the ${yrs[0]}–${prevY} average of ${histAvg}%`);
+
+  const cpiLatest = DATA.cpi.headline[DATA.cpi.headline.length - 1];
+  const cpiPrev   = DATA.cpi.headline[DATA.cpi.headline.length - 2];
+  ins('ins-dash-cpi', `<strong>${h.cpi}%</strong> YoY as of ${h.cpiMonth} — ${h.cpi < 2 ? 'well-contained' : h.cpi < 3 ? 'moderate' : 'elevated'}, ${h.cpi < cpiPrev ? 'easing from' : 'up from'} ${cpiPrev}% the prior year`);
+
   new Chart(document.getElementById('c-dash-gdp'), {
     type: 'bar',
-    data: {
-      labels: DATA.gdp.years,
-      datasets: [{ data: DATA.gdp.growth, backgroundColor: DATA.gdp.growth.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 3 }],
-    },
-    options: opts({ scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 8, font: FONT } }, y: { grid: { color:'#f0f0f0' }, ticks: { callback: v => v+'%', font: FONT } } } }),
+    data: { labels: yrs, datasets: [{ data: g, backgroundColor: g.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 5, borderSkipped: false }] },
+    options: opts({ scales: { x:{ grid:{display:false}, ticks:{maxTicksLimit:8,font:FONT} }, y:{ grid:{color:'#edf0f7'}, ticks:{callback:v=>v+'%',font:FONT}, border:{display:false} } } }),
   });
 
-  // CPI line
   const cpiDs = [
-    { label: 'Headline', data: DATA.cpi.headline, borderColor: GOLD, backgroundColor: GOLD+'22', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 3 },
-    ...(DATA.cpi.core.some(v => v !== null)
-      ? [{ label: 'Core', data: DATA.cpi.core, borderColor: TEAL, borderDash: [4,3], tension: 0.3, borderWidth: 2, pointRadius: 2, spanGaps: true }]
-      : []),
+    { label:'Headline', data:DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'25', fill:true, tension:0.4, borderWidth:2.5, pointRadius:4, pointHoverRadius:6, pointBackgroundColor:GOLD, pointBorderColor:'#fff', pointBorderWidth:2 },
+    ...(DATA.cpi.core.some(v=>v!==null) ? [{ label:'Core', data:DATA.cpi.core, borderColor:TEAL, borderDash:[5,3], tension:0.4, borderWidth:2, pointRadius:2, spanGaps:true, fill:false }] : []),
   ];
   new Chart(document.getElementById('c-dash-cpi'), {
-    type: 'line',
-    data: { labels: DATA.cpi.years, datasets: cpiDs },
-    options: opts({
-      plugins: { legend: { display: cpiDs.length > 1, position: 'bottom' }, tooltip: { mode: 'index', intersect: false } },
-      scales: { x: { grid: { display: false }, ticks: { font: FONT } }, y: { grid: { color:'#f0f0f0' }, ticks: { callback: v => v+'%', font: FONT } } },
-    }),
+    type: 'line', data:{ labels:DATA.cpi.years, datasets:cpiDs },
+    options: opts({ plugins:{ legend:{display:cpiDs.length>1,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
 
-  // Insight
-  const g = DATA.gdp.growth;
-  const postPandemic = g.filter((_, i) => DATA.gdp.years[i] >= 2021);
-  const avg = (postPandemic.reduce((a,b) => a+b, 0) / postPandemic.length).toFixed(1);
+  const postCovid = g.filter((_,i)=>yrs[i]>=2021);
+  const avg5 = (postCovid.reduce((a,b)=>a+b,0)/postCovid.length).toFixed(1);
   document.getElementById('dash-insight').innerHTML =
-    `Malaysia's real GDP grew <strong>${h.gdpGrowth}%</strong> in ${h.gdpYear}, ` +
-    `averaging <strong>${avg}%</strong> annually since the 2021 rebound. ` +
-    `Inflation stands at <strong>${h.cpi}%</strong> YoY (${h.cpiMonth}), ` +
-    `with BNM maintaining the OPR at <strong>${h.opr}%</strong> since May 2023. ` +
-    `Absolute poverty has fallen from <strong>49.3%</strong> in 1970 to <strong>${h.poverty}%</strong> in ${h.povertyYear}.`;
+    `Malaysia's economy grew <strong>${h.gdpGrowth}%</strong> in ${h.gdpYear}, averaging <strong>${avg5}%</strong> per year since the 2021 rebound. ` +
+    `Inflation at <strong>${h.cpi}%</strong> (${h.cpiMonth}) is ${h.cpi < 2 ? 'well within comfortable range' : 'moderate'}, with BNM holding the OPR at <strong>${h.opr}%</strong>. ` +
+    `Absolute poverty has fallen from <strong>49.3%</strong> in 1970 to <strong>${h.poverty}%</strong> in ${h.povertyYear} — a structural achievement spanning five decades.`;
 }
 
-// ── ECONOMY ──────────────────────────────────────────────
-function renderEconomy() {
-  // Annual
-  new Chart(document.getElementById('c-gdp-annual'), {
+// ── ECONOMY — range toggles (destroy + recreate) ─────────
+let gdpRange = 'max', qtrRange = 'max';
+
+function sliceEnd(arr, n) { return n === 'max' ? [...arr] : arr.slice(-n); }
+
+function drawGdpAnnual() {
+  const cv = document.getElementById('c-gdp-annual');
+  Chart.getChart(cv)?.destroy();
+  const y = sliceEnd(DATA.gdp.years, gdpRange), g = sliceEnd(DATA.gdp.growth, gdpRange);
+  const latestG = g[g.length-1], latestY = y[y.length-1];
+  const histAvg = (g.slice(0,-1).reduce((a,b)=>a+b,0)/(g.length-1)).toFixed(1);
+  ins('ins-gdp-annual', `<strong>${latestG}%</strong> in ${latestY} — ${latestG > +histAvg ? 'above' : 'below'} the period average of ${histAvg}%`);
+  new Chart(cv, {
     type: 'bar',
-    data: { labels: DATA.gdp.years, datasets: [{ data: DATA.gdp.growth, backgroundColor: DATA.gdp.growth.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 3 }] },
-    options: opts({ scales: { x: { grid:{display:false}, ticks:{maxTicksLimit:10,font:FONT} }, y: { grid:{color:'#f0f0f0'}, ticks:{callback:v=>v+'%',font:FONT} } } }),
+    data: { labels: y, datasets: [{ data: g, backgroundColor: g.map(v => v < 0 ? RED+'bb' : NAVY+'cc'), borderRadius: 5, borderSkipped: false }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{maxTicksLimit:10,font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
+}
 
-  // Quarterly
-  new Chart(document.getElementById('c-gdp-qtr'), {
+function drawGdpQtr() {
+  const cv = document.getElementById('c-gdp-qtr');
+  Chart.getChart(cv)?.destroy();
+  const count = qtrRange === 'max' ? DATA.gdpQuarterly.labels.length : qtrRange * 4;
+  const ql = DATA.gdpQuarterly.labels.slice(-count), qv = DATA.gdpQuarterly.values.slice(-count);
+  const latest = qv[qv.length-1], latestL = ql[ql.length-1];
+  ins('ins-gdp-qtr', `<strong>${latest > 0 ? '+' : ''}${latest}%</strong> YoY in ${latestL} — ${latest > 5 ? 'robust momentum' : latest > 3 ? 'solid growth' : latest > 0 ? 'moderate expansion' : 'contraction'}`);
+  new Chart(cv, {
     type: 'line',
-    data: {
-      labels: DATA.gdpQuarterly.labels,
-      datasets: [{ data: DATA.gdpQuarterly.values, borderColor: GOLD, backgroundColor: GOLD+'18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 2 }],
-    },
-    options: opts({ scales: { x: { grid:{display:false}, ticks:{maxTicksLimit:12,font:FONT} }, y: { grid:{color:'#f0f0f0'}, ticks:{callback:v=>v+'%',font:FONT} } } }),
+    data: { labels: ql, datasets: [{ data: qv, borderColor: GOLD, backgroundColor: GOLD+'1e', fill:true, tension:0.35, borderWidth:2.5, pointRadius:1.5, pointHoverRadius:5 }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{maxTicksLimit:12,font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
+}
 
-  // Sectors
+function setGdpRange(n) {
+  gdpRange = n;
+  document.querySelectorAll('[data-gdp]').forEach(b => b.classList.toggle('active', b.dataset.gdp == n));
+  drawGdpAnnual();
+}
+function setQtrRange(n) {
+  qtrRange = n;
+  document.querySelectorAll('[data-qtr]').forEach(b => b.classList.toggle('active', b.dataset.qtr == n));
+  drawGdpQtr();
+}
+
+function renderEconomy() {
+  drawGdpAnnual();
+  drawGdpQtr();
+
+  const topSector = DATA.sectors.labels[DATA.sectors.values.indexOf(Math.max(...DATA.sectors.values))];
+  ins('ins-sectors', `<strong>${topSector}</strong> leads with the highest YoY growth in ${DATA.sectors.labels[0] ? DATA.gdp.years[DATA.gdp.years.length-1] : '—'}`);
+
+  const privLast = DATA.expenditure.privateCons[DATA.expenditure.privateCons.length-1];
+  ins('ins-exp', `Private consumption at <strong>${privLast}% of GDP</strong> — the primary growth driver`);
+
   new Chart(document.getElementById('c-sectors'), {
     type: 'bar',
-    data: { labels: DATA.sectors.labels, datasets: [{ data: DATA.sectors.values, backgroundColor: DATA.sectors.values.map(v => v < 0 ? RED+'aa' : TEAL+'cc'), borderRadius: 4 }] },
-    options: opts({ indexAxis:'y', scales: { x:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}}, y:{grid:{display:false},ticks:{font:FONT}} } }),
+    data: { labels: DATA.sectors.labels, datasets: [{ data: DATA.sectors.values, backgroundColor: DATA.sectors.values.map(v => v < 0 ? RED+'aa' : TEAL+'cc'), borderRadius: 5, borderSkipped: false }] },
+    options: opts({ indexAxis:'y', scales: { x:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}}, y:{grid:{display:false},ticks:{font:FONT}} } }),
   });
 
-  // Expenditure stacked
   new Chart(document.getElementById('c-expenditure'), {
     type: 'bar',
-    data: {
-      labels: DATA.expenditure.years,
-      datasets: [
-        { label: 'Private Consumption', data: DATA.expenditure.privateCons, backgroundColor: NAVY+'cc', borderRadius: 2 },
-        { label: 'Govt Consumption',    data: DATA.expenditure.govtCons,    backgroundColor: GOLD+'cc', borderRadius: 2 },
-        { label: 'Investment',          data: DATA.expenditure.investment,  backgroundColor: TEAL+'cc', borderRadius: 2 },
-        { label: 'Net Exports',         data: DATA.expenditure.netExports,  backgroundColor: PURP+'cc', borderRadius: 2 },
-      ],
-    },
-    options: opts({
-      plugins: { legend: { display: true, position: 'bottom' }, tooltip: { mode:'index', intersect:false } },
-      scales: { x:{stacked:true,grid:{display:false},ticks:{font:FONT}}, y:{stacked:true,grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}} },
-    }),
+    data: { labels: DATA.expenditure.years, datasets: [
+      { label:'Private Consumption', data:DATA.expenditure.privateCons, backgroundColor:NAVY+'cc', borderRadius:2 },
+      { label:'Govt Consumption',    data:DATA.expenditure.govtCons,    backgroundColor:GOLD+'cc', borderRadius:2 },
+      { label:'Investment',          data:DATA.expenditure.investment,  backgroundColor:TEAL+'cc', borderRadius:2 },
+      { label:'Net Exports',         data:DATA.expenditure.netExports,  backgroundColor:PURP+'cc', borderRadius:2 },
+    ]},
+    options: opts({ plugins:{ legend:{display:true,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{stacked:true,grid:{display:false},ticks:{font:FONT}}, y:{stacked:true,grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
 }
 
 // ── PRICES ───────────────────────────────────────────────
 function renderPrices() {
-  // Headline
+  const cpiLatest = DATA.cpi.headline[DATA.cpi.headline.length-1];
+  const cpiPrev   = DATA.cpi.headline[DATA.cpi.headline.length-2];
+  const cpiYear   = DATA.cpi.years[DATA.cpi.years.length-1];
+  ins('ins-cpi-trend', `<strong>${cpiLatest}%</strong> avg in ${cpiYear} — ${cpiLatest < cpiPrev ? 'easing from' : 'up from'} ${cpiPrev}% in ${DATA.cpi.years[DATA.cpi.years.length-2]}`);
+
+  const coreLatest = DATA.cpi.core.filter(v=>v!==null).pop();
+  const corePrev   = DATA.cpi.core.filter(v=>v!==null).slice(-2,-1)[0];
+  if (coreLatest != null)
+    ins('ins-cpi-core', `Core CPI at <strong>${coreLatest}%</strong> — ${coreLatest > cpiLatest ? 'above headline, suggesting entrenched price pressures' : 'below headline, demand-side pressures contained'}`);
+
   new Chart(document.getElementById('c-cpi-trend'), {
     type: 'line',
-    data: { labels: DATA.cpi.years, datasets: [{ data: DATA.cpi.headline, borderColor: GOLD, backgroundColor: GOLD+'22', fill:true, tension:0.3, borderWidth:2.5, pointRadius:4, pointBackgroundColor:GOLD }] },
-    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}} } }),
+    data: { labels: DATA.cpi.years, datasets: [{ data: DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'25', fill:true, tension:0.4, borderWidth:2.5, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:GOLD, pointBorderColor:'#fff', pointBorderWidth:2 }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
 
-  // Core vs headline
   new Chart(document.getElementById('c-cpi-core'), {
     type: 'line',
-    data: {
-      labels: DATA.cpi.years,
-      datasets: [
-        { label:'Headline', data:DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'18', fill:true, tension:0.3, borderWidth:2, pointRadius:3 },
-        { label:'Core', data:DATA.cpi.core, borderColor:TEAL, borderDash:[5,3], tension:0.3, borderWidth:2, pointRadius:3, spanGaps:true, fill:false },
-      ],
-    },
-    options: opts({
-      plugins: { legend:{display:true,position:'bottom'}, tooltip:{mode:'index',intersect:false} },
-      scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}} },
-    }),
+    data: { labels: DATA.cpi.years, datasets: [
+      { label:'Headline', data:DATA.cpi.headline, borderColor:GOLD, backgroundColor:GOLD+'18', fill:true, tension:0.4, borderWidth:2.5, pointRadius:3, pointHoverRadius:5 },
+      { label:'Core', data:DATA.cpi.core, borderColor:TEAL, borderDash:[5,3], tension:0.4, borderWidth:2, pointRadius:3, spanGaps:true, fill:false },
+    ]},
+    options: opts({ plugins:{ legend:{display:true,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
 
-  // Divisions
   if (DATA.cpiComponents.labels.length) {
-    const paired = DATA.cpiComponents.labels.map((l, i) => [l, DATA.cpiComponents.values[i]]).sort((a, b) => b[1] - a[1]);
+    const items = DATA.cpiComponents.labels
+      .map((l, i) => ({ label:l, value:DATA.cpiComponents.values[i], weight:DATA.cpiComponents.weights[i] }))
+      .sort((a, b) => b.value - a.value);
+
     new Chart(document.getElementById('c-cpi-div'), {
       type: 'bar',
       data: {
-        labels: paired.map(p => p[0]),
-        datasets: [{ data: paired.map(p => p[1]), backgroundColor: paired.map(p => p[1] > 0 ? NAVY+'cc' : RED+'aa'), borderRadius: 4 }],
+        labels: items.map(p => p.label),
+        datasets: [{ data: items.map(p => p.value), backgroundColor: items.map(p => p.value >= 0 ? NAVY+'cc' : RED+'aa'), hoverBackgroundColor: items.map(p => p.value >= 0 ? NAVY : RED), borderRadius: 5, borderSkipped: false }],
       },
-      options: opts({ indexAxis:'y', scales: { x:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}}, y:{grid:{display:false},ticks:{font:{...FONT,size:10}}} } }),
+      options: opts({
+        onClick(evt, els) { if (els.length) showCpiDetail(items[els[0].index]); },
+        onHover(evt, els) { evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+        indexAxis: 'y',
+        scales: { x:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}}, y:{grid:{display:false},ticks:{font:{...FONT,size:10}}} },
+      }),
+    });
+  }
+}
+
+// ── CPI DRILLDOWN ─────────────────────────────────────────
+const DIV_LABEL_TO_CODE = {
+  'Food & Non-alc. Beverages':'01', 'Alcoholic Bev. & Tobacco':'02',
+  'Clothing & Footwear':'03', 'Housing, Water & Utilities':'04',
+  'Furnishings & Equipment':'05', 'Health':'06',
+  'Transport':'07', 'Communication':'08',
+  'Recreation & Culture':'09', 'Education':'10',
+  'Restaurants & Hotels':'11', 'Miscellaneous Goods':'12',
+  'Insurance & Financial':'13',
+};
+let cpiSubChart = null;
+
+function showCpiDetail(item) {
+  const panel = document.getElementById('cpi-component-detail');
+  const contrib = ((item.weight / 100) * item.value).toFixed(3);
+  const col = item.value >= 0 ? NAVY : RED;
+  const sign = v => v >= 0 ? '+' : '';
+  const divCode = DIV_LABEL_TO_CODE[item.label];
+  const subs = (DATA.cpiSubComponents || {})[divCode] || [];
+
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div class="detail-name">${item.label}</div>
+    <div class="detail-grid">
+      <div><div class="detail-stat-label">YoY Change</div><div class="detail-stat-value" style="color:${col}">${sign(item.value)}${item.value.toFixed(2)}%</div></div>
+      <div><div class="detail-stat-label">Basket Weight</div><div class="detail-stat-value">${item.weight.toFixed(1)}%</div></div>
+      <div><div class="detail-stat-label">Contribution</div><div class="detail-stat-value" style="color:${col}">${sign(+contrib)}${contrib} pp</div></div>
+    </div>
+    <div class="detail-stat-label" style="margin-bottom:0.35rem">Share of CPI basket</div>
+    <div class="weight-bar-track"><div class="weight-bar-fill" style="width:0%"></div></div>
+    ${subs.length ? `<div class="detail-stat-label" style="margin-top:1.1rem;margin-bottom:0.5rem">Sub-components · 3-digit COICOP</div><div style="position:relative;height:${Math.max(60,subs.length*30)}px"><canvas id="c-cpi-sub"></canvas></div>` : ''}`;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    panel.querySelector('.weight-bar-fill').style.width = item.weight + '%';
+  }));
+
+  if (subs.length) {
+    if (cpiSubChart) { cpiSubChart.destroy(); cpiSubChart = null; }
+    cpiSubChart = new Chart(document.getElementById('c-cpi-sub'), {
+      type: 'bar',
+      data: { labels: subs.map(s=>s.name), datasets: [{ data: subs.map(s=>s.yoy), backgroundColor: subs.map(s=>s.yoy>=0?NAVY+'cc':RED+'aa'), hoverBackgroundColor: subs.map(s=>s.yoy>=0?NAVY:RED), borderRadius:4, borderSkipped:false }] },
+      options: opts({ indexAxis:'y', animation:{duration:400}, plugins:{ legend:{display:false}, tooltip:{...TT, callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw.toFixed(2)}% YoY`}} }, scales:{ x:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}}, y:{grid:{display:false},ticks:{font:{...FONT,size:10}}} } }),
     });
   }
 }
 
 // ── MONETARY ─────────────────────────────────────────────
 function renderMonetary() {
-  // OPR step chart
+  const oprLatest = DATA.opr.values[DATA.opr.values.length-1];
+  const oprPrev   = DATA.opr.values[DATA.opr.values.length-2];
+  const oprLabel  = DATA.opr.labels[DATA.opr.labels.length-1];
+  const action    = oprLatest < oprPrev ? 'cut' : oprLatest > oprPrev ? 'hiked' : 'held';
+  ins('ins-opr', `BNM <strong>${action === 'held' ? 'holds' : action + 's'}</strong> OPR at <strong>${oprLatest}%</strong> — last change in ${oprLabel}`);
+
   new Chart(document.getElementById('c-opr'), {
     type: 'line',
-    data: {
-      labels: DATA.opr.labels,
-      datasets: [{ label:'OPR (%)', data:DATA.opr.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, stepped:'before', borderWidth:2.5, pointRadius:5, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2 }],
-    },
-    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:1.5,max:3.5,grid:{color:'#f0f0f0'},ticks:{callback:v=>v.toFixed(2)+'%',stepSize:0.25,font:FONT}} } }),
+    data: { labels: DATA.opr.labels, datasets: [{ label:'OPR (%)', data:DATA.opr.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, stepped:'before', borderWidth:3, pointRadius:6, pointHoverRadius:8, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2.5 }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:1.5,max:3.5,grid:{color:'#edf0f7'},ticks:{callback:v=>v.toFixed(2)+'%',stepSize:0.25,font:FONT},border:{display:false}} } }),
   });
 
-  // Base rates table
   const tbody = document.querySelector('#tbl-rates tbody');
   tbody.innerHTML = DATA.baseRates.length
-    ? DATA.baseRates.map(b => `<tr>
-        <td><strong>${b.name}</strong></td>
-        <td class="right">${b.br.toFixed(2)}</td>
-        <td class="right">${b.blr ? b.blr.toFixed(2) : '—'}</td>
-        <td class="right">${b.elf ? b.elf.toFixed(2) : '—'}</td>
-      </tr>`).join('')
-    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1.2rem">Run update_data.py to populate</td></tr>';
+    ? DATA.baseRates.map(b => `<tr><td><strong>${b.name}</strong></td><td class="right">${b.br.toFixed(2)}</td><td class="right">${b.blr?b.blr.toFixed(2):'—'}</td><td class="right">${b.elf?b.elf.toFixed(2):'—'}</td></tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1.2rem">No data</td></tr>';
 }
 
-// ── EXTERNAL ─────────────────────────────────────────────
-function renderExternal() {
-  // FX multi-line
-  const FX_META = {
-    usd: { label: 'USD/MYR', color: NAVY },
-    sgd: { label: 'SGD/MYR', color: GOLD },
-    cny: { label: 'CNY/MYR', color: RED  },
-    eur: { label: 'EUR/MYR', color: TEAL },
-    jpy: { label: 'JPY/MYR', color: PURP },
-  };
-  const fxDs = Object.entries(FX_META)
-    .filter(([k]) => DATA.fx[k] && DATA.fx[k].length)
-    .map(([k, m]) => ({ label: m.label, data: DATA.fx[k], borderColor: m.color, tension: 0.3, borderWidth: 1.8, pointRadius: 0, fill: false }));
+// ── EXTERNAL — FX tickers + NEER ─────────────────────────
+const FX_CFG = [
+  { key:'usd', label:'USD / MYR', color:NAVY },
+  { key:'sgd', label:'SGD / MYR', color:'#b7791f' },
+  { key:'cny', label:'CNY / MYR', color:RED  },
+  { key:'eur', label:'EUR / MYR', color:TEAL },
+  { key:'jpy', label:'JPY / MYR', color:PURP },
+];
 
-  if (fxDs.length) {
-    new Chart(document.getElementById('c-fx'), {
-      type: 'line',
-      data: { labels: DATA.fx.labels, datasets: fxDs },
-      options: opts({ plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{display:false},ticks:{maxTicksLimit:18,font:FONT}},y:{grid:{color:'#f0f0f0'},ticks:{font:FONT}}} }),
+function computeNeer() {
+  const W = { usd:0.19, sgd:0.26, cny:0.32, eur:0.13, jpy:0.10 };
+  const base = {};
+  FX_CFG.forEach(c => { base[c.key] = DATA.fx[c.key][0]; });
+  return DATA.fx.labels.map((_, i) => {
+    let n = 100;
+    Object.entries(W).forEach(([k, w]) => {
+      if (DATA.fx[k] && DATA.fx[k][i] > 0) n *= Math.pow(base[k] / DATA.fx[k][i], w);
     });
-  }
+    return Math.round(n * 10) / 10;
+  });
+}
 
-  // Trade totals
-  new Chart(document.getElementById('c-trade'), {
-    type: 'bar',
-    data: {
-      labels: DATA.trade.years,
-      datasets: [
-        { label:'Exports (RM B)', data:DATA.trade.exports, backgroundColor:NAVY+'cc', borderRadius:3 },
-        { label:'Imports (RM B)', data:DATA.trade.imports, backgroundColor:GOLD+'cc', borderRadius:3 },
-      ],
-    },
-    options: opts({ plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{display:false},ticks:{font:FONT}},y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>'RM'+v+'B',font:FONT}}} }),
+function renderExternal() {
+  const grid = document.getElementById('fx-ticker-grid');
+
+  // Build ticker HTML
+  grid.innerHTML = FX_CFG.map(c => {
+    const series = DATA.fx[c.key];
+    const cur  = series[series.length - 1];
+    const yago = series[Math.max(0, series.length - 13)];
+    const chg  = ((cur - yago) / yago * 100).toFixed(1);
+    const cls  = cur < yago ? 'chg-up' : 'chg-dn'; // lower MYR/unit = stronger MYR = good
+    const arrow = cur < yago ? '▲ MYR stronger' : '▼ MYR weaker';
+    return `<div class="fx-ticker">
+      <div class="fx-ticker-label">${c.label}</div>
+      <div class="fx-ticker-value">${cur.toFixed(4)}</div>
+      <div class="fx-ticker-change ${cls}">${arrow} ${Math.abs(chg)}% YoY</div>
+      <div class="fx-ticker-chart"><canvas id="c-fx-${c.key}"></canvas></div>
+    </div>`;
+  }).join('');
+
+  // Draw sparklines after HTML renders
+  requestAnimationFrame(() => {
+    FX_CFG.forEach(c => {
+      const cv = document.getElementById('c-fx-' + c.key);
+      if (!cv) return;
+      const series = DATA.fx[c.key];
+      new Chart(cv, {
+        type: 'line',
+        data: { labels: DATA.fx.labels, datasets: [{ data: series, borderColor: c.color, backgroundColor: c.color + '22', fill: true, tension: 0.3, borderWidth: 1.8, pointRadius: 0 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          plugins: { legend:{display:false}, tooltip:{enabled:false} },
+          scales: { x:{display:false}, y:{display:false} },
+        },
+      });
+    });
   });
 
-  // Trade commodity
+  // NEER
+  const neer = computeNeer();
+  const neerLatest = neer[neer.length - 1];
+  const neerFirst = neer[0];
+  const neerChange = ((neerLatest - neerFirst) / neerFirst * 100).toFixed(1);
+  ins('ins-neer', `Index at <strong>${neerLatest}</strong> (base Jan 2022 = 100) — MYR has ${neerLatest > 100 ? 'appreciated' : 'depreciated'} <strong>${Math.abs(+neerChange)}%</strong> in trade-weighted terms since the base period`);
+
+  new Chart(document.getElementById('c-neer'), {
+    type: 'line',
+    data: { labels: DATA.fx.labels, datasets: [{ label:'NEER (base=100)', data: neer, borderColor: NAVY, backgroundColor: NAVY+'1a', fill:true, tension:0.35, borderWidth:2.5, pointRadius:0, pointHoverRadius:5 }] },
+    options: opts({
+      plugins:{ legend:{display:false}, tooltip:{...TT, callbacks:{label:ctx=>` NEER: ${ctx.raw}`}} },
+      scales:{ x:{grid:{display:false},ticks:{maxTicksLimit:14,font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{font:FONT},border:{display:false}} },
+    }),
+  });
+
+  // Trade bar
+  const trExp = DATA.trade.exports, trImp = DATA.trade.imports, trYr = DATA.trade.years;
+  const surplus = trExp[trExp.length-1] - trImp[trImp.length-1];
+  ins('ins-trade', `Trade surplus of <strong>RM${surplus}B</strong> in ${trYr[trYr.length-1]} — exports at RM${trExp[trExp.length-1]}B`);
+
+  new Chart(document.getElementById('c-trade'), {
+    type: 'bar',
+    data: { labels: trYr, datasets: [
+      { label:'Exports (RM B)', data:trExp, backgroundColor:NAVY+'cc', borderRadius:4 },
+      { label:'Imports (RM B)', data:trImp, backgroundColor:GOLD+'cc', borderRadius:4 },
+    ]},
+    options: opts({ plugins:{ legend:{display:true,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>'RM'+v+'B',font:FONT},border:{display:false}} } }),
+  });
+
   if (DATA.tradeCommodity.labels.length) {
+    const topExp = DATA.tradeCommodity.labels[DATA.tradeCommodity.exports.indexOf(Math.max(...DATA.tradeCommodity.exports))];
+    ins('ins-trade-comm', `<strong>${topExp}</strong> is the largest export commodity by value`);
     new Chart(document.getElementById('c-trade-comm'), {
       type: 'bar',
-      data: {
-        labels: DATA.tradeCommodity.labels,
-        datasets: [
-          { label:'Exports (RM B)', data:DATA.tradeCommodity.exports, backgroundColor:NAVY+'cc', borderRadius:3 },
-          { label:'Imports (RM B)', data:DATA.tradeCommodity.imports, backgroundColor:GOLD+'cc', borderRadius:3 },
-        ],
-      },
-      options: opts({ indexAxis:'y', plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'B',font:FONT}},y:{grid:{display:false},ticks:{font:{...FONT,size:10}}}} }),
+      data: { labels: DATA.tradeCommodity.labels, datasets: [
+        { label:'Exports (RM B)', data:DATA.tradeCommodity.exports, backgroundColor:NAVY+'cc', borderRadius:3 },
+        { label:'Imports (RM B)', data:DATA.tradeCommodity.imports, backgroundColor:GOLD+'cc', borderRadius:3 },
+      ]},
+      options: opts({ indexAxis:'y', plugins:{ legend:{display:true,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'B',font:FONT},border:{display:false}}, y:{grid:{display:false},ticks:{font:{...FONT,size:10}}} } }),
     });
   }
 }
 
 // ── SOCIETY ──────────────────────────────────────────────
 function renderSociety() {
-  // Gini
+  const giniLatest = DATA.gini.values[DATA.gini.values.length-1];
+  const giniFirst  = DATA.gini.values[0];
+  ins('ins-gini', `Gini fell from <strong>${giniFirst}</strong> in ${DATA.gini.years[0]} to <strong>${giniLatest}</strong> in ${DATA.gini.years[DATA.gini.years.length-1]} — sustained inequality reduction`);
+
+  const povLatest = DATA.poverty.absolute[DATA.poverty.absolute.length-1];
+  const povFirst  = DATA.poverty.absolute[0];
+  ins('ins-poverty', `Absolute poverty at <strong>${povLatest}%</strong> in ${DATA.poverty.years[DATA.poverty.years.length-1]}, down from <strong>${povFirst}%</strong> in ${DATA.poverty.years[0]}`);
+
   new Chart(document.getElementById('c-gini'), {
     type: 'line',
-    data: { labels: DATA.gini.years, datasets: [{ data:DATA.gini.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, tension:0.2, borderWidth:2.5, pointRadius:5, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2 }] },
-    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:0.36,max:0.58,grid:{color:'#f0f0f0'},ticks:{callback:v=>v.toFixed(3),font:FONT}} } }),
+    data: { labels: DATA.gini.years, datasets: [{ data:DATA.gini.values, borderColor:NAVY, backgroundColor:NAVY+'18', fill:true, tension:0.25, borderWidth:2.5, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:GOLD, pointBorderColor:NAVY, pointBorderWidth:2 }] },
+    options: opts({ scales: { x:{grid:{display:false},ticks:{font:FONT}}, y:{min:0.36,max:0.58,grid:{color:'#edf0f7'},ticks:{callback:v=>v.toFixed(3),font:FONT},border:{display:false}} } }),
   });
 
-  // Poverty
   const povDs = [
-    { label:'Absolute Poverty', data:DATA.poverty.absolute, borderColor:RED, backgroundColor:RED+'18', fill:true, tension:0.2, borderWidth:2.5, pointRadius:4 },
-    ...(DATA.poverty.hardcore.some(v=>v!==null)
-      ? [{ label:'Hardcore Poverty', data:DATA.poverty.hardcore, borderColor:NAVY, borderDash:[5,3], tension:0.2, borderWidth:2, pointRadius:3, spanGaps:true, fill:false }]
-      : []),
+    { label:'Absolute Poverty', data:DATA.poverty.absolute, borderColor:RED, backgroundColor:RED+'18', fill:true, tension:0.25, borderWidth:2.5, pointRadius:4, pointHoverRadius:6 },
+    ...(DATA.poverty.hardcore.some(v=>v!==null) ? [{ label:'Hardcore Poverty', data:DATA.poverty.hardcore, borderColor:NAVY, borderDash:[5,3], tension:0.25, borderWidth:2, pointRadius:3, spanGaps:true, fill:false }] : []),
   ];
   new Chart(document.getElementById('c-poverty'), {
-    type: 'line',
-    data: { labels: DATA.poverty.years, datasets: povDs },
-    options: opts({ plugins:{legend:{display:true,position:'bottom'},tooltip:{mode:'index',intersect:false}}, scales:{x:{grid:{display:false},ticks:{font:FONT}},y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%',font:FONT}}} }),
+    type: 'line', data:{ labels:DATA.poverty.years, datasets:povDs },
+    options: opts({ plugins:{ legend:{display:true,position:'bottom'}, tooltip:{...TT} }, scales:{ x:{grid:{display:false},ticks:{font:FONT}}, y:{grid:{color:'#edf0f7'},ticks:{callback:v=>v+'%',font:FONT},border:{display:false}} } }),
   });
 
-  // State table
   const tbody = document.querySelector('#tbl-states tbody');
   tbody.innerHTML = DATA.stateData.length
-    ? DATA.stateData.map(s => `<tr>
-        <td><strong>${s.state}</strong></td>
-        <td class="right">RM ${s.meanIncome.toLocaleString()}</td>
-        <td class="right">${s.medianIncome ? 'RM ' + s.medianIncome.toLocaleString() : '—'}</td>
-        <td class="right">${s.gini.toFixed(3)}</td>
-        <td class="right"><span class="badge ${s.poverty > 10 ? 'b-red' : s.poverty > 5 ? 'b-blue' : 'b-green'}">${s.poverty}%</span></td>
-      </tr>`).join('')
-    : '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.2rem">Run update_data.py to populate</td></tr>';
+    ? DATA.stateData.map(s => `<tr><td><strong>${s.state}</strong></td><td class="right">RM ${s.meanIncome.toLocaleString()}</td><td class="right">${s.medianIncome?'RM '+s.medianIncome.toLocaleString():'—'}</td><td class="right">${s.gini.toFixed(3)}</td><td class="right"><span class="badge ${s.poverty>10?'b-red':s.poverty>5?'b-blue':'b-green'}">${s.poverty}%</span></td></tr>`).join('')
+    : '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.2rem">No data</td></tr>';
 }
 
-// ── ROUTER ───────────────────────────────────────────────
+// ── ROUTER + BOOT ─────────────────────────────────────────
 function renderTab(id) {
-  if (id === 'dashboard') renderDashboard();
-  else if (id === 'economy')   renderEconomy();
-  else if (id === 'prices')    renderPrices();
-  else if (id === 'monetary')  renderMonetary();
-  else if (id === 'external')  renderExternal();
-  else if (id === 'society')   renderSociety();
+  ({ dashboard:renderDashboard, economy:renderEconomy, prices:renderPrices, monetary:renderMonetary, external:renderExternal, society:renderSociety })[id]?.();
 }
 
-// ── BOOT ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initHero();
   rendered['dashboard'] = true;
