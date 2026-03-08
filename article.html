@@ -263,7 +263,7 @@ async function loadArticle() {
     document.getElementById('a-title').textContent = a.title || '';
     document.getElementById('a-subtitle').textContent = a.subtitle || '';
     const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join(' ');
-    document.getElementById('a-meta').innerHTML = `${tags}<span>By Deisigan &nbsp;&middot;&nbsp; ${a.date_label || ''}</span>`;
+    document.getElementById('a-meta').innerHTML = `${tags}<span>${a.date_label || ''}</span>`;
     document.getElementById('a-body').innerHTML = a.body_html || '';
     /* Execute any <script> tags in body_html (innerHTML doesn't auto-run them) */
     document.getElementById('a-body').querySelectorAll('script').forEach(old => {
