@@ -33,7 +33,7 @@ POST_DATA = {
           <div class="key-num"><div class="val">2.3%</div><div class="lbl">Core CPI (Dec 2025)</div></div>
         </div>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Growth Performance</h2>
+        <h2>Growth Performance</h2>
         <p><strong>Malaysia's economy delivered its strongest performance since the post-pandemic rebound, expanding 5.2 percent in 2025 and accelerating sharply through the year to register the fastest quarterly growth rate in more than two years.</strong> After a subdued first half — output grew 4.4 percent in both Q1 and Q2 — momentum gathered decisively: GDP expanded 5.4 percent in Q3 and 6.3 percent in Q4 on a year-on-year basis, the latter also gaining 3.3 percent on a sequential basis. The sequential pickup in Q4 confirms that the acceleration reflected genuine underlying demand rather than base effects alone. On a full-year basis, 2025 marked Malaysia's strongest outturn since 2022, driven by a broad-based expansion across services, manufacturing, and construction, and exceeded most official forecasts heading into the year.</p>
 
         <div class="data-table-wrapper">
@@ -58,7 +58,7 @@ POST_DATA = {
 
         <div class="section-break">&middot; &middot; &middot;</div>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Domestic Demand</h2>
+        <h2>Domestic Demand</h2>
         <p><strong>Domestic demand was the primary engine of growth, with private investment delivering the strongest impulse across all demand components.</strong> Gross fixed capital formation (GFCF) expanded 9.3 percent year-on-year in Q4 &mdash; extending a sustained run of strong investment growth throughout the year &mdash; as capital spending accelerated in semiconductor fabrication, data center infrastructure, and logistics facilities tied to the New Industrial Master Plan 2030. Construction output grew 11.0 percent in Q4, reflecting this physical build-out in the real economy. Private consumption held firm at 5.3 percent in Q4, underpinned by continued employment gains and real wage growth at a time when headline inflation remained contained. Government consumption also contributed, rising 8.0 percent year-on-year in Q4, partly reflecting the full-year impact of the 2024 civil service salary revision and sustained social expenditure. Taken together, these components suggest that domestic demand had become self-reinforcing by the second half of 2025: the investment cycle fed into employment and income growth, which in turn supported consumption &mdash; a virtuous dynamic not always visible in the aggregate growth figure.</p>
 
         <div class="pull-quote"><p>&ldquo;By Q4 2025, gross fixed capital formation had expanded 9.3 percent &mdash; the physical build-out of Malaysia&rsquo;s technology and industrial ambitions now measurable in the national accounts.&rdquo;</p></div>
@@ -69,7 +69,7 @@ POST_DATA = {
           <div class="chart-source">Source: DOSM &mdash; February 2026</div>
         </div>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">External Sector</h2>
+        <h2>External Sector</h2>
         <p><strong>The external sector contributed positively but provided a more moderate impulse than domestic demand, with import growth outpacing export growth in Q4.</strong> Exports of goods and services grew 3.9 percent year-on-year in Q4, recovering from a softer 1.7 percent in Q3, as global semiconductor demand improved and commodity exports stabilized. In value terms, total merchandise exports reached approximately RM 1.61 trillion in 2025, generating a trade surplus of around RM 154.6 billion &mdash; a solid buffer that supported the current account position. However, strong investment activity drove capital goods imports sharply higher (+7.9 percent year-on-year in Q4), narrowing the net trade contribution to GDP. The ringgit appreciated meaningfully in the second half of 2025, moving from an average of 4.23 per US dollar in August to 4.09 in December and 4.03 by January 2026, reflecting improved global risk sentiment and capital inflows into regional emerging markets. Currency appreciation, while supportive of import-cost stability, creates a modest competitiveness headwind for export-oriented sectors that warrants monitoring.</p>
 
         <div class="chart-container">
@@ -80,7 +80,7 @@ POST_DATA = {
 
         <div class="section-break">&middot; &middot; &middot;</div>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Inflation</h2>
+        <h2>Inflation</h2>
         <p><strong>Inflation remained well-contained throughout 2025, though an upward drift in core price pressures toward year-end warrants attention.</strong> Headline CPI averaged approximately 1.4 percent for the full year, easing from 1.7 percent in January to a trough of 1.1 percent in June before gradually recovering to 1.6 percent by December &mdash; a level that held into January 2026. This moderation largely reflected favorable food price trends, subdued global commodity prices, and the base effects of prior fuel subsidy adjustments. Core inflation, however, rose steadily from 1.8 percent in January to 2.3 percent by December 2025, a trajectory that continued into January 2026. The widening gap between headline and core readings suggests that underlying demand-side pressures are building &mdash; particularly in services prices &mdash; even as administered price changes have masked their full extent. This divergence merits close monitoring as subsidy rationalization continues through 2026; the headline rate will likely track upward as fuel subsidy targeting proceeds, potentially compressing real household incomes for lower-income groups.</p>
 
         <div class="data-table-wrapper">
@@ -105,15 +105,15 @@ POST_DATA = {
           <div class="chart-source">Source: DOSM &mdash; February 2026. Core CPI excludes volatile items (fresh food and administered prices).</div>
         </div>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Labour Market</h2>
+        <h2>Labour Market</h2>
         <p><strong>Labour market conditions tightened further in 2025, with broad-based employment gains supporting private consumption across income groups.</strong> The unemployment rate remained close to structural lows through the year, while labour force participation continued its gradual upward trend. Employment growth was concentrated in services &mdash; particularly information and communication technology, professional services, and hospitality &mdash; consistent with the sectoral composition of GDP expansion. Nominal wage growth broadly outpaced headline inflation for much of 2025, protecting household real incomes and sustaining consumption momentum among B40 and M40 households. Underemployment (Guna Tenaga Tidak Penuh) nonetheless remained a more nuanced challenge: structural skill mismatches between available labour supply and demand from the rapidly expanding technology and high-value manufacturing sectors continued to limit productivity gains and keep a portion of the labour force in lower-wage roles than their qualifications would otherwise command.</p>
 
         <div class="section-break">&middot; &middot; &middot;</div>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Financial Conditions</h2>
+        <h2>Financial Conditions</h2>
         <p><strong>Financial conditions remained accommodative throughout 2025, with Bank Negara Malaysia holding the Overnight Policy Rate steady at 2.75 percent.</strong> The MPC&rsquo;s decision to maintain rates reflected a balanced assessment: growth was on a solid trajectory, headline inflation was contained, and the external environment &mdash; while uncertain &mdash; did not warrant preemptive policy adjustment. With core inflation stabilizing around 2.0&ndash;2.3 percent by year-end, the real policy rate edged into marginally positive territory, suggesting that the current monetary stance is broadly neutral rather than accommodative in real terms. Credit growth remained supportive of private investment, and banking system buffers were adequate. The appreciating ringgit provided an additional disinflationary channel that gave BNM room to maintain a patient stance without concern about imported price pressures. Looking into 2026, any policy adjustment is more likely to be guided by the durability of the growth acceleration and the trajectory of core inflation than by external rate movements alone.</p>
 
-        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Risks and Outlook</h2>
+        <h2>Risks and Outlook</h2>
         <p><strong>The near-term outlook is favorable, but Malaysia&rsquo;s 2026 growth trajectory faces a set of meaningful downside risks that could test the resilience of the domestic demand recovery.</strong> The most significant external risk is a sharper-than-expected slowdown in global trade: escalating US tariff actions on major trading partners &mdash; including China &mdash; could reduce demand for Malaysia&rsquo;s electronics and manufacturing exports more materially than current forecasts assume. A deceleration in China&rsquo;s economy poses an additional direct risk given close bilateral trade and investment linkages, particularly in commodities and intermediate goods. On the domestic side, the pace of subsidy rationalization &mdash; including the planned targeting of RON95 fuel subsidies &mdash; carries a dual risk: while necessary for fiscal consolidation, a poorly sequenced implementation could simultaneously compress household purchasing power and push headline inflation into territory that complicates the monetary policy stance. On the upside, sustained foreign direct investment inflows linked to semiconductor supply chain diversification and data center buildout could extend the investment cycle well into 2026. If global conditions remain broadly benign and investment momentum holds, full-year GDP growth in 2026 is likely to remain in the 4.5&ndash;5.5 percent range &mdash; consistent with Malaysia&rsquo;s medium-term potential output trajectory.</p>
 
         <p class="disclaimer">Data sourced from the Department of Statistics Malaysia (DOSM) and Bank Negara Malaysia (BNM). All growth rates are year-on-year unless otherwise stated. Trade values are in ringgit; exchange rates are monthly averages. Views are the author&rsquo;s own and do not represent the position of the World Bank Group.</p>
