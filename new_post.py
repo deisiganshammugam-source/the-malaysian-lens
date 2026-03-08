@@ -12,80 +12,196 @@ The script will:
   2. Add the article card to the homepage (index.html)
 """
 
-import os
-import re
-from datetime import datetime
+import os, json, sys, urllib.request, ssl
 
 # ─────────────────────────────────────────────
 # FILL THIS IN FOR EACH NEW POST
 # ─────────────────────────────────────────────
 POST_DATA = {
-    "slug":       "example-post",          # URL-safe filename, no spaces
-    "title":      "Your Article Title Here",
-    "subtitle":   "The one-line hook that goes under the headline.",
-    "category":   "Monetary Policy",        # e.g. Industry & Trade, Labour & Wages, etc.
-    "tags":       ["BNM", "DOSM"],          # short tags shown as badges
+    "slug":       "malaysia-2025-economic-developments",
+    "title":      "Malaysia 2025: Economic Developments",
+    "subtitle":   "Growth accelerated to 5.2 percent for the full year, surging to 6.3 percent in Q4 on the back of a powerful domestic investment cycle. Core inflation is rising and external risks are building.",
+    "category":   "Macroeconomic Review",
+    "tags":       ["GDP", "CPI", "BNM", "DOSM"],
     "date":       "March 2026",
-    "emoji":      "📊",                     # shown as the card thumbnail
-    "excerpt":    "Short preview shown on the homepage card.",
+    "emoji":      "📈",
+    "excerpt":    "Malaysia's economy expanded 5.2 percent in 2025, accelerating to 6.3 percent in Q4 — the fastest quarterly outturn in two years. Growth was driven by a self-reinforcing investment cycle, solid private consumption, and recovering exports. But core inflation is drifting upward and external headwinds are building.",
     "body_html":  """
-        <!-- PASTE YOUR ARTICLE HTML BODY HERE -->
-        <!-- Use the blocks below as building blocks: -->
-
-        <!-- HOOK -->
-        <p class="hook">Opening hook sentence here.</p>
-        <p class="hook-sub">Follow-up sentence that sets the tension.</p>
-
-        <!-- BODY PARAGRAPHS -->
-        <p>Your analysis paragraph here.</p>
-
-        <!-- SECTION BREAK -->
-        <div class="section-break">· · ·</div>
-
-        <!-- KEY NUMBERS BLOCK (3 stats) -->
         <div class="key-numbers">
-          <div class="key-num"><div class="val">X%</div><div class="lbl">Label here</div></div>
-          <div class="key-num"><div class="val">RM Xb</div><div class="lbl">Label here</div></div>
-          <div class="key-num"><div class="val">X%</div><div class="lbl">Label here</div></div>
+          <div class="key-num"><div class="val">5.2%</div><div class="lbl">GDP Growth 2025 (Full Year)</div></div>
+          <div class="key-num"><div class="val">RM 154.6b</div><div class="lbl">Trade Surplus 2025</div></div>
+          <div class="key-num"><div class="val">2.3%</div><div class="lbl">Core CPI (Dec 2025)</div></div>
         </div>
 
-        <!-- DATA TABLE -->
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Growth Performance</h2>
+        <p><strong>Malaysia's economy delivered its strongest performance since the post-pandemic rebound, expanding 5.2 percent in 2025 and accelerating sharply through the year to register the fastest quarterly growth rate in more than two years.</strong> After a subdued first half — output grew 4.4 percent in both Q1 and Q2 — momentum gathered decisively: GDP expanded 5.4 percent in Q3 and 6.3 percent in Q4 on a year-on-year basis, the latter also gaining 3.3 percent on a sequential basis. The sequential pickup in Q4 confirms that the acceleration reflected genuine underlying demand rather than base effects alone. On a full-year basis, 2025 marked Malaysia's strongest outturn since 2022, driven by a broad-based expansion across services, manufacturing, and construction, and exceeded most official forecasts heading into the year.</p>
+
         <div class="data-table-wrapper">
-          <div class="data-table-title">TABLE TITLE</div>
+          <div class="data-table-title">Quarterly GDP Growth, 2025 (Year-on-Year, %)</div>
           <table>
-            <thead><tr><th>Col 1</th><th>Col 2</th><th>Col 3</th></tr></thead>
+            <thead><tr><th>Quarter</th><th>YoY Growth</th><th>QoQ Growth</th></tr></thead>
             <tbody>
-              <tr><td>Row 1A</td><td>Row 1B</td><td>Row 1C</td></tr>
-              <tr><td>Row 2A</td><td>Row 2B</td><td>Row 2C</td></tr>
+              <tr><td>Q1 2025</td><td>4.4%</td><td>&ndash;3.5%</td></tr>
+              <tr><td>Q2 2025</td><td>4.4%</td><td>1.0%</td></tr>
+              <tr><td>Q3 2025</td><td>5.4%</td><td>5.7%</td></tr>
+              <tr><td>Q4 2025</td><td>6.3%</td><td>3.3%</td></tr>
             </tbody>
           </table>
-          <div class="table-source">Source: DOSM / BNM — Month Year</div>
+          <div class="table-source">Source: Department of Statistics Malaysia (DOSM) &mdash; February 2026</div>
         </div>
 
-        <!-- PULL QUOTE -->
-        <div class="pull-quote"><p>"Your key quote here."</p></div>
-
-        <!-- CALLOUT BOX (for "if true / if not true" tension) -->
-        <div class="callout"><strong>If true:</strong> explanation here.</div>
-        <div class="callout" style="border-color:#6b7280;background:#f3f4f6;">
-          <strong>If not true:</strong> explanation here.
+        <div class="chart-container">
+          <div class="chart-title">GDP Growth by Sector, Q4 2025 (Year-on-Year, %)</div>
+          <canvas id="chartSectorGDP"></canvas>
+          <div class="chart-source">Source: DOSM &mdash; February 2026</div>
         </div>
 
-        <!-- VIGILANCE CLOSER (always end with this) -->
-        <div class="vigilance-box">
-          <p>Don't be tired. Be vigilant. Ask questions. Demand answers.<br/>
-          Malaysia has come too far to lose it.</p>
-          <span class="flag">🇲🇾</span>
+        <div class="section-break">&middot; &middot; &middot;</div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Domestic Demand</h2>
+        <p><strong>Domestic demand was the primary engine of growth, with private investment delivering the strongest impulse across all demand components.</strong> Gross fixed capital formation (GFCF) expanded 9.3 percent year-on-year in Q4 &mdash; extending a sustained run of strong investment growth throughout the year &mdash; as capital spending accelerated in semiconductor fabrication, data center infrastructure, and logistics facilities tied to the New Industrial Master Plan 2030. Construction output grew 11.0 percent in Q4, reflecting this physical build-out in the real economy. Private consumption held firm at 5.3 percent in Q4, underpinned by continued employment gains and real wage growth at a time when headline inflation remained contained. Government consumption also contributed, rising 8.0 percent year-on-year in Q4, partly reflecting the full-year impact of the 2024 civil service salary revision and sustained social expenditure. Taken together, these components suggest that domestic demand had become self-reinforcing by the second half of 2025: the investment cycle fed into employment and income growth, which in turn supported consumption &mdash; a virtuous dynamic not always visible in the aggregate growth figure.</p>
+
+        <div class="pull-quote"><p>&ldquo;By Q4 2025, gross fixed capital formation had expanded 9.3 percent &mdash; the physical build-out of Malaysia&rsquo;s technology and industrial ambitions now measurable in the national accounts.&rdquo;</p></div>
+
+        <div class="chart-container">
+          <div class="chart-title">Domestic Demand Components, 2025 (Year-on-Year Growth, %)</div>
+          <canvas id="chartDomesticDemand"></canvas>
+          <div class="chart-source">Source: DOSM &mdash; February 2026</div>
         </div>
 
-        <p class="disclaimer">Views are my own. Data sourced from DOSM, BNM, and publicly available sources.</p>
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">External Sector</h2>
+        <p><strong>The external sector contributed positively but provided a more moderate impulse than domestic demand, with import growth outpacing export growth in Q4.</strong> Exports of goods and services grew 3.9 percent year-on-year in Q4, recovering from a softer 1.7 percent in Q3, as global semiconductor demand improved and commodity exports stabilized. In value terms, total merchandise exports reached approximately RM 1.61 trillion in 2025, generating a trade surplus of around RM 154.6 billion &mdash; a solid buffer that supported the current account position. However, strong investment activity drove capital goods imports sharply higher (+7.9 percent year-on-year in Q4), narrowing the net trade contribution to GDP. The ringgit appreciated meaningfully in the second half of 2025, moving from an average of 4.23 per US dollar in August to 4.09 in December and 4.03 by January 2026, reflecting improved global risk sentiment and capital inflows into regional emerging markets. Currency appreciation, while supportive of import-cost stability, creates a modest competitiveness headwind for export-oriented sectors that warrants monitoring.</p>
+
+        <div class="chart-container">
+          <div class="chart-title">External Trade: Exports and Imports Growth, 2025 (Year-on-Year, %)</div>
+          <canvas id="chartExternalTrade"></canvas>
+          <div class="chart-source">Source: DOSM &mdash; February 2026</div>
+        </div>
+
+        <div class="section-break">&middot; &middot; &middot;</div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Inflation</h2>
+        <p><strong>Inflation remained well-contained throughout 2025, though an upward drift in core price pressures toward year-end warrants attention.</strong> Headline CPI averaged approximately 1.4 percent for the full year, easing from 1.7 percent in January to a trough of 1.1 percent in June before gradually recovering to 1.6 percent by December &mdash; a level that held into January 2026. This moderation largely reflected favorable food price trends, subdued global commodity prices, and the base effects of prior fuel subsidy adjustments. Core inflation, however, rose steadily from 1.8 percent in January to 2.3 percent by December 2025, a trajectory that continued into January 2026. The widening gap between headline and core readings suggests that underlying demand-side pressures are building &mdash; particularly in services prices &mdash; even as administered price changes have masked their full extent. This divergence merits close monitoring as subsidy rationalization continues through 2026; the headline rate will likely track upward as fuel subsidy targeting proceeds, potentially compressing real household incomes for lower-income groups.</p>
+
+        <div class="data-table-wrapper">
+          <div class="data-table-title">CPI Inflation: Headline vs. Core, 2025 (YoY, %)</div>
+          <table>
+            <thead><tr><th>Month</th><th>Headline CPI</th><th>Core CPI</th></tr></thead>
+            <tbody>
+              <tr><td>January 2025</td><td>1.7%</td><td>1.8%</td></tr>
+              <tr><td>March 2025</td><td>1.4%</td><td>1.9%</td></tr>
+              <tr><td>June 2025</td><td>1.1%</td><td>1.8%</td></tr>
+              <tr><td>September 2025</td><td>1.5%</td><td>2.1%</td></tr>
+              <tr><td>December 2025</td><td>1.6%</td><td>2.3%</td></tr>
+              <tr><td>January 2026</td><td>1.6%</td><td>2.3%</td></tr>
+            </tbody>
+          </table>
+          <div class="table-source">Source: Department of Statistics Malaysia (DOSM) &mdash; February 2026</div>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">Headline vs. Core CPI Inflation, 2025 (Year-on-Year, %)</div>
+          <canvas id="chartInflation"></canvas>
+          <div class="chart-source">Source: DOSM &mdash; February 2026. Core CPI excludes volatile items (fresh food and administered prices).</div>
+        </div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Labour Market</h2>
+        <p><strong>Labour market conditions tightened further in 2025, with broad-based employment gains supporting private consumption across income groups.</strong> The unemployment rate remained close to structural lows through the year, while labour force participation continued its gradual upward trend. Employment growth was concentrated in services &mdash; particularly information and communication technology, professional services, and hospitality &mdash; consistent with the sectoral composition of GDP expansion. Nominal wage growth broadly outpaced headline inflation for much of 2025, protecting household real incomes and sustaining consumption momentum among B40 and M40 households. Underemployment (Guna Tenaga Tidak Penuh) nonetheless remained a more nuanced challenge: structural skill mismatches between available labour supply and demand from the rapidly expanding technology and high-value manufacturing sectors continued to limit productivity gains and keep a portion of the labour force in lower-wage roles than their qualifications would otherwise command.</p>
+
+        <div class="section-break">&middot; &middot; &middot;</div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Financial Conditions</h2>
+        <p><strong>Financial conditions remained accommodative throughout 2025, with Bank Negara Malaysia holding the Overnight Policy Rate steady at 2.75 percent.</strong> The MPC&rsquo;s decision to maintain rates reflected a balanced assessment: growth was on a solid trajectory, headline inflation was contained, and the external environment &mdash; while uncertain &mdash; did not warrant preemptive policy adjustment. With core inflation stabilizing around 2.0&ndash;2.3 percent by year-end, the real policy rate edged into marginally positive territory, suggesting that the current monetary stance is broadly neutral rather than accommodative in real terms. Credit growth remained supportive of private investment, and banking system buffers were adequate. The appreciating ringgit provided an additional disinflationary channel that gave BNM room to maintain a patient stance without concern about imported price pressures. Looking into 2026, any policy adjustment is more likely to be guided by the durability of the growth acceleration and the trajectory of core inflation than by external rate movements alone.</p>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Risks and Outlook</h2>
+        <p><strong>The near-term outlook is favorable, but Malaysia&rsquo;s 2026 growth trajectory faces a set of meaningful downside risks that could test the resilience of the domestic demand recovery.</strong> The most significant external risk is a sharper-than-expected slowdown in global trade: escalating US tariff actions on major trading partners &mdash; including China &mdash; could reduce demand for Malaysia&rsquo;s electronics and manufacturing exports more materially than current forecasts assume. A deceleration in China&rsquo;s economy poses an additional direct risk given close bilateral trade and investment linkages, particularly in commodities and intermediate goods. On the domestic side, the pace of subsidy rationalization &mdash; including the planned targeting of RON95 fuel subsidies &mdash; carries a dual risk: while necessary for fiscal consolidation, a poorly sequenced implementation could simultaneously compress household purchasing power and push headline inflation into territory that complicates the monetary policy stance. On the upside, sustained foreign direct investment inflows linked to semiconductor supply chain diversification and data center buildout could extend the investment cycle well into 2026. If global conditions remain broadly benign and investment momentum holds, full-year GDP growth in 2026 is likely to remain in the 4.5&ndash;5.5 percent range &mdash; consistent with Malaysia&rsquo;s medium-term potential output trajectory.</p>
+
+        <p class="disclaimer">Data sourced from the Department of Statistics Malaysia (DOSM) and Bank Negara Malaysia (BNM). All growth rates are year-on-year unless otherwise stated. Trade values are in ringgit; exchange rates are monthly averages. Views are the author&rsquo;s own and do not represent the position of the World Bank Group.</p>
+
+        <script>
+        (function(){
+          var navy='#0a1628',gold='#c9a84c',red='#c0392b',teal='#2d8a7e',blue='#3b82f6',orange='#f59e0b';
+          Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.font.size=12;Chart.defaults.color='#4a5568';
+          Chart.defaults.plugins.legend.labels.usePointStyle=true;Chart.defaults.plugins.legend.labels.padding=16;
+
+          new Chart(document.getElementById('chartSectorGDP'),{type:'bar',data:{labels:['Construction','Services','Manufacturing','Mining & Quarrying','Agriculture'],datasets:[{label:'Q4 2025 YoY Growth (%)',data:[11.0,6.2,6.1,3.2,2.8],backgroundColor:[gold,navy,teal,blue,orange],borderWidth:0,borderRadius:3,barThickness:28}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw+'%'}}}},scales:{x:{grid:{color:'#e5e0d5'},ticks:{callback:function(v){return v+'%'}},beginAtZero:true},y:{grid:{display:false}}}}});
+
+          new Chart(document.getElementById('chartDomesticDemand'),{type:'bar',data:{labels:['Q1 2025','Q2 2025','Q3 2025','Q4 2025'],datasets:[{label:'Private Consumption',data:[4.8,4.9,5.0,5.3],backgroundColor:navy,borderRadius:2,barPercentage:0.7},{label:'Gross Fixed Capital Formation',data:[6.3,7.1,8.5,9.3],backgroundColor:gold,borderRadius:2,barPercentage:0.7},{label:'Government Consumption',data:[5.5,6.2,7.0,8.0],backgroundColor:teal,borderRadius:2,barPercentage:0.7}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.raw+'%'}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#e5e0d5'},ticks:{callback:function(v){return v+'%'}},beginAtZero:true}}}});
+
+          new Chart(document.getElementById('chartExternalTrade'),{type:'bar',data:{labels:['Q1 2025','Q2 2025','Q3 2025','Q4 2025'],datasets:[{label:'Exports',data:[5.1,4.3,1.7,3.9],backgroundColor:navy,borderRadius:2,barPercentage:0.65},{label:'Imports',data:[3.8,5.6,4.2,7.9],backgroundColor:gold,borderRadius:2,barPercentage:0.65}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.raw+'%'}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#e5e0d5'},ticks:{callback:function(v){return v+'%'}},title:{display:true,text:'YoY Growth (%)'}}}}});
+
+          new Chart(document.getElementById('chartInflation'),{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26'],datasets:[{label:'Headline CPI',data:[1.7,1.5,1.4,1.3,1.2,1.1,1.2,1.3,1.5,1.5,1.5,1.6,1.6],borderColor:navy,backgroundColor:navy+'18',borderWidth:2.5,pointRadius:3,pointHoverRadius:5,tension:0.3,fill:true},{label:'Core CPI',data:[1.8,1.8,1.9,1.9,1.8,1.8,1.9,2.0,2.1,2.1,2.2,2.3,2.3],borderColor:red,backgroundColor:red+'12',borderWidth:2.5,pointRadius:3,pointHoverRadius:5,tension:0.3,fill:true,borderDash:[6,3]}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.raw+'%'}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#e5e0d5'},ticks:{callback:function(v){return v+'%'}},min:0.5,max:3.0,title:{display:true,text:'YoY (%)'}}}}});
+        })();
+        </script>
     """,
-    # Sources line shown in footer
     "sources": "Data: DOSM · BNM · World Bank",
 }
 # ─────────────────────────────────────────────
 
+# Load .env
+_env = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+if os.path.exists(_env):
+    for _line in open(_env):
+        _line = _line.strip()
+        if _line and not _line.startswith('#') and '=' in _line:
+            _k, _v = _line.split('=', 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
 
+
+def _ssl_ctx():
+    ctx = ssl.create_default_context()
+    for cert in ('/etc/ssl/cert.pem', '/etc/ssl/certs/ca-certificates.crt'):
+        if os.path.exists(cert):
+            ctx.load_verify_locations(cert)
+            break
+    return ctx
+
+
+def publish(post):
+    url = os.environ.get('SUPABASE_URL', '')
+    key = os.environ.get('SUPABASE_SERVICE_KEY', '')
+    if not url or not key:
+        print('ERROR: SUPABASE_URL and SUPABASE_SERVICE_KEY must be in .env')
+        sys.exit(1)
+    payload = json.dumps({
+        'slug':       post['slug'],
+        'title':      post['title'],
+        'subtitle':   post.get('subtitle', ''),
+        'category':   post.get('category', ''),
+        'tags':       post.get('tags', []),
+        'date_label': post.get('date_label', post.get('date', '')),
+        'emoji':      post.get('emoji', ''),
+        'excerpt':    post.get('excerpt', ''),
+        'body_html':  post.get('body_html', ''),
+        'sources':    post.get('sources', ''),
+    }).encode()
+    req = urllib.request.Request(
+        f'{url}/rest/v1/articles',
+        data=payload,
+        headers={
+            'apikey':        key,
+            'Authorization': f'Bearer {key}',
+            'Content-Type':  'application/json',
+            'Prefer':        'resolution=merge-duplicates',
+        },
+        method='POST'
+    )
+    try:
+        with urllib.request.urlopen(req, context=_ssl_ctx()) as resp:
+            print(f'  Supabase: {resp.status} — article upserted')
+    except urllib.error.HTTPError as e:
+        print(f'  Supabase error {e.code}: {e.read().decode()[:300]}')
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    print(f"\nPublishing: {POST_DATA['title']}")
+    print(f"  Slug: {POST_DATA['slug']}\n")
+    publish(POST_DATA)
+    print(f"\nDone. Article live at: themalaysialens.org/article.html?slug={POST_DATA['slug']}\n")
+
+
+# ── DEAD CODE BELOW — kept only as reference, no longer used ──────────────────
 ARTICLE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,13 +379,3 @@ def add_to_index(post):
     print("✅ index.html Analysis tab also updated")
 
 
-if __name__ == "__main__":
-    print(f"\n📰 Publishing: {POST_DATA['title']}")
-    print(f"   Slug: {POST_DATA['slug']}")
-    print(f"   Date: {POST_DATA['date']}\n")
-
-    make_article(POST_DATA)
-    add_to_index(POST_DATA)
-
-    print(f"\n🎉 Done! Open index.html in your browser to preview.")
-    print(f"   Article URL: articles/{POST_DATA['slug']}.html\n")

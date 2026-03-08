@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">Loading — The Malaysian Lens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root{--navy:#0a1628;--gold:#c9a84c;--cream:#faf8f3;--text:#1a1a2e;--muted:#6b7280;--border:#e5e0d5;--red:#c0392b;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;}
+    header{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 2rem;}
+    .header-top{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0 1rem;max-width:1100px;margin:0 auto;}
+    .site-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#fff;text-decoration:none;display:block;}
+    .site-name span{color:var(--gold);}
+    .site-tagline{font-size:0.7rem;color:#a0aec0;letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+    nav{max-width:1100px;margin:0 auto;padding:0.75rem 0;display:flex;gap:2rem;border-top:1px solid rgba(255,255,255,0.1);}
+    nav a{color:#cbd5e0;text-decoration:none;font-size:0.8rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;}
+    nav a:hover{color:var(--gold);}
+    .date-bar{background:var(--gold);text-align:center;padding:0.35rem;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--navy);}
+    .article-wrapper{max-width:720px;margin:3rem auto;padding:0 2rem;}
+    .back-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;color:var(--muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;margin-bottom:2rem;}
+    .back-link:hover{color:var(--gold);}
+    .article-category{display:inline-block;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--red);margin-bottom:1rem;}
+    .article-headline{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;line-height:1.15;color:var(--navy);margin-bottom:1.25rem;}
+    .article-sub{font-size:1.15rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;font-weight:300;border-left:3px solid var(--gold);padding-left:1rem;}
+    .article-meta-bar{display:flex;align-items:center;gap:1.5rem;padding:1rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:2rem;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;}
+    .tag{background:var(--navy);color:var(--gold);padding:0.2rem 0.6rem;border-radius:2px;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;}
+    .article-body{font-size:1.05rem;line-height:1.85;}
+    .article-body p{margin-bottom:1.4rem;}
+    .hook{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy);line-height:1.4;margin-bottom:0.5rem;}
+    .hook-sub{font-size:1rem;color:var(--muted);font-style:italic;margin-bottom:2rem;}
+    .section-break{text-align:center;color:var(--gold);font-size:1.2rem;letter-spacing:8px;margin:2rem 0;}
+    .data-table-wrapper{margin:2rem 0;overflow-x:auto;}
+    .data-table-title{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:0.75rem;}
+    table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+    thead{background:var(--navy);color:#fff;}
+    thead th{padding:0.75rem 1rem;text-align:left;font-weight:500;font-size:0.78rem;}
+    tbody tr:nth-child(even){background:#fff;}
+    tbody tr:nth-child(odd){background:#f5f2ec;}
+    tbody td{padding:0.65rem 1rem;border-bottom:1px solid var(--border);}
+    .table-source{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;font-style:italic;}
+    .pull-quote{background:var(--navy);color:#fff;padding:2rem;margin:2rem 0;border-left:4px solid var(--gold);}
+    .pull-quote p{font-family:'Playfair Display',serif;font-size:1.3rem;line-height:1.5;margin-bottom:0;}
+    .key-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0;}
+    .key-num{background:#fff;border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.25rem;text-align:center;}
+    .key-num .val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--navy);}
+    .key-num .lbl{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:0.25rem;}
+    .callout{background:#fff3cd;border-left:4px solid #f59e0b;padding:1.25rem 1.5rem;margin:2rem 0;font-size:0.95rem;}
+    .vigilance-box{background:var(--navy);color:#e2e8f0;padding:2rem;margin:2.5rem 0 1rem;text-align:center;}
+    .vigilance-box p{font-family:'Playfair Display',serif;font-size:1.2rem;line-height:1.6;margin-bottom:0;}
+    .vigilance-box .flag{font-size:1.5rem;margin-top:0.75rem;display:block;}
+    .disclaimer{font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+    footer{background:var(--navy);color:#a0aec0;padding:2.5rem 2rem;text-align:center;margin-top:4rem;}
+    footer .footer-name{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;}
+    footer p{font-size:0.8rem;line-height:1.8;}
+    footer .sources{margin-top:1rem;font-size:0.72rem;color:#4a5568;}
+    .loading-state{text-align:center;padding:6rem 2rem;color:var(--muted);}
+    .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .not-found h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--navy);margin-bottom:1rem;}
+    .not-found p{color:var(--muted);margin-bottom:2rem;}
+    .chart-container{background:#fff;border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.5rem;margin:2rem 0;}
+    .chart-container .chart-title{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:0.75rem;}
+    .chart-container .chart-source{font-size:0.72rem;color:var(--muted);margin-top:0.75rem;font-style:italic;}
+    .chart-container canvas{max-height:320px;}
+    @media(max-width:600px){.article-headline{font-size:2rem;}.key-numbers{grid-template-columns:1fr;}.chart-container canvas{max-height:260px;}}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <a href="index.html" class="site-name">The <span>Malaysian</span> Lens</a>
+      <div class="site-tagline">Economic Analysis · Data-Driven · Independent</div>
+    </div>
+    <div style="font-size:2rem;">&#127474;&#127486;</div>
+  </div>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="analysis.html">Analysis</a>
+  </nav>
+</header>
+
+<div class="date-bar" id="datebar"></div>
+
+<div id="state-loading" class="loading-state">
+  <div class="spinner"></div>
+  <p>Loading article&#8230;</p>
+</div>
+
+<div id="state-notfound" style="display:none">
+  <div class="article-wrapper">
+    <div class="not-found">
+      <h2>Article not found</h2>
+      <p>This article may have been moved or removed.</p>
+      <a href="analysis.html" class="back-link">&#8592; Back to all analysis</a>
+    </div>
+  </div>
+</div>
+
+<div id="state-article" style="display:none">
+  <div class="article-wrapper">
+    <a href="analysis.html" class="back-link">&#8592; Back to all analysis</a>
+    <span class="article-category" id="a-category"></span>
+    <h1 class="article-headline" id="a-title"></h1>
+    <p class="article-sub" id="a-subtitle"></p>
+    <div class="article-meta-bar" id="a-meta"></div>
+    <div class="article-body" id="a-body"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-name">The Malaysian Lens</div>
+  <p>Economic Analysis by Deisigan &nbsp;&middot;&nbsp; &#127474;&#127486; &nbsp;&middot;&nbsp; Independent</p>
+  <p class="sources" id="a-sources">Data: DOSM &middot; BNM &middot; Sources stated per article</p>
+</footer>
+
+<script>
+  const SUPABASE_URL = 'https://dvzkvjxhnrralaccpoua.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2emt2anhobnJyYWxhY2Nwb3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3ODc1MjIsImV4cCI6MjA4ODM2MzUyMn0.mfn1QwwmpnO6Vvp8sxvdkf-1nGsxFeB4UJAoM8nJFwI';
+
+  function show(id) {
+    ['state-loading', 'state-notfound', 'state-article'].forEach(s =>
+      document.getElementById(s).style.display = s === id ? '' : 'none'
+    );
+  }
+
+  document.getElementById('datebar').textContent =
+    new Date().toLocaleDateString('en-MY', {weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+
+  async function loadArticle() {
+    const slug = new URLSearchParams(window.location.search).get('slug');
+    if (!slug) { show('state-notfound'); return; }
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/articles?slug=eq.${encodeURIComponent(slug)}&select=*`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      const rows = await res.json();
+      if (!rows || !rows[0]) { show('state-notfound'); return; }
+      const a = rows[0];
+      document.getElementById('page-title').textContent = `${a.title} \u2014 The Malaysian Lens`;
+      document.getElementById('a-category').textContent = a.category || '';
+      document.getElementById('a-title').textContent = a.title || '';
+      document.getElementById('a-subtitle').textContent = a.subtitle || '';
+      const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join(' ');
+      document.getElementById('a-meta').innerHTML = `${tags}<span>By Deisigan &nbsp;&middot;&nbsp; ${a.date_label || ''}</span>`;
+      document.getElementById('a-body').innerHTML = a.body_html || '';
+      /* Execute any <script> tags in body_html (innerHTML doesn't auto-run them) */
+      document.getElementById('a-body').querySelectorAll('script').forEach(old => {
+        const ns = document.createElement('script');
+        ns.textContent = old.textContent;
+        old.parentNode.replaceChild(ns, old);
+      });
+      if (a.sources) document.getElementById('a-sources').textContent = a.sources;
+      show('state-article');
+    } catch(e) {
+      show('state-notfound');
+    }
+  }
+
+  loadArticle();
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@
   <title>Malaysia 2025: Economic Developments — The Malaysian Lens</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {--navy:#0a1628;--gold:#c9a84c;--cream:#faf8f3;--text:#1a1a2e;--muted:#6b7280;--border:#e5e0d5;--red:#c0392b;}
     *{margin:0;padding:0;box-sizing:border-box;}
@@ -56,7 +57,11 @@
     footer .footer-name{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;}
     footer p{font-size:0.8rem;line-height:1.8;}
     footer .sources{margin-top:1rem;font-size:0.72rem;color:#4a5568;}
-    @media(max-width:600px){.article-headline{font-size:2rem;}.key-numbers{grid-template-columns:1fr;}}
+    .chart-container{background:#fff;border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.5rem;margin:2rem 0;}
+    .chart-container .chart-title{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:0.75rem;}
+    .chart-container .chart-source{font-size:0.72rem;color:var(--muted);margin-top:0.75rem;font-style:italic;}
+    .chart-container canvas{max-height:320px;}
+    @media(max-width:600px){.article-headline{font-size:2rem;}.key-numbers{grid-template-columns:1fr;}.chart-container canvas{max-height:260px;}}
   </style>
 </head>
 <body>
@@ -110,6 +115,12 @@
           <div class="table-source">Source: Department of Statistics Malaysia (DOSM) — February 2026</div>
         </div>
 
+        <div class="chart-container">
+          <div class="chart-title">GDP Growth by Sector, Q4 2025 (Year-on-Year, %)</div>
+          <canvas id="chartSectorGDP"></canvas>
+          <div class="chart-source">Source: DOSM — February 2026</div>
+        </div>
+
         <div class="section-break">· · ·</div>
 
         <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Domestic Demand</h2>
@@ -117,8 +128,20 @@
 
         <div class="pull-quote"><p>"By Q4 2025, gross fixed capital formation had expanded 9.3 percent — the physical build-out of Malaysia's technology and industrial ambitions now measurable in the national accounts."</p></div>
 
+        <div class="chart-container">
+          <div class="chart-title">Domestic Demand Components, Q4 2025 (Year-on-Year Growth, %)</div>
+          <canvas id="chartDomesticDemand"></canvas>
+          <div class="chart-source">Source: DOSM — February 2026</div>
+        </div>
+
         <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">External Sector</h2>
         <p><strong>The external sector contributed positively but provided a more moderate impulse than domestic demand, with import growth outpacing export growth in Q4.</strong> Exports of goods and services grew 3.9 percent year-on-year in Q4, recovering from a softer 1.7 percent in Q3, as global semiconductor demand improved and commodity exports stabilized. In value terms, total merchandise exports reached approximately RM 1.61 trillion in 2025, generating a trade surplus of around RM 154.6 billion — a solid buffer that supported the current account position. However, strong investment activity drove capital goods imports sharply higher (+7.9 percent year-on-year in Q4), narrowing the net trade contribution to GDP. The ringgit appreciated meaningfully in the second half of 2025, moving from an average of 4.23 per US dollar in August to 4.09 in December and 4.03 by January 2026, reflecting improved global risk sentiment and capital inflows into regional emerging markets. Currency appreciation, while supportive of import-cost stability, creates a modest competitiveness headwind for export-oriented sectors that warrants monitoring.</p>
+
+        <div class="chart-container">
+          <div class="chart-title">External Trade: Exports and Imports Growth, 2025 (Year-on-Year, %)</div>
+          <canvas id="chartExternalTrade"></canvas>
+          <div class="chart-source">Source: DOSM — February 2026</div>
+        </div>
 
         <div class="section-break">· · ·</div>
 
@@ -139,6 +162,12 @@
             </tbody>
           </table>
           <div class="table-source">Source: Department of Statistics Malaysia (DOSM) — February 2026</div>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">Headline vs. Core CPI Inflation, 2025 (Year-on-Year, %)</div>
+          <canvas id="chartInflation"></canvas>
+          <div class="chart-source">Source: DOSM — February 2026. Core CPI excludes volatile items (fresh food and administered prices).</div>
         </div>
 
         <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#0a1628;margin:2rem 0 0.75rem;">Labour Market</h2>
@@ -167,6 +196,129 @@
     const d = new Date();
     document.getElementById('datebar').textContent =
       d.toLocaleDateString('en-MY', {weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+
+    /* ── Chart defaults ── */
+    const navy = '#0a1628', gold = '#c9a84c', cream = '#faf8f3';
+    const red = '#c0392b', teal = '#2d8a7e', blue = '#3b82f6', orange = '#f59e0b', slate = '#64748b';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#4a5568';
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.padding = 16;
+
+    /* ── 1. GDP by Sector – Horizontal Bar ── */
+    new Chart(document.getElementById('chartSectorGDP'), {
+      type: 'bar',
+      data: {
+        labels: ['Construction', 'Services', 'Manufacturing', 'Mining & Quarrying', 'Agriculture'],
+        datasets: [{
+          label: 'Q4 2025 YoY Growth (%)',
+          data: [11.0, 6.2, 6.1, 3.2, 2.8],
+          backgroundColor: [gold, navy, teal, blue, orange],
+          borderWidth: 0,
+          borderRadius: 3,
+          barThickness: 28
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ctx.raw + '%' } }
+        },
+        scales: {
+          x: { grid: { color: '#e5e0d5' }, ticks: { callback: v => v + '%' }, beginAtZero: true },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    /* ── 2. Domestic Demand Decomposition – Bar ── */
+    new Chart(document.getElementById('chartDomesticDemand'), {
+      type: 'bar',
+      data: {
+        labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
+        datasets: [
+          { label: 'Private Consumption', data: [4.8, 4.9, 5.0, 5.3], backgroundColor: navy, borderRadius: 2, barPercentage: 0.7 },
+          { label: 'Gross Fixed Capital Formation', data: [6.3, 7.1, 8.5, 9.3], backgroundColor: gold, borderRadius: 2, barPercentage: 0.7 },
+          { label: 'Government Consumption', data: [5.5, 6.2, 7.0, 8.0], backgroundColor: teal, borderRadius: 2, barPercentage: 0.7 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%' } }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { grid: { color: '#e5e0d5' }, ticks: { callback: v => v + '%' }, beginAtZero: true }
+        }
+      }
+    });
+
+    /* ── 3. External Trade – Grouped Bar ── */
+    new Chart(document.getElementById('chartExternalTrade'), {
+      type: 'bar',
+      data: {
+        labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
+        datasets: [
+          { label: 'Exports', data: [5.1, 4.3, 1.7, 3.9], backgroundColor: navy, borderRadius: 2, barPercentage: 0.65 },
+          { label: 'Imports', data: [3.8, 5.6, 4.2, 7.9], backgroundColor: gold, borderRadius: 2, barPercentage: 0.65 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%' } }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { grid: { color: '#e5e0d5' }, ticks: { callback: v => v + '%' }, title: { display: true, text: 'YoY Growth (%)' } }
+        }
+      }
+    });
+
+    /* ── 4. Inflation: Headline vs Core CPI – Dual Line ── */
+    new Chart(document.getElementById('chartInflation'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan 26'],
+        datasets: [
+          {
+            label: 'Headline CPI',
+            data: [1.7, 1.5, 1.4, 1.3, 1.2, 1.1, 1.2, 1.3, 1.5, 1.5, 1.5, 1.6, 1.6],
+            borderColor: navy, backgroundColor: navy + '18',
+            borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 5, tension: 0.3, fill: true
+          },
+          {
+            label: 'Core CPI',
+            data: [1.8, 1.8, 1.9, 1.9, 1.8, 1.8, 1.9, 2.0, 2.1, 2.1, 2.2, 2.3, 2.3],
+            borderColor: red, backgroundColor: red + '12',
+            borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 5, tension: 0.3, fill: true,
+            borderDash: [6, 3]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%' } }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { grid: { color: '#e5e0d5' }, ticks: { callback: v => v + '%' }, min: 0.5, max: 3.0,
+               title: { display: true, text: 'YoY (%)' } }
+        }
+      }
+    });
   </script>
 </body>
 </html>
