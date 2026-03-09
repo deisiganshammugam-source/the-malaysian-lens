@@ -4,230 +4,312 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Analysis — The Malaysian Lens</title>
+  <meta name="description" content="Data-driven analysis of the Malaysian economy. In-depth articles on GDP, inflation, trade, and policy.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --navy: #0a1628;
-      --gold: #c9a84c;
-      --cream: #faf8f3;
-      --text: #1a1a2e;
-      --muted: #6b7280;
-      --border: #e5e0d5;
-      --red: #c0392b;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+:root {
+  --navy:   #1a2b4a;
+  --gold:   #c9a84c;
+  --gold-lt:#f5e9c0;
+  --bg:     #f3f5f8;
+  --card:   #ffffff;
+  --border: #e4e9f0;
+  --muted:  #64748b;
+  --red:    #dc2626;
+  --green:  #16a34a;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(26,43,74,.05);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--navy); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+a { color:var(--navy); text-decoration:none; }
 
-    header { background: var(--navy); border-bottom: 3px solid var(--gold); padding: 0 1.5rem; }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 0 0.8rem; max-width: 1200px; margin: 0 auto; }
-    .site-name { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: #fff; text-decoration: none; }
-    .site-name span { color: var(--gold); }
-    .site-tagline { font-size: 0.65rem; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
-    .header-nav { display: flex; gap: 1.5rem; align-items: center; }
-    .header-nav a { color: #cbd5e0; text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
-    .header-nav a:hover, .header-nav a.active { color: var(--gold); }
+/* ── header (identical to index.html) ── */
+.site-header {
+  background:var(--navy); color:#fff;
+  padding:.9rem 1.4rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+}
+.logo { display:flex; align-items:baseline; gap:.45rem; }
+.logo-name { font-size:1.35rem; font-weight:800; letter-spacing:-.02em; }
+.logo-name span { color:var(--gold); }
+.tagline { font-size:.7rem; color:#94a3b8; letter-spacing:.08em; text-transform:uppercase; font-weight:500; }
+.header-meta { font-size:.72rem; color:#94a3b8; white-space:nowrap; }
+.header-meta strong { color:var(--gold); }
 
-    .page-hero {
-      background: var(--navy);
-      padding: 3rem 1.5rem 2.5rem;
-      border-bottom: 1px solid rgba(201,168,76,0.3);
-    }
-    .page-hero-inner { max-width: 1200px; margin: 0 auto; }
-    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; }
-    .page-hero p { font-size: 0.95rem; color: #94a3b8; max-width: 600px; }
+/* ── ticker (identical to index.html) ── */
+.ticker-wrap {
+  background:var(--navy); border-top:1px solid rgba(255,255,255,.1);
+  overflow:hidden; height:34px; position:relative;
+}
+.ticker-inner {
+  display:flex; align-items:center; height:100%;
+  animation:tickerScroll 40s linear infinite;
+  white-space:nowrap; width:max-content;
+}
+.ticker-inner:hover { animation-play-state:paused; }
+.ticker-item {
+  padding:0 1.8rem; font-size:.73rem; color:#94a3b8; border-right:1px solid rgba(255,255,255,.1);
+  display:flex; align-items:center; gap:.45rem; height:100%;
+}
+.ticker-item .t-label { letter-spacing:.06em; text-transform:uppercase; font-size:.65rem; }
+.ticker-item .t-val { color:#fff; font-weight:700; }
+.ticker-item .t-pos { color:#4ade80; }
+.ticker-item .t-neg { color:#f87171; }
+@keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-    /* FILTER BAR */
-    .filter-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 0.8rem 1.5rem; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .filter-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
-    .filter-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; margin-right: 0.5rem; }
-    .filter-btn {
-      background: none;
-      border: 1px solid var(--border);
-      padding: 0.3rem 0.75rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      color: var(--muted);
-      cursor: pointer;
-      border-radius: 2px;
-      transition: all 0.15s;
-    }
-    .filter-btn:hover { border-color: var(--gold); color: var(--navy); }
-    .filter-btn.active { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+/* ── tabs (identical to index.html) ── */
+.tabs-wrap {
+  background:#fff; border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100; box-shadow:0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,.03);
+}
+.tabs-inner {
+  display:flex; overflow-x:auto; scrollbar-width:none;
+  max-width:1280px; margin:0 auto; padding:0 1rem;
+}
+.tabs-inner::-webkit-scrollbar { display:none; }
+.tab-btn {
+  padding:.7rem 1.25rem; font-size:.8rem; font-weight:600;
+  color:var(--muted); border:none; background:none; cursor:pointer;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+  white-space:nowrap; transition:color .15s, border-color .15s;
+  font-family:inherit; letter-spacing:.01em; display:inline-block;
+}
+.tab-btn:hover { color:var(--navy); }
+.tab-btn.active { color:var(--navy); border-bottom-color:var(--gold); }
 
-    /* GRID */
-    .articles-wrap { max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
-    .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+/* ── main layout ── */
+.main-wrap { max-width:1280px; margin:0 auto; padding:1.5rem 1rem 3rem; }
 
-    .article-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-bottom: 3px solid transparent;
-      padding: 1.5rem;
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      border-radius: 2px;
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 0.4s ease forwards;
-    }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-    .article-card:hover { border-bottom-color: var(--gold); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+/* ── section heading ── */
+.section-heading {
+  display:flex; align-items:center; gap:.6rem;
+  font-size:.95rem; font-weight:700; margin-bottom:1.25rem; color:var(--navy);
+}
 
-    .card-emoji { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
-    .card-category { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 0.5rem; }
-    .card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.35; transition: color 0.2s; }
-    .article-card:hover .card-title { color: var(--gold); }
-    .card-excerpt { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
-    .card-meta { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-    .tag {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--navy);
-      padding: 0.2rem 0.65rem;
-      border-radius: 2px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-    }
+/* ── filter buttons ── */
+.filter-bar { display:flex; gap:.3rem; flex-wrap:wrap; margin-bottom:1.25rem; align-items:center; }
+.filter-label { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-right:.5rem; }
+.filter-btn {
+  padding:.25rem .65rem; font-size:.72rem; font-weight:600; border-radius:5px;
+  border:1px solid var(--border); background:var(--card); color:var(--muted);
+  cursor:pointer; font-family:inherit; transition:all .15s; letter-spacing:.01em;
+}
+.filter-btn:hover { border-color:var(--gold); color:var(--navy); }
+.filter-btn.active { background:var(--navy); color:var(--gold); border-color:var(--navy); }
 
-    .no-results { display: none; text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 0.95rem; }
-    .no-results.show { display: block; }
+/* ── articles grid ── */
+.articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.875rem; }
+.article-card {
+  background:var(--card); border-radius:var(--radius); padding:1.25rem;
+  box-shadow:var(--shadow); cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  border:1px solid var(--border);
+  opacity:0; transform:translateY(8px);
+  animation:fadeUp 0.35s ease forwards;
+}
+@keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+.article-card:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,.08), 0 0 0 1px var(--gold); border-color:var(--gold); }
+.article-tag {
+  display:inline-block; background:var(--gold); color:var(--navy);
+  font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
+  padding:.2rem .55rem; border-radius:4px; margin-bottom:.6rem;
+}
+.article-title { font-size:.95rem; font-weight:700; color:var(--navy); line-height:1.35; margin-bottom:.5rem; }
+.article-excerpt { font-size:.78rem; color:var(--muted); line-height:1.55; margin-bottom:.75rem; }
+.article-meta { font-size:.7rem; color:var(--muted); display:flex; align-items:center; justify-content:space-between; }
+.article-meta .read-more { color:var(--navy); font-weight:600; }
+.article-meta .read-more:hover { color:var(--gold); }
 
-    footer { background: var(--navy); color: #94a3b8; padding: 2.5rem 1.5rem; text-align: center; }
-    .footer-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 0.5rem; }
-    footer p { font-size: 0.8rem; line-height: 1.9; }
-    footer .sources { margin-top: 0.5rem; font-size: 0.7rem; color: #4a5568; }
+.no-results { display:none; text-align:center; padding:3rem 1rem; color:var(--muted); font-size:.88rem; }
+.no-results.show { display:block; }
 
-    @media (max-width: 768px) {
-      .site-name { font-size: 1.3rem; }
-      .page-hero h1 { font-size: 1.7rem; }
-      .articles-grid { grid-template-columns: 1fr; }
-    }
+/* ── disclaimer ── */
+.disclaimer {
+  background:#fffbeb; border-top:1px solid #f3d87a;
+  padding:.75rem 1.4rem; font-size:.74rem; color:#92400e; line-height:1.6;
+}
+.disclaimer strong { color:#78350f; font-weight:600; }
+
+/* ── footer (identical to index.html) ── */
+.site-footer {
+  background:var(--navy); color:#94a3b8;
+  padding:1.1rem 1.5rem; font-size:.75rem; text-align:center;
+  display:flex; align-items:center; justify-content:center; gap:.5rem; flex-wrap:wrap;
+}
+.site-footer strong { color:var(--gold); }
+.site-footer a { color:var(--gold); }
+
+/* ── responsive ── */
+@media(max-width:860px) { .articles-grid { grid-template-columns:1fr; } }
+@media(max-width:540px) { .logo-name { font-size:1.1rem; } }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div>
-      <a href="index.html" class="site-name">The <span>Malaysian</span> Lens</a>
-      <div class="site-tagline">Economic Analysis · Data-Driven · Independent</div>
+<!-- ── HEADER (identical to index.html) ── -->
+<header class="site-header">
+  <a href="index.html" style="text-decoration:none">
+    <div class="logo">
+      <div class="logo-name">The <span>Malaysian</span> Lens</div>
+      <div class="tagline">Economic Analysis &middot; Data-Driven &middot; Independent</div>
     </div>
-    <nav class="header-nav">
-      <a href="index.html">Dashboard</a>
-      <a href="analysis.html" class="active">Analysis</a>
-      <span style="color:#c9a84c;font-size:1.3rem;">🇲🇾</span>
-    </nav>
-  </div>
+  </a>
+  <div class="header-meta">Updated: <strong id="last-updated">&mdash;</strong></div>
 </header>
 
-<div class="page-hero">
-  <div class="page-hero-inner">
-    <h1>Analysis</h1>
-    <p>Data-driven posts on the Malaysian economy — grounded in DOSM and BNM data, written for everyone. Sources stated in each piece.</p>
+<!-- ── TICKER (identical to index.html) ── -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
+
+<!-- ── TABS (identical to index.html — Analysis is active) ── -->
+<div class="tabs-wrap">
+  <div class="tabs-inner">
+    <a class="tab-btn" href="index.html">Real Economy</a>
+    <a class="tab-btn" href="index.html#inflation">Inflation</a>
+    <a class="tab-btn" href="index.html#external">External</a>
+    <a class="tab-btn" href="index.html#monetary">Monetary</a>
+    <a class="tab-btn active" href="analysis.html">Analysis</a>
   </div>
 </div>
 
-<div class="filter-bar">
-  <div class="filter-inner">
+<!-- ── MAIN CONTENT ── -->
+<div class="main-wrap">
+  <div class="section-heading">
+    <span>In-Depth Analysis</span>
+  </div>
+
+  <div class="filter-bar">
     <span class="filter-label">Filter:</span>
     <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="macroeconomic-review">Macro Review</button>
+    <button class="filter-btn" data-filter="prices">Prices</button>
     <button class="filter-btn" data-filter="industry-trade">Industry &amp; Trade</button>
     <button class="filter-btn" data-filter="monetary-policy">Monetary Policy</button>
     <button class="filter-btn" data-filter="labour-wages">Labour &amp; Wages</button>
     <button class="filter-btn" data-filter="fiscal">Fiscal</button>
     <button class="filter-btn" data-filter="external">External</button>
   </div>
-</div>
 
-<div class="articles-wrap">
   <div class="articles-grid" id="articles-grid">
-    <div id="articles-loading" style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.9rem;">Loading articles&#8230;</div>
+    <div id="articles-loading" style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.85rem;">Loading articles&#8230;</div>
   </div>
   <div class="no-results" id="no-results">No posts found for this category yet — check back soon.</div>
 </div>
 
-<div style="background:#fffbeb;border-top:1px solid #f3d87a;padding:.75rem 1.5rem;font-size:.74rem;color:#92400e;line-height:1.6;">
-  <strong style="color:#78350f;">Disclaimer:</strong>
-  This website, including all analysis and article content, is entirely generated by artificial intelligence (Claude, Anthropic).
-  Data is sourced from DOSM (data.gov.my) and BNM (bnm.gov.my). Content may contain errors. For informational purposes only.
+<!-- ── DISCLAIMER (identical to index.html) ── -->
+<div class="disclaimer">
+  <strong>Disclaimer:</strong>
+  This website, including all data visualisations, analysis, and article content, is entirely generated by artificial intelligence (Claude, Anthropic).
+  Data is sourced from DOSM (<a href="https://data.gov.my" target="_blank">data.gov.my</a>) and BNM (<a href="https://bnm.gov.my" target="_blank">bnm.gov.my</a>).
+  Content may contain errors. For informational purposes only &mdash; not financial advice. The Malaysian Lens accepts no liability for decisions made using this information.
 </div>
-<footer>
-  <div class="footer-name">The Malaysian Lens</div>
-  <p>Economic Analysis &nbsp;·&nbsp; Data-Driven &nbsp;·&nbsp; Independent</p>
-  <p class="sources">Data: DOSM (data.gov.my) · BNM (apikijangportal.bnm.gov.my) · Sources stated per article</p>
+
+<!-- ── FOOTER (identical to index.html) ── -->
+<footer class="site-footer">
+  <span>Data sourced from</span>
+  <strong><a href="https://data.gov.my" target="_blank">DOSM (data.gov.my)</a></strong>
+  <span>and</span>
+  <strong><a href="https://bnm.gov.my" target="_blank">BNM (bnm.gov.my)</a></strong>
+  <span>&middot;</span>
+  <span>Independent analysis</span>
 </footer>
 
 <script>
-  const SUPABASE_URL = 'https://dvzkvjxhnrralaccpoua.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2emt2anhobnJyYWxhY2Nwb3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3ODc1MjIsImV4cCI6MjA4ODM2MzUyMn0.mfn1QwwmpnO6Vvp8sxvdkf-1nGsxFeB4UJAoM8nJFwI';
+const SUPABASE_URL = 'https://dvzkvjxhnrralaccpoua.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2emt2anhobnJyYWxhY2Nwb3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3ODc1MjIsImV4cCI6MjA4ODM2MzUyMn0.mfn1QwwmpnO6Vvp8sxvdkf-1nGsxFeB4UJAoM8nJFwI';
 
-  let activeFilter = 'all';
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const noResults  = document.getElementById('no-results');
-
-  function catSlug(cat) {
-    return (cat || '').toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
-  }
-
-  function applyFilter() {
-    const cards = document.querySelectorAll('#articles-grid .article-card');
-    let visible = 0;
-    cards.forEach((card, i) => {
-      const match = activeFilter === 'all' || card.dataset.category === activeFilter;
-      card.style.display = match ? '' : 'none';
-      if (match) { card.style.animationDelay = `${i * 0.04}s`; visible++; }
-    });
-    noResults.classList.toggle('show', visible === 0);
-  }
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      applyFilter();
-    });
-  });
-
-  async function loadArticles() {
-    const grid = document.getElementById('articles-grid');
-    try {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/articles?select=slug,title,category,tags,date_label,emoji,excerpt&order=created_at.desc`,
-        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-      );
-      const articles = await res.json();
-      document.getElementById('articles-loading').remove();
-      if (!articles || !articles.length) {
-        noResults.classList.add('show');
-        return;
-      }
-      articles.forEach((a, i) => {
-        const tags = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join(' ');
-        const card = document.createElement('div');
-        card.className = 'article-card';
-        card.dataset.category = catSlug(a.category);
-        card.style.animationDelay = `${i * 0.05}s`;
-        card.onclick = () => window.location = `article.html?slug=${a.slug}`;
-        card.innerHTML = `
-          <span class="card-emoji">${a.emoji || ''}</span>
-          <div class="card-category">${a.category || ''}</div>
-          <div class="card-title">${a.title}</div>
-          <p class="card-excerpt">${a.excerpt || ''}</p>
-          <div class="card-meta">${tags}<span>${a.date_label || ''}</span></div>`;
-        grid.appendChild(card);
-      });
-      applyFilter();
-    } catch(e) {
-      document.getElementById('articles-loading').textContent = 'Could not load articles.';
+/* ── Load ticker data from Supabase ── */
+async function loadTicker() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/dashboard_data?select=data&limit=1`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+    if (!rows || !rows[0] || !rows[0].data) return;
+    const D = rows[0].data;
+    document.getElementById('last-updated').innerHTML = D._lastUpdated || '—';
+    const items = [];
+    if (D.gdp) items.push({ label:'GDP', val: D.gdp.latest_yoy != null ? D.gdp.latest_yoy.toFixed(1)+'%' : '—', cls: D.gdp.latest_yoy >= 0 ? 't-pos' : 't-neg' });
+    if (D.cpi) {
+      items.push({ label:'CPI', val: D.cpi.headline_yoy != null ? D.cpi.headline_yoy.toFixed(1)+'%' : '—', cls:'t-val' });
+      items.push({ label:'Core CPI', val: D.cpi.core_yoy != null ? D.cpi.core_yoy.toFixed(1)+'%' : '—', cls:'t-val' });
     }
-  }
+    if (D.opr) items.push({ label:'OPR', val: D.opr.rate != null ? D.opr.rate.toFixed(2)+'%' : '—', cls:'t-val' });
+    if (D.fx) items.push({ label:'USD/MYR', val: D.fx.usd_myr != null ? D.fx.usd_myr.toFixed(4) : '—', cls:'t-val' });
+    if (items.length) {
+      const html = items.map(i => `<div class="ticker-item"><span class="t-label">${i.label}</span><span class="${i.cls}">${i.val}</span></div>`).join('');
+      document.getElementById('ticker-inner').innerHTML = html + html;
+    }
+  } catch(e) {}
+}
 
-  loadArticles();
+/* ── Filters ── */
+let activeFilter = 'all';
+const filterBtns = document.querySelectorAll('.filter-btn');
+const noResults  = document.getElementById('no-results');
+
+function catSlug(cat) { return (cat || '').toLowerCase().replace(/ & /g, '-').replace(/ /g, '-'); }
+
+function applyFilter() {
+  const cards = document.querySelectorAll('#articles-grid .article-card');
+  let visible = 0;
+  cards.forEach((card, i) => {
+    const match = activeFilter === 'all' || card.dataset.category === activeFilter;
+    card.style.display = match ? '' : 'none';
+    if (match) { card.style.animationDelay = `${i * 0.04}s`; visible++; }
+  });
+  noResults.classList.toggle('show', visible === 0);
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+
+/* ── Load articles ── */
+async function loadArticles() {
+  const grid = document.getElementById('articles-grid');
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/articles?select=slug,title,category,tags,date_label,emoji,excerpt&order=created_at.desc`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const articles = await res.json();
+    document.getElementById('articles-loading').remove();
+    if (!articles || !articles.length) { noResults.classList.add('show'); return; }
+    articles.forEach((a, i) => {
+      const tags = (a.tags || []).map(t => `<span class="article-tag" style="margin-right:.25rem">${t}</span>`).join('');
+      const card = document.createElement('div');
+      card.className = 'article-card';
+      card.dataset.category = catSlug(a.category);
+      card.style.animationDelay = `${i * 0.05}s`;
+      card.onclick = () => window.location = `article.html?slug=${a.slug}`;
+      card.innerHTML = `
+        ${a.emoji ? `<div style="font-size:1.4rem;margin-bottom:.5rem">${a.emoji}</div>` : ''}
+        <div class="article-tag">${a.category || ''}</div>
+        <div class="article-title">${a.title}</div>
+        <p class="article-excerpt">${a.excerpt || ''}</p>
+        <div class="article-meta">
+          <div>${tags}<span style="color:var(--muted);font-size:.7rem">${a.date_label||''}</span></div>
+          <a class="read-more" href="article.html?slug=${a.slug}">Read More \u2192</a>
+        </div>`;
+      grid.appendChild(card);
+    });
+    applyFilter();
+  } catch(e) {
+    document.getElementById('articles-loading').textContent = 'Could not load articles.';
+  }
+}
+
+loadTicker();
+loadArticles();
 </script>
 </body>
 </html>

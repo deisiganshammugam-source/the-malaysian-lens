@@ -26,7 +26,7 @@
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--navy); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
 a { color:var(--navy); text-decoration:none; }
 
-/* ── header (matches index.html) ── */
+/* ── header (identical to index.html) ── */
 .site-header {
   background:var(--navy); color:#fff;
   padding:.9rem 1.4rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
@@ -35,22 +35,63 @@ a { color:var(--navy); text-decoration:none; }
 .logo-name { font-size:1.35rem; font-weight:800; letter-spacing:-.02em; }
 .logo-name span { color:var(--gold); }
 .tagline { font-size:.7rem; color:#94a3b8; letter-spacing:.08em; text-transform:uppercase; font-weight:500; }
-.header-nav { display:flex; gap:1.2rem; align-items:center; }
-.header-nav a {
-  color:#94a3b8; font-size:.78rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
-  transition:color .15s; padding:.3rem 0;
+.header-meta { font-size:.72rem; color:#94a3b8; white-space:nowrap; }
+.header-meta strong { color:var(--gold); }
+
+/* ── ticker (identical to index.html) ── */
+.ticker-wrap {
+  background:var(--navy); border-top:1px solid rgba(255,255,255,.1);
+  overflow:hidden; height:34px; position:relative;
 }
-.header-nav a:hover { color:var(--gold); }
+.ticker-inner {
+  display:flex; align-items:center; height:100%;
+  animation:tickerScroll 40s linear infinite;
+  white-space:nowrap; width:max-content;
+}
+.ticker-inner:hover { animation-play-state:paused; }
+.ticker-item {
+  padding:0 1.8rem; font-size:.73rem; color:#94a3b8; border-right:1px solid rgba(255,255,255,.1);
+  display:flex; align-items:center; gap:.45rem; height:100%;
+}
+.ticker-item .t-label { letter-spacing:.06em; text-transform:uppercase; font-size:.65rem; }
+.ticker-item .t-val { color:#fff; font-weight:700; }
+.ticker-item .t-pos { color:#4ade80; }
+.ticker-item .t-neg { color:#f87171; }
+@keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-/* ── article layout ── */
-.article-outer { max-width:760px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+/* ── tabs (identical to index.html) ── */
+.tabs-wrap {
+  background:#fff; border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100; box-shadow:0 1px 0 var(--border), 0 2px 8px rgba(0,0,0,.03);
+}
+.tabs-inner {
+  display:flex; overflow-x:auto; scrollbar-width:none;
+  max-width:1280px; margin:0 auto; padding:0 1rem;
+}
+.tabs-inner::-webkit-scrollbar { display:none; }
+.tab-btn {
+  padding:.7rem 1.25rem; font-size:.8rem; font-weight:600;
+  color:var(--muted); border:none; background:none; cursor:pointer;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+  white-space:nowrap; transition:color .15s, border-color .15s;
+  font-family:inherit; letter-spacing:.01em;
+}
+.tab-btn:hover { color:var(--navy); }
+.tab-btn.active { color:var(--navy); border-bottom-color:var(--gold); }
 
+/* ── main layout ── */
+.main-wrap { max-width:1280px; margin:0 auto; padding:1.5rem 1rem 3rem; }
+
+/* ── back link ── */
 .back-link {
   display:inline-flex; align-items:center; gap:.35rem;
   font-size:.75rem; font-weight:600; color:var(--muted); letter-spacing:.06em; text-transform:uppercase;
   margin-bottom:1.5rem; transition:color .15s;
 }
 .back-link:hover { color:var(--gold); }
+
+/* ── article layout ── */
+.article-outer { max-width:760px; margin:0 auto; }
 
 .article-category {
   display:inline-block; background:var(--gold); color:var(--navy);
@@ -88,6 +129,8 @@ a { color:var(--navy); text-decoration:none; }
   border-bottom:2px solid var(--gold); text-transform:uppercase; letter-spacing:.04em;
 }
 .article-body strong { font-weight:600; }
+.article-body ul, .article-body ol { margin-bottom:1.3rem; padding-left:1.5rem; }
+.article-body li { margin-bottom:.4rem; }
 
 /* ── section break ── */
 .section-break { text-align:center; color:var(--gold); font-size:1rem; letter-spacing:6px; margin:2rem 0; }
@@ -152,18 +195,25 @@ tbody td { padding:.55rem .9rem; }
 
 /* ── disclaimer ── */
 .disclaimer {
+  background:#fffbeb; border-top:1px solid #f3d87a;
+  padding:.75rem 1.4rem; font-size:.74rem; color:#92400e;
+  line-height:1.6;
+}
+.disclaimer strong { color:#78350f; font-weight:600; }
+.article-body .disclaimer {
   font-size:.78rem; color:var(--muted); margin-top:2rem; padding-top:1.5rem;
   border-top:1px solid var(--border); line-height:1.6;
+  background:none; border-left:none;
 }
 
-/* ── footer (matches index.html) ── */
+/* ── footer (identical to index.html) ── */
 .site-footer {
   background:var(--navy); color:#94a3b8;
   padding:1.1rem 1.5rem; font-size:.75rem; text-align:center;
   display:flex; align-items:center; justify-content:center; gap:.5rem; flex-wrap:wrap;
-  margin-top:0;
 }
 .site-footer strong { color:var(--gold); }
+.site-footer a { color:var(--gold); }
 
 /* ── states ── */
 .loading-state { text-align:center; padding:6rem 2rem; color:var(--muted); }
@@ -178,13 +228,13 @@ tbody td { padding:.55rem .9rem; }
   .article-headline { font-size:1.6rem; }
   .key-numbers { grid-template-columns:1fr; }
   .chart-container canvas { max-height:240px; }
-  .article-outer { padding:1.25rem 1rem 2rem; }
+  .main-wrap { padding:1.25rem 1rem 2rem; }
 }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER (same as index.html) ── -->
+<!-- ── HEADER (identical to index.html) ── -->
 <header class="site-header">
   <a href="index.html" style="text-decoration:none">
     <div class="logo">
@@ -192,47 +242,73 @@ tbody td { padding:.55rem .9rem; }
       <div class="tagline">Economic Analysis &middot; Data-Driven &middot; Independent</div>
     </div>
   </a>
-  <div class="header-nav">
-    <a href="index.html">Dashboard</a>
-    <a href="analysis.html">Analysis</a>
-  </div>
+  <div class="header-meta">Updated: <strong id="last-updated">&mdash;</strong></div>
 </header>
 
-<!-- ── LOADING ── -->
-<div id="state-loading" class="loading-state">
-  <div class="spinner"></div>
-  <p>Loading article&#8230;</p>
+<!-- ── TICKER (identical to index.html) ── -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker-inner"></div>
 </div>
 
-<!-- ── NOT FOUND ── -->
-<div id="state-notfound" style="display:none">
-  <div class="article-outer">
-    <div class="not-found">
-      <h2>Article not found</h2>
-      <p>This article may have been moved or removed.</p>
-      <a href="analysis.html" class="back-link">&#8592; Back to all analysis</a>
+<!-- ── TABS (identical to index.html — Analysis is active) ── -->
+<div class="tabs-wrap">
+  <div class="tabs-inner">
+    <a class="tab-btn" href="index.html">Real Economy</a>
+    <a class="tab-btn" href="index.html#inflation">Inflation</a>
+    <a class="tab-btn" href="index.html#external">External</a>
+    <a class="tab-btn" href="index.html#monetary">Monetary</a>
+    <a class="tab-btn active" href="analysis.html">Analysis</a>
+  </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="main-wrap">
+
+  <!-- LOADING -->
+  <div id="state-loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading article&#8230;</p>
+  </div>
+
+  <!-- NOT FOUND -->
+  <div id="state-notfound" style="display:none">
+    <div class="article-outer">
+      <div class="not-found">
+        <h2>Article not found</h2>
+        <p>This article may have been moved or removed.</p>
+        <a href="analysis.html" class="back-link">&#8592; Back to all analysis</a>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ── ARTICLE ── -->
-<div id="state-article" style="display:none">
-  <div class="article-outer">
-    <a href="analysis.html" class="back-link">&#8592; Back to all analysis</a>
-    <span class="article-category" id="a-category"></span>
-    <h1 class="article-headline" id="a-title"></h1>
-    <p class="article-sub" id="a-subtitle"></p>
-    <div class="article-meta-bar" id="a-meta"></div>
-    <div class="article-body" id="a-body"></div>
+  <!-- ARTICLE -->
+  <div id="state-article" style="display:none">
+    <div class="article-outer">
+      <a href="analysis.html" class="back-link">&#8592; Back to all analysis</a>
+      <span class="article-category" id="a-category"></span>
+      <h1 class="article-headline" id="a-title"></h1>
+      <p class="article-sub" id="a-subtitle"></p>
+      <div class="article-meta-bar" id="a-meta"></div>
+      <div class="article-body" id="a-body"></div>
+    </div>
   </div>
+
+</div><!-- end main-wrap -->
+
+<!-- ── DISCLAIMER (identical to index.html) ── -->
+<div class="disclaimer">
+  <strong>Disclaimer:</strong>
+  This website, including all data visualisations, analysis, and article content, is entirely generated by artificial intelligence (Claude, Anthropic).
+  Data is sourced from DOSM (<a href="https://data.gov.my" target="_blank">data.gov.my</a>) and BNM (<a href="https://bnm.gov.my" target="_blank">bnm.gov.my</a>).
+  Content may contain errors. For informational purposes only &mdash; not financial advice. The Malaysian Lens accepts no liability for decisions made using this information.
 </div>
 
-<!-- ── FOOTER (same as index.html) ── -->
+<!-- ── FOOTER (identical to index.html) ── -->
 <footer class="site-footer">
   <span>Data sourced from</span>
-  <strong>DOSM (data.gov.my)</strong>
+  <strong><a href="https://data.gov.my" target="_blank">DOSM (data.gov.my)</a></strong>
   <span>and</span>
-  <strong>BNM (bnm.gov.my)</strong>
+  <strong><a href="https://bnm.gov.my" target="_blank">BNM (bnm.gov.my)</a></strong>
   <span>&middot;</span>
   <span id="a-sources">Sources stated per article</span>
 </footer>
@@ -247,6 +323,41 @@ function show(id) {
   );
 }
 
+/* ── Load ticker data from Supabase (same as index.html) ── */
+async function loadTicker() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/dashboard_data?select=data&limit=1`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+    if (!rows || !rows[0] || !rows[0].data) return;
+    const D = rows[0].data;
+
+    /* Update header timestamp */
+    const upd = D._lastUpdated || '—';
+    document.getElementById('last-updated').innerHTML = upd;
+
+    /* Build ticker items */
+    const items = [];
+    if (D.gdp) items.push({ label:'GDP', val: D.gdp.latest_yoy != null ? D.gdp.latest_yoy.toFixed(1)+'%' : '—', cls: D.gdp.latest_yoy >= 0 ? 't-pos' : 't-neg' });
+    if (D.cpi) {
+      items.push({ label:'CPI', val: D.cpi.headline_yoy != null ? D.cpi.headline_yoy.toFixed(1)+'%' : '—', cls:'t-val' });
+      items.push({ label:'Core CPI', val: D.cpi.core_yoy != null ? D.cpi.core_yoy.toFixed(1)+'%' : '—', cls:'t-val' });
+    }
+    if (D.opr) items.push({ label:'OPR', val: D.opr.rate != null ? D.opr.rate.toFixed(2)+'%' : '—', cls:'t-val' });
+    if (D.fx) items.push({ label:'USD/MYR', val: D.fx.usd_myr != null ? D.fx.usd_myr.toFixed(4) : '—', cls:'t-val' });
+
+    if (items.length) {
+      const html = items.map(i =>
+        `<div class="ticker-item"><span class="t-label">${i.label}</span><span class="${i.cls}">${i.val}</span></div>`
+      ).join('');
+      document.getElementById('ticker-inner').innerHTML = html + html; /* duplicate for seamless loop */
+    }
+  } catch(e) { /* ticker is non-critical, fail silently */ }
+}
+
+/* ── Load article from Supabase ── */
 async function loadArticle() {
   const slug = new URLSearchParams(window.location.search).get('slug');
   if (!slug) { show('state-notfound'); return; }
@@ -278,6 +389,8 @@ async function loadArticle() {
   }
 }
 
+/* ── Init ── */
+loadTicker();
 loadArticle();
 </script>
 </body>
